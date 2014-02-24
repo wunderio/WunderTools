@@ -1,0 +1,16 @@
+---
+# file: roles/varnish/tasks/main.yml
+  # Init tasks
+  - name: Enable the Varnish repository
+    shell: rpm --nosignature -i http://repo.varnish-cache.org/redhat/varnish-3.0/el6/noarch/varnish-release/varnish-release-3.0-1.el6.noarch.rpm
+      creates=/etc/yum.repos.d/varnish.repo
+  - name: install varnish server
+    yum: pkg=varnish state=installed
+  - name: ensure varnish is running now and on boot
+    service: name=varnish state=started enabled=yes
+  - name: Varnish default.vcl
+    template: src=default.vcl.j2 dest=/etc/varnish/default.vcl
+  - name: Varnish sysconfig
+    template: src=varnish.j2 dest=/etc/sysconfig/varnish
+    notify:
+      - restart varnish

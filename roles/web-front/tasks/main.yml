@@ -1,0 +1,74 @@
+---
+# file: roles/web-front/tasks/main.yml
+
+  # Install repositories
+  - name: Get WK repository
+    get_url: dest=/tmp/wk-release.rpm url=http://wkrepo:xeehae9eeX@repo.wunder.io/CentOS/6/x86_64/wk-release-0.2-1.WK.x86_64.rpm
+  - name: Install WK repository
+    yum: pkg=/tmp/wk-release.rpm state=installed
+  - name: Install EPEL key
+    shell: rpm --import http://ftp.riken.jp/Linux/fedora/epel/RPM-GPG-KEY-EPEL-6
+  - name: Get EPEL repository
+    get_url: dest=/tmp/epel-release.rpm url=http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+  - name: Install EPEL repository
+    yum: pkg=/tmp/epel-release.rpm state=installed
+  - name: Get IUS repository
+    get_url: dest=/tmp/ius-release.rpm url=http://dl.iuscommunity.org/pub/ius/stable/CentOS/6/x86_64/ius-release-1.0-11.ius.centos6.noarch.rpm
+  - name: Install IUS repository
+    yum: pkg=/tmp/ius-release.rpm state=installed
+
+  # Install nginx
+  - name: Install nginx server
+    yum: pkg=nginx state=installed
+
+  # Nginx configuration files
+  - name: nginx.conf
+    template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+  - name: upstream_phpcgi.conf
+    template: src=upstream_phpcgi.conf.j2 dest=/etc/nginx/conf.d/upstream_phpcgi.conf
+  - name: appcluster_upstream.conf
+    template: src=appcluster_upstream.conf.j2 dest=/etc/nginx/conf.d/appcluster_upstream.conf
+  - name: mime.types
+    copy: src=mime.types dest=/etc/nginx/mime.types
+  - name: mappings.conf
+    copy: src=mappings.conf dest=/etc/nginx/conf.d/mappings.conf
+  - name: drupal.conf
+    copy: src=drupal.conf dest=/etc/nginx/conf.d/drupal.conf
+  - name: fastcgi_drupal.conf
+    copy: src=fastcgi_drupal.conf dest=/etc/nginx/conf.d/fastcgi_drupal.conf
+  - name: php_fpm_status.conf
+    copy: src=php_fpm_status.conf dest=/etc/nginx/conf.d/php_fpm_status.conf
+  - name: Create sites-enabled directory
+    file: state=directory path=/etc/nginx/sites-enabled
+  - name: site definitions
+    template: src=sites.conf.j2 dest=/etc/nginx/sites-enabled/sites.conf
+    notify:
+      - restart nginx
+  - name: Ensure nginx is running now and on boot
+    service: name=nginx state=started enabled=yes
+
+# PHP version specific setup:
+# Written as such since the following fails:
+#  - include: "{{ php_package }}.yml"
+
+  - include: "php53u.yml"
+    when: php_package == "php53u"
+
+  - include: "php55u.yml"
+    when: php_package == "php55u"
+
+# Nginx configs.
+
+  - name: php-fpm www.conf
+    template: src=www.conf.j2 dest=/etc/php-fpm.d/www.conf
+    notify:
+      - restart php-fpm
+  # Set correct log rotates
+  - name: Nginx logrotate
+    copy: src=nginx dest=/etc/logrotate.d/nginx
+  - name: Drupal logrotate
+    copy: src=drupal dest=/etc/logrotate.d/drupal
+  - name: PHP-FPM logrotate
+    copy: src=php-fpm dest=/etc/logrotate.d/php-fpm
+    notify:
+      - restart rsyslog

@@ -1,0 +1,6 @@
+---
+# file: roles/user/default/main.yml
+
+# Lists of users to create and delete
+users: []
+users_deleted: []

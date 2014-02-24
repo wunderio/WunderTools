@@ -1,0 +1,37 @@
+---
+# file: roles/web-front/tasks/php53u.yml
+
+# Install all php packages
+  - name: Install php-fpm
+    yum: pkg=php53u-fpm state=installed
+  - name: Ensure php-fpm is running now and on boot
+    service: name=php-fpm state=started enabled=yes
+  - name: Install php packages
+    yum: pkg={{ item }} state=installed
+    with_items:
+      - php53u
+      - php53u-mysql
+      - php53u-gd
+      - php53u-imap
+      - php53u-mbstring
+      - php53u-pear
+      - php53u-xml
+      - php53u-xmlrpc
+      - php53u-pdo
+      - php53u-pecl-memcache
+      - php53u-pecl-memcached
+      - php53u-pecl-apc
+      - php53u-devel
+      - php53u-dba
+      - php53u-mcrypt
+      - php53u-soap
+      - php53u-pecl-redis
+      - php53u-suhosin
+
+  # PHP configuration files
+  - name: php.ini
+    template: src=php53u/php.ini.j2 dest=/etc/php.ini
+  - name: apc.ini
+    template: src=php53u/apc.ini.j2 dest=/etc/php.d/apc.ini
+  - name: suhosin.ini
+    template: src=php53u/suhosin.ini.j2 dest=/etc/php.d/suhosin.ini

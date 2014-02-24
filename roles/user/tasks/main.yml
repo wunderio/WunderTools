@@ -1,0 +1,49 @@
+---
+# file: roles/user/tasks/main.yml
+  - name: Per-user group creation (users)
+    group: name={{item.username}}
+    with_items: users
+    
+  - name: Per-user group creation (admins)
+    group: name={{item.username}}
+    with_items: admins
+
+  - name: User creation
+    user: name={{item.username}}
+          password='{{item.password}}'
+          group={{item.username}}
+          groups='{{item.groups | join(',')}}'
+          shell={{item.shell}}
+          comment='{{item.name}}'
+    with_items: users
+    
+  - name: Admin creation
+    user: name={{item.username}}
+          password='{{item.password}}'
+          group={{item.username}}
+          groups='{{item.groups | join(',')}}'
+          shell={{item.shell}}
+          comment='{{item.name}}'
+    with_items: admins
+
+  - name: SSH keys
+    authorized_key: user={{item.0.username}} key='{{item.1}}'
+    with_subelements:
+      - users
+      - ssh_key
+
+  - name: Deleted user removal
+    user: name={{item.username}} state=absent
+    with_items: users_deleted
+
+  - name: Deleted per-user group removal (users)
+    group: name={{item.username}} state=absent
+    with_items: users_deleted
+    
+    - name: Deleted admins removal
+      user: name={{item.username}} state=absent
+      with_items: admins_deleted
+    
+    - name: Deleted per-user group removal (admins)
+      group: name={{item.username}} state=absent
+      with_items: admins_deleted

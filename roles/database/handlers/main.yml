@@ -1,0 +1,4 @@
+---
+# file: roles/database/handlers/main.yml
+- name: restart mariadb
+  service: name=mysql state=running

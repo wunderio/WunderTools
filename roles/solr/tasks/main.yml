@@ -1,0 +1,42 @@
+
+- name: Install tomcat6
+  yum: name={{ item }} state=installed
+  with_items:
+   - java-1.6.0-openjdk
+   - tomcat6
+   - tomcat6-admin-webapps
+
+- name: Download Solr 4.4.0
+  shell: curl -o /tmp/vagrant-cache/solr-4.4.0.tgz http://archive.apache.org/dist/lucene/solr/4.4.0/solr-4.4.0.tgz
+    creates=/tmp/vagrant-cache/solr-4.4.0.tgz 
+
+- name: Unpack Solr 4.4.0
+  shell: tar xfz /tmp/vagrant-cache/solr-4.4.0.tgz -C /root
+    creates=/root/solr-4.4.0
+
+- name: Copy server.xml
+  copy: src=server.xml dest=/etc/tomcat6/server.xml owner={{ user }} group={{ group }} mode=644
+
+- name: Setup war
+  shell: creates=/var/lib/tomcat6/webapps/solr.war chdir=/root/solr-4.4.0 service tomcat6 stop && sleep 10 && cp dist/solr-4.4.0.war /var/lib/tomcat6/webapps/solr.war && service tomcat6 start && sleep 10
+
+- name: Copy libraries
+  shell: creates=/usr/share/tomcat6/lib/jcl-over-slf4j-1.6.6.jar chdir=/root/solr-4.4.0 cp -r example/lib/ext/* /usr/share/tomcat6/lib/
+
+- name: Copy configurations
+  shell: creates=/var/lib/tomcat6/solr chdir=/root/solr-4.4.0 cp -r example/solr /var/lib/tomcat6/solr
+
+- name: Copy solr.xml
+  copy: src=solr.xml dest=/etc/tomcat6/Catalina/localhost/solr.xml owner={{ user }} group={{ group }} mode=644
+
+- name: Copy web.xml
+  copy: src=web.xml dest=/var/lib/tomcat6/webapps/solr/WEB-INF/web.xml owner={{ user }} group={{ group }} mode=644
+
+- name: Chown tomcat6 lib directory
+  shell: chown -R tomcat:tomcat /var/lib/tomcat6
+  notify:
+    - restart tomcat6
+
+- name: Ensure tomcat6 and solr are running
+  service: name=redis state=started enabled=yes
+

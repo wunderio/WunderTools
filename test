@@ -1,0 +1,9 @@
+# file: test
+
+# local webservers
+[local-webservers]
+192.168.23.150
+
+# all webservers
+[webservers:children]
+local-webservers
