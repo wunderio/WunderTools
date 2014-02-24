@@ -1,6 +1,8 @@
 
 Project reference setup with ansible & vagrant
+
 -------------------------------------------------------------------------------
+Introduction
 
 Start by running:
 	
@@ -30,6 +32,7 @@ To open up ssh access to the virtual machine:
 	$ vagrant ssh
 
 -------------------------------------------------------------------------------
+Useful thigs
 
 At the moment IP is configured in 
 	Vagrantfile 
@@ -46,4 +49,25 @@ Nginx responds in
 Solr responds in
 	http://33.33.33.151:8983/solr
 
+-------------------------------------------------------------------------------
+Ansible configuration as a git subtree
 
+The directory ansible/playbook contains the ansible configuration as a git 
+subtree. These commands are here provided not because you need to run them (you
+very rarely have to) but for a reference only.
+
+Adding:
+
+	$ git subtree add --prefix ansible/playbook <url> master --squash
+
+Pulling:
+
+	$ git subtree add --prefix ansible/playbook <url> master --squash
+
+Pushing:
+
+	$ git subtree push --prefix ansible/playbook <url> master --squash
+
+Committing (as usual):
+
+	$ git commit -m "message"
