@@ -1,0 +1,5 @@
+upstream appcluster {
+  {% for backend in loadbalancers %}
+  server {{ backend.host }}:{{ backend.port }};
+  {% endfor %}
+}

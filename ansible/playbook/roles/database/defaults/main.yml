@@ -1,0 +1,47 @@
+---
+# file: roles/database/defaults/main.yml
+mysql_root_password: changeme
+server_hostname: localhost
+
+# InnoDB settings
+innodb_log_file_size: '1G'
+innodb_buffer_pool_size: '10G'
+innodb_log_buffer_size: '4M'
+innodb_file_per_table: '1'
+innodb_open_files: '400'
+innodb_io_capacity: '400'
+innodb_flush_method: 'O_DIRECT'
+innodb_data_file_path: 'ibdata1:200M:autoextend'
+innodb_additional_mem_pool_size: '100M'
+innodb_open_file: '16384'
+innodb_flush_log_at_trx_commit: '0'
+innodb_support_xa: '0'
+innodb_buffer_pool_instances: '5'
+
+# General configurations
+max_allowed_packet: '256M'
+bulk_insert_buffer_size: '64M'
+max_connections: '150'
+thread_cache_size: '128'
+table_open_cache: '256'
+wait_timeout: '60'
+tmp_table_size: '32M'
+max_heap_table_size: '32M'
+join_buffer_size: '2M'
+sort_buffer_size: '2M'
+query_cache_limit: '2M'
+query_cache_size: '64M'
+
+myisam_recover: 'BACKUP'
+key_buffer_size: '384M'
+table_cache: '400'
+myisam_sort_buffer_size: '512M'
+concurrent_insert: '2'
+read_buffer_size: '2M'
+read_rnd_buffer_size: '4M'
+
+# Logs
+log_warnings: '2'
+slow_query_log: '1'
+long_query_time: '1'
+log_slow_verbosity: 'query_plan'

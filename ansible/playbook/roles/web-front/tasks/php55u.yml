@@ -1,0 +1,42 @@
+---
+# file: roles/web-front/tasks/php55u.yml
+
+  # Install all php packages
+  - name: Install php-fpm
+    yum: pkg={{ php_package }}-fpm state=installed
+  - name: Ensure php-fpm is running now and on boot
+    service: name=php-fpm state=started enabled=yes
+  - name: Install php packages
+    yum: pkg={{ item }} state=installed
+    with_items:
+      - "{{ php_package }}"
+      - "{{ php_package }}-mysqlnd"
+      - "{{ php_package }}-gd"
+      - "{{ php_package }}-imap"
+      - "{{ php_package }}-mbstring"
+      - "{{ php_package }}-pear"
+      - "{{ php_package }}-xml"
+      - "{{ php_package }}-xmlrpc"
+      - "{{ php_package }}-pdo"
+      - "{{ php_package }}-devel"
+      - "{{ php_package }}-dba"
+      - "{{ php_package }}-mcrypt"
+      - "{{ php_package }}-soap"
+      - "{{ php_package }}-opcache"
+      - "{{ php_package }}-pecl-jsonc"
+      - "{{ php_package }}-pecl-memcache"
+
+  # Install redis
+  - name: Install php-pecl-redis
+    yum: name=http://dl.iuscommunity.org/pub/ius/development/CentOS/6/x86_64/php55u-pecl-redis-2.2.4-4.ius.centos6.x86_64.rpm state=present
+
+  # PHP configuration files
+  - name: php.ini
+    template: src=php55u/php.ini.j2 dest=/etc/php.ini
+    notify:
+      - restart php-fpm
+
+  - name: opcache.ini
+    template: src=php55u/opcache.ini.j2 dest=/etc/php.d/opcache.ini
+    notify:
+      - restart php-fpm

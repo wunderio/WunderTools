@@ -1,0 +1,73 @@
+# file: roles/common/tasks/main.yml
+# Init tasks
+- name: ensure iptables is stopped and is not running at boot time.
+  action: service name=iptables state=stopped enabled=no
+- name: ensure python-selinux is installed on all nodes.
+  action: yum name=libselinux-python state=installed
+- name: set SELinux to disabled
+  action: selinux state=disabled
+# Repos
+- name: Create the GPG key for EPEL
+  copy: src=RPM-GPG-KEY-EPEL-6 dest=/etc/pki/rpm-gpg
+- name: Create the repository for EPEL
+  copy: src=epel.repo dest=/etc/yum.repos.d/epel.repo
+# Utils
+- name: install ntp
+  yum: pkg=ntp state=installed
+  tags: ntp
+- name: be sure ntp is configured
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  notify:
+    - restart ntpd
+  tags: ntp
+- name: ensure ntpd is running now and on boot
+  service: name=ntpd state=started enabled=yes
+  tags: ntp
+- name: Install packages
+  yum: pkg={{ item }} state=installed
+  with_items:
+    - screen
+    - htop
+    - ntop
+    - iotop
+    - wget
+    - perl
+    - perl-DBI
+    - gcc
+    - cvs
+    - subversion
+    - gitosis
+    - git
+    - vim
+    - make
+    - unzip
+    - patch
+    - yum-plugin-security
+    - links
+    - yum-utils
+    - sysstat
+# Sensu monitoring
+#- name: Install sensu
+#  yum: pkg=sensu state=installed
+#- name: Ensure sensu-client is running on boot
+#  service: name=sensu-client state=stopped enabled=yes
+#- name: Configure rabbitmq.json
+#  template: src=rabbitmq.json.j2 dest=/etc/sensu/conf.d/rabbitmq.json
+#- name: Configure client.json
+#  template: src=client.json.j2 dest=/etc/sensu/conf.d/client.json
+#- name: Create Sensu ssl dir
+#  file: path=/etc/sensu/ssl owner=sensu group=sensu mode=0750 state=directory
+#- name: Copy ssl files
+#  copy: src=files/sensu.wunder.io_{{ item }}.pem dest=/etc/sensu/ssl/sensu.wunder.io_{{ item }}.pem owner=sensu group=sensu mode=0640 backup=yes
+#  with_items:
+#    - cert
+#    - key
+# Configs
+- name: be sure sysctl.conf is configured
+  template: src=sysctl.conf.j2 dest=/etc/sysctl.conf
+- name: be sure 90-nproc.conf is configured
+  template: src=90-nproc.conf.j2 dest=/etc/security/limits.d/90-nproc.conf
+# - name: Syslog logrotate
+#   copy: src=syslog dest=/etc/logrotate.d/syslog
+#   notify:
+#     - restart rsyslog

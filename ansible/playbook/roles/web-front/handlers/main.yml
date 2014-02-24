@@ -1,0 +1,8 @@
+---
+# file: roles/web-front/handlers/main.yml
+- name: restart nginx
+  service: name=nginx state=restarted
+- name: restart php-fpm
+  service: name=php-fpm state=restarted
+- name: restart rsyslog
+  service: name=rsyslog state=restarted

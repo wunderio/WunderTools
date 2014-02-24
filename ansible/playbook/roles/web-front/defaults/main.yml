@@ -1,0 +1,65 @@
+---
+# file: roles/web-front/defaults/main.yml
+
+# Define the PHP version
+# Available version are: php53u, php55u
+php_package: 'php55u'
+
+# PHP
+memory_limit: '256M'
+realpath_cache_size: '256k'
+realpath_cache_ttl: '7200'
+max_execution_time: '60'
+max_input_time: '60'
+post_max_size: '24M'
+upload_max_filesize: '50M'
+max_file_uploads: '20'
+allow_url_fopen: 'On'
+apc_shm_size: '256M'
+apc_ttl: '0'
+apc_user_ttl: '7200'
+apc_stat: '0'
+opcache_memory: '256'
+opcache_validate: '0'
+suhosin_mail_protect: '2'
+suhosin_filter_action: '402'
+suhosin_log_syslog: 'S_ALL & ~S_SQL'
+suhosin_post_max_vars: '1000'
+suhosin_request_max_vars: '1000'
+fpm_pm_max_children: '50'
+fpm_pm_start_servers: '15'
+fpm_pm_min_spare_servers: '10'
+fpm_pm_max_spare_servers: '35'
+fpm_pm_max_requests: '500'
+display_errors: 'Off'
+html_errors: 'Off'
+date:
+    timezone: "Europe/Helsinki"
+
+# Nginx
+worker_processes: '4'
+default_port: '8080'
+nginx_sites:
+  - hostname: 'local.matkavekka.fi local.matkavekka.com'
+    port: '8080 default_server'
+    docroot: '/vagrant/docroot'
+    accesslog: true
+    accesslog_params: 'main buffer=32k'
+    errorlog: true
+    logprefix: 'local.matkavekka.x'
+    ssl: false
+    sslproxy: false
+    ssl_certificate: default.crt
+    ssl_certificate_key: default.key
+    include_drupal: true
+    cdn: false
+    nocdnhostname: 'www.wunder.io'
+    redirect: false
+    redirecthost: 'https://www.wunder.io'
+upstream:
+  - server: 'unix:/tmp/php-fpm.sock'
+loadbalancer: false
+loadbalancers:
+  - host: '127.0.0.1'
+    port: '8081'
+real_ip_from_varnish: '127.0.0.1'

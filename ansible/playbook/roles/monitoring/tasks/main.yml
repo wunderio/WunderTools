@@ -1,0 +1,37 @@
+# file: roles/monitoring/tasks/main.yml
+# Init tasks
+- name: Create the GPG key for New Relic
+  copy: src=RPM-GPG-KEY-NEWRELIC dest=/etc/pki/rpm-gpg
+- name: Create the repository for New Relic
+  copy: src=newrelic.repo dest=/etc/yum.repos.d/newrelic.repo
+- name: Create the repository for Sensu
+  copy: src=sensu.repo dest=/etc/yum.repos.d/sensu.repo
+# Utils
+- name: Install newrelic-sysmond
+  yum: pkg=newrelic-sysmond state=installed
+- name: Be sure newrelic-sysmond is configured
+  template: src=nrsysmond.cfg.j2 dest=/etc/newrelic/nrsysmond.cfg
+  notify:
+    - restart newrelic-sysmond
+  tags: ntp
+- name: Ensure newrelic-sysmond is running now and on boot
+  service: name=newrelic-sysmond state=started enabled=yes
+  tags: ntp
+# Sensu monitoring
+- name: Install sensu
+  yum: pkg=sensu state=installed
+- name: Ensure sensu-client is running on boot
+  service: name=sensu-client state=stopped enabled=yes
+- name: Configure rabbitmq.json
+  template: src=rabbitmq.json.j2 dest=/etc/sensu/conf.d/rabbitmq.json
+- name: Configure client.json
+  template: src=client.json.j2 dest=/etc/sensu/conf.d/client.json
+- name: Create Sensu ssl dir
+  file: path=/etc/sensu/ssl owner=sensu group=sensu mode=0750 state=directory
+- name: Copy ssl files
+  copy: src=files/{{ item }}.pem dest=/etc/sensu/ssl/{{ item }}.pem owner=sensu group=sensu mode=0640 backup=yes
+  with_items:
+    - cert
+    - key
+  notify:
+    - restart sensu-client

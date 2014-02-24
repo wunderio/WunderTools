@@ -1,0 +1,19 @@
+### Upstream configuration for PHP FastCGI.
+
+## Add as many servers as needed:
+## Cf. http://wiki.nginx.org/HttpUpstreamModule.
+## Note that this configuration assumes by default that keepalive
+## upstream connections are supported.
+
+## Add as many servers as needed. Cf. http://wiki.nginx.org/HttpUpstreamModule.
+## For the name it is possible to use a domain name, an address, port or unix socket.
+upstream phpcgi {
+  {% for backend in upstream %}
+  server {{ backend.server }};
+  {% endfor %}
+  ## Request is passed to the server with the least number
+  ## of active connections, taking into account weights of servers.
+  least_conn;
+  ## Create a backend connection cache.
+  keepalive 20;
+}

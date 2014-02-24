@@ -1,0 +1,15 @@
+/var/log/drupal.log
+{
+    rotate 4
+    weekly
+    missingok
+    notifempty
+    create 640 root root
+    compress
+    delaycompress
+    sharedscripts
+    postrotate
+            reload rsyslog >/dev/null 2>&1 || true
+            /sbin/service remote_syslog reload >/dev/null 2>&1 || true
+    endscript
+}

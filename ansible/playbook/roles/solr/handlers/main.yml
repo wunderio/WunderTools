@@ -1,0 +1,10 @@
+---
+# Handlers for tomcat6
+- name: start tomcat6
+  service: name=tomcat6 state=running
+
+- name: restart tomcat6
+  service: name=tomcat6 state=restarted
+
+- name: reload tomcat6
+  service: name=tomcat6 state=reloaded

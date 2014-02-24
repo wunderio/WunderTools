@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context docBase="/var/lib/tomcat6/webapps/solr.war" debug="0" privileged="true" allowLinking="true" crossContext="true">
+<Environment name="solr/home" type="java.lang.String" value="/var/lib/tomcat6/solr" override="true" />
+</Context>

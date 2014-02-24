@@ -1,0 +1,36 @@
+---
+# Prepare database for drupal
+- name: Setup database for Drupal
+  mysql_db: name={{ drupal.db_user }} state=present
+
+- name: Setup database user for Drupal
+  mysql_user: name={{ drupal.db_user }} password={{ drupal.db_pwd }} priv={{ drupal.db_name }}.*:ALL state=present
+
+# Install drush
+- name: Allow phar execution
+  lineinfile:
+    dest=/etc/php.d/suhosin.ini
+    regexp='^suhosin.executor.include.whitelist = phar'
+    insertafter='^;suhosin.stealth = 1'
+    line='suhosin.executor.include.whitelist = phar'
+    state=present
+  when: php_package != "php55u"
+
+- name: Install composer
+  shell: curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/bin/composer
+    creates=/usr/bin/composer
+
+- name: Make sure /usr/lib/composer exists
+  action: file path=/usr/lib/composer state=directory
+
+- name: Set up composer environment variables
+  template: src=composer.sh.j2 dest=/etc/profile.d/composer.sh
+
+- name: Install drush
+  shell: source /etc/profile.d/composer.sh && composer global require drush/drush:{{ drush.version }} && drush
+    creates=/usr/bin/drush
+
+- name: Install drush sql-sync-pipe
+  shell: cd {{ composer.path }}/vendor/drush/drush/commands && git clone https://github.com/mvance/sql-sync-pipe.git
+    creates={{ composer.path }}/vendor/drush/drush/commands/sql-sync-pipe/sql_sync_pipe.drush.inc
+

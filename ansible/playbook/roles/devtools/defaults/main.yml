@@ -1,0 +1,5 @@
+
+
+# the following is also set in web-front - required here for xdebug
+php_package: php53u
+
