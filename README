@@ -1,2 +1,49 @@
 
 Project reference setup with ansible & vagrant
+-------------------------------------------------------------------------------
+
+Start by running:
+	
+	$ ./build.sh new
+
+This will do the following:
+	
+	- Bring up & provision the virtual machine (if needed)
+	- Build the drupal site under drupal/current
+
+After finishing provisioning (first time is always slow) and building the site
+you need to install the Drupal site in http://33.33.33.151:8080/install.php
+(Note: on rare occasion php-fpm/varnish/e.g. requires to be restarted before
+starting to work. You can do this by issuing the following command:
+
+	$ vagrant  ssh -c "sudo service php-fpm restart"
+	$ vagrant  ssh -c "sudo service varnish restart"
+
+All Drupal related configurations are under drupal/conf
+
+Drush is usable without ssh access with the drush.sh script e.g:
+
+	$ ./drush.sh cc all
+
+To open up ssh access to the virtual machine:
+
+	$ vagrant ssh
+
+-------------------------------------------------------------------------------
+
+At the moment IP is configured in 
+	Vagrantfile 
+	ansible/inventory/hosts
+
+The default is 33.33.33.151
+
+Varnish responds in 
+	http://33.33.33.151/
+
+Nginx responds in
+	http://33.33.33.151:8080/
+
+Solr responds in
+	http://33.33.33.151:8983/solr
+
+

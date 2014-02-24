@@ -129,7 +129,6 @@ check_requirements() {
 	local error=false
 	local dirs=(
 		"$drush_make_script"
-		"$base/code/modules/custom"
 	)
 	for dir in ${dirs[@]}
 	do
