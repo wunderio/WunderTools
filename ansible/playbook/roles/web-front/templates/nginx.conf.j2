@@ -73,6 +73,9 @@ http {
   client_max_body_size    100M;
   client_body_buffer_size 128k;
 
+  proxy_buffers 8 16k;
+  proxy_buffer_size 32k;
+
   ## Reset lingering timed out connections. Deflect DDoS.
   reset_timedout_connection on;
 
