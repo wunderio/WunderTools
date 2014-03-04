@@ -5,21 +5,8 @@
   yum: pkg=rubygems state=installed
   tags: css
 
-- name: CSS | Install SASS
-  action: command gem install sass creates=/usr/local/bin/sass
-  tags: css
-
-- name: CSS | Install Susy (no more --pre required as it is 1.0 now)
-  action: command gem install susy
-  tags: css
-
-- name: CSS | Install Compass
-  action: command gem install compass creates=/usr/local/bin/compass
-  tags: css
-
-#- name: CSS | Install Aurora (which will install breakpoint, sass-buttons, respond-to)
-#  action: command gem install compass-aurora
-#  tags: css
+- name: RUBY | Install Bundler
+  shell: gem install bundler
 
 - name: PHP | XDebug
   yum: pkg={{ php_package }}-pecl-xdebug state=installed
