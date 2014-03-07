@@ -30,7 +30,8 @@
   shell: source /etc/profile.d/composer.sh && composer global require drush/drush:{{ drush.version }} && drush
     creates=/usr/bin/drush
 
-- name: Install drush sql-sync-pipe
-  shell: cd {{ composer.path }}/vendor/drush/drush/commands && git clone https://github.com/mvance/sql-sync-pipe.git
-    creates={{ composer.path }}/vendor/drush/drush/commands/sql-sync-pipe/sql_sync_pipe.drush.inc
+# - name: Install drush sql-sync-pipe
+#   shell: cd {{ composer.path }}/vendor/drush/drush/commands && git clone https://github.com/mvance/sql-sync-pipe.git
+#     creates={{ composer.path }}/vendor/drush/drush/commands/sql-sync-pipe/sql_sync_pipe.drush.inc
+
 
