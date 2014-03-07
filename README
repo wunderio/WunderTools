@@ -32,7 +32,7 @@ To open up ssh access to the virtual machine:
 	$ vagrant ssh
 
 -------------------------------------------------------------------------------
-Useful thigs
+Useful things
 
 At the moment IP is configured in 
 	Vagrantfile 
@@ -50,6 +50,23 @@ Solr responds in
 	http://33.33.33.151:8983/solr
 
 -------------------------------------------------------------------------------
+Vagrant + Ansible configuration
+
+Vagrant is using Ansible provision stored under the ansible subdirectory.
+The inventory file (which stores the hosts and their IP's) is located under 
+ansible/inventory. Host specific configurations for Vagrant are stored in 
+ansible/vagrant.yml and the playbooks are under ansible/playbook directory.
+Variable overrides are defined in ansible/variables.yml.
+
+You should only bother with the following:
+
+	What components do you want to install?
+		ansible/vagrant.yml
+
+	And how are those set up?
+		ansible/variables.yml
+
+-------------------------------------------------------------------------------
 Ansible configuration as a git subtree
 
 The directory ansible/playbook contains the ansible configuration as a git 
@@ -62,7 +79,7 @@ Adding:
 
 Pulling:
 
-	$ git subtree add --prefix ansible/playbook <url> master --squash
+	$ git subtree pull --prefix ansible/playbook <url> master --squash
 
 Pushing:
 
