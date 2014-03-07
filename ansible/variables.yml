@@ -15,13 +15,14 @@ drush: {
 
 # PHP
 php_package: 'php55u'
-
-
 display_errors: 'On'
 html_errors: 'On'
 
 apc_stat: '1'
 memory_limit: '512M'
+
+opcache_validate: '1'
+opcache_revalidate_freq: '0'
 
 # MariaDB
 mysql_root_password: 1asirjg9834t35t
