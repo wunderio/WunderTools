@@ -67,6 +67,34 @@ You should only bother with the following:
 		ansible/variables.yml
 
 -------------------------------------------------------------------------------
+Debugging tools
+
+XDebug tools are installed via the devtools role. Everything should work out 
+of the box for PHPStorm. PHP script e.g. drush debugging should also work.
+
+Example sublime text project configuration (via Project->Edit Project):
+
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "/path/to/ansibleref"
+		}
+	],
+
+	"settings": 
+	{
+		"xdebug": {
+		    "path_mapping": {
+		        "/vagrant" : "/path/to/ansibleref"
+		    }
+		}
+	}
+}
+
+
+-------------------------------------------------------------------------------
 Ansible configuration as a git subtree
 
 The directory ansible/playbook contains the ansible configuration as a git 
