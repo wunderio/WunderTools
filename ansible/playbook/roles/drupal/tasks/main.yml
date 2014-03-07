@@ -6,7 +6,6 @@
 - name: Setup database user for Drupal
   mysql_user: name={{ drupal.db_user }} password={{ drupal.db_pwd }} priv={{ drupal.db_name }}.*:ALL state=present
 
-# Install drush
 - name: Allow phar execution
   lineinfile:
     dest=/etc/php.d/suhosin.ini

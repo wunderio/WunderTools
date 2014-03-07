@@ -46,6 +46,7 @@
     - links
     - yum-utils
     - sysstat
+    - graphicsmagick
 # Sensu monitoring
 #- name: Install sensu
 #  yum: pkg=sensu state=installed
