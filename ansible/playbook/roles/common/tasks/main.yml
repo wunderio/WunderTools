@@ -29,6 +29,7 @@
     - screen
     - htop
     - ntop
+    - nano
     - iotop
     - wget
     - perl
