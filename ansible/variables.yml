@@ -14,15 +14,74 @@ drush: {
 }
 
 # PHP
-php_package: 'php55u'
-display_errors: 'On'
-html_errors: 'On'
+php_package: php55u
 
-apc_stat: '1'
-memory_limit: '512M'
+# Sections APC and suhosin are only for php53u
+# OPCACHE is for php55u, PHP section is shared
 
-opcache_validate: '1'
-opcache_revalidate_freq: '0'
+php:
+ - section: PHP
+   options:
+    - key: memory_limit
+      val: 512M
+    - key: realpath_cache_size
+      val: 256K
+    - key: realpath_cache_ttl
+      val: 7200
+    - key: max_execution_time
+      val: 60
+    - key: max_input_time
+      val: 60
+    - key: post_max_size
+      val: 24M
+    - key: upload_max_filesize
+      val: 50M
+    - key: max_file_uploads
+      val: 20
+    - key: allow_url_fopen
+      val: On
+    - key: display_errors
+      val: Off
+    - key: html_errors
+      val: Off
+    - key: display_errors
+      val: On
+    - key: html_errors
+      val: On
+ - section: DATE
+   options:
+    - key: date.timezone
+      val: Europe/Helsinki
+ # - section: APC
+ #   options: 
+ #    - key: apc.shm_size
+ #      val: 256M
+ #    - key: apc.ttl
+ #      val: 0
+ #    - key: apc.user_ttl
+ #      val: 7200
+ #    - key: apc.stat
+ #      val: 0
+ # - section: suhosin
+ #   options:
+ #     - key: suhosin.mail.protect
+ #       val: 2
+ #     - key: suhosin.filter.action
+ #       val: 402
+ #     - key: suhosin.log.syslog
+ #       val: S_ALL & ~S_SQL
+ #     - key: suhosin.post.max_vars
+ #       val: 1000
+ #     - key: suhosin.request.max_vars
+ #       val: 1000
+ - section: OPCACHE
+   options:
+    - key: opcache.memory
+      val: 256
+    - key: opcache.validate
+      val: 1
+    - key: opcache.revalidate_freq
+      val: 0
 
 # MariaDB
 mysql_root_password: 1asirjg9834t35t
