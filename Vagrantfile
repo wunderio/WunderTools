@@ -6,7 +6,7 @@ Vagrant.configure("2") do |config|
 	# Default configuration
 	########################################
 
-	config.vm.hostname = "local.lansivayla.fi"
+	config.vm.hostname = "local.ansible.ref"
 	config.vm.box = "centos-6.5-x86_64"
 
 	config.vm.network :private_network, ip: "33.33.33.151"
