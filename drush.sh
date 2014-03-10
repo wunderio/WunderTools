@@ -1,14 +1,24 @@
 #!/bin/bash
 
-if ! vagrant status|grep default|grep -q running; then
-	echo "Vagrant is not up!"
-	exit 1
-fi
-
 params=''
 for i in "$@";do 
     params="$params \"${i//\"/\\\"}\""
 done;
 
-vagrant ssh -c "cd /vagrant/drupal;drush $params"
+
+if [ -z "$WKV_SITE_ENV" ]; then
+
+	if ! vagrant status|grep default|grep -q running; then
+		echo "Vagrant is not up!"
+		exit 1
+	fi
+
+	vagrant ssh -c "cd /vagrant/drupal;drush $params"
+
+else
+
+	cd drupal/current
+	drush $params
+
+fi
 
