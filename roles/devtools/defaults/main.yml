@@ -4,6 +4,7 @@
 php_package: php53u
 
 development_packages:
+ - nano
 
 xdebug:
  - section: XDebug
