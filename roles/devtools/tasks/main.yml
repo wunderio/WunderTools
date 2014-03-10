@@ -8,6 +8,11 @@
 - name: RUBY | Install Bundler
   shell: gem install bundler
 
+- name: Development packages
+  yum: pkg={{ item }} state=installed
+  with_items:
+    - "{{ development_packages }}"
+
 - name: PHP | XDebug
   yum: pkg={{ php_package }}-pecl-xdebug state=installed
   tags: ntp
