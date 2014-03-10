@@ -30,13 +30,3 @@
   - name: Install php-pecl-redis
     yum: name=http://dl.iuscommunity.org/pub/ius/development/CentOS/6/x86_64/php55u-pecl-redis-2.2.4-4.ius.centos6.x86_64.rpm state=present
 
-  # PHP configuration files
-  - name: php.ini
-    template: src=php55u/php.ini.j2 dest=/etc/php.ini
-    notify:
-      - restart php-fpm
-
-  - name: opcache.ini
-    template: src=php55u/opcache.ini.j2 dest=/etc/php.d/opcache.ini
-    notify:
-      - restart php-fpm

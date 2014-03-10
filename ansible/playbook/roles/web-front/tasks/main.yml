@@ -57,6 +57,31 @@
   - include: "php55u.yml"
     when: php_package == "php55u"
 
+# PHP configuration ini file
+  - name: Prepare php {{ php_ini_file }}
+    lineinfile:
+      dest={{ php_ini_file }}
+      regexp='^[{{ item.section }}]'
+      insertafter=EOF
+      line='[{{ item.section }}]'
+      create=True
+      mode=644
+    with_items: 
+      - "{{ php }}"
+
+  # PHP configuration files
+  - name: Provision php {{ php_ini_file }}
+    ini_file: dest={{ php_ini_file }}
+      section="{{ item.0.section }}"
+      option="{{ item.1.key }}"
+      value="{{ item.1.val }}"
+      backup=yes
+    with_subelements:
+      - "{{ php }}"
+      - options
+    notify:
+      - restart php-fpm
+
 # Nginx configs.
 
   - name: php-fpm www.conf
