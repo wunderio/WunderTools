@@ -54,6 +54,7 @@ Vagrant.configure("2") do |config|
 		ansible.inventory_path = "ansible/inventory"
 		ansible.extra_vars = "ansible/variables.yml"
 		ansible.playbook = "ansible/playbook/vagrant.yml"
+		ansible.limit = "all"
 	end
 
 	config.vm.provision :shell, :path => "ansible/shell/provision.sh"
