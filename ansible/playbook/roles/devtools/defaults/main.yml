@@ -10,6 +10,8 @@ development_packages:
  - nano
  - ruby-devel
  - sqlite-devel
+ - cc 
+ - gcc-c++ 
 
 xdebug:
  - section: XDebug
