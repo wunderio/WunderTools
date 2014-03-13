@@ -3,8 +3,13 @@
 # the following is also set in web-front - required here for xdebug
 php_package: php53u
 
+# the following is also set in web-front - required here for mailcatcher
+php_ini_file: /etc/php.d/zz_wunderkraut.ini
+
 development_packages:
  - nano
+ - ruby-devel
+ - sqlite-devel
 
 xdebug:
  - section: XDebug
@@ -22,3 +27,11 @@ xdebug:
     - key: xdebug.remote_log
       val: /var/log/xdebug.log
 
+
+# PHP ini
+php:
+ - section: PHP
+   options:
+    - key: sendmail_path
+      val: /usr/bin/catchmail
+      
