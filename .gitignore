@@ -5,3 +5,4 @@ drupal/current
 drupal/builds
 drupal/files
 .idea
+ansible/inventory/hosts

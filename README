@@ -14,7 +14,7 @@ This will do the following:
 	- Build the drupal site under drupal/current
 
 After finishing provisioning (first time is always slow) and building the site
-you need to install the Drupal site in http://33.33.33.151:8080/install.php
+you need to install the Drupal site in http://x.x.x.x:8080/install.php
 (Note: on rare occasion php-fpm/varnish/e.g. requires to be restarted before
 starting to work. You can do this by issuing the following command:
 
@@ -35,19 +35,20 @@ To open up ssh access to the virtual machine:
 Useful things
 
 At the moment IP is configured in 
-	Vagrantfile 
-	ansible/inventory/hosts
-
-The default is 33.33.33.151
+	Vagrantfile
+		variable INSTANCE_IP
 
 Varnish responds in 
-	http://33.33.33.151/
+	http://x.x.x.x/
 
 Nginx responds in
-	http://33.33.33.151:8080/
+	http://x.x.x.x:8080/
 
 Solr responds in
-	http://33.33.33.151:8983/solr
+	http://x.x.x.x:8983/solr
+
+MailCatcher responds in
+	http://x.x.x.x:1080
 
 -------------------------------------------------------------------------------
 Vagrant + Ansible configuration
