@@ -4,10 +4,11 @@ INSTANCE_NAME     = "ansibleref"
 INSTANCE_HOSTNAME = "local.ansibleref.com"
 INSTANCE_MEM      = "4000" 
 INSTANCE_CPUS     = "2"
-INSTANCE_IP       = "34.33.33.100"
+INSTANCE_IP       = "192.168.10.10"
 ANSIBLE_INVENTORY = "ansible/inventory"
 
 # Write the inventory file for ansible
+FileUtils.mkdir_p ANSIBLE_INVENTORY
 File.open(ANSIBLE_INVENTORY + "/hosts", 'w') { |file| file.write("[vagrant]\n" + INSTANCE_IP) }
 
 # And never anything below this line
@@ -65,7 +66,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	########################################
 
 	config.vm.provision "ansible" do |ansible|
-		ansible.verbose        = "vvvv"
+		#ansible.verbose        = "v"
 		ansible.inventory_path = ANSIBLE_INVENTORY
 		ansible.extra_vars     = "ansible/variables.yml"
 		ansible.playbook       = "ansible/playbook/vagrant.yml"
