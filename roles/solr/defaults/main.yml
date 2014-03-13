@@ -1,0 +1,5 @@
+
+solr_user: tomcat
+solr_group: tomcat
+
+cache_path: /tmp
