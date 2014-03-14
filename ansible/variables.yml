@@ -22,6 +22,8 @@ php_package: php55u
 php:
  - section: PHP
    options:
+    - key: sendmail_path
+      val: /usr/bin/catchmail
     - key: memory_limit
       val: 512M
     - key: realpath_cache_size
@@ -103,13 +105,13 @@ ssl_ip_fix: false
 # Nginx
 worker_processes: '1'
 nginx_sites:
-  - hostname: 'local.ly.fi *.local.ly.fi'
+  - hostname: 'local.ansibleref.com *.local.ansibleref.com'
     port: '8080 default_server'
     docroot: '/vagrant/drupal/current'
     accesslog: true
     accesslog_params: 'main buffer=32k'
     errorlog: true
-    logprefix: 'local.ly'
+    logprefix: 'local.ansibleref.com'
     ssl: false
     sslproxy: false
     ssl_certificate: default.crt
