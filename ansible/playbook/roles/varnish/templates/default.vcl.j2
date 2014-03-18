@@ -191,8 +191,13 @@ sub vcl_fetch {
     set beresp.do_gzip = true;
   }
 
-  # Default TTL for all content is 12h
-  set beresp.ttl = 12h;
+  # If Drupal page cache is enabled, it will send a X-Drupal-Cache header, and for anonoymous "Cache-Control: public, max-age=x."-headers.
+  # In those cases, Varnish normally  uses the max-age value directly for do determine how long it is cached (ttl).
+  # We can set the TTL for all content to 12h. Lets do it only if Varnish already thinks it is cacheable, and not a page-cache-item.
+  if(beresp.status == 200 && beresp.ttl > 0s && !beresp.http.X-Drupal-Cache){
+    # Default TTL for all content is 12h
+    set beresp.ttl = 12h;
+  }
 
   if (req.url ~ "\.(jpg|jpeg|gif|png|ico|css|zip|tgz|gz|rar|bz2|pdf|txt|tar|wav|bmp|rtf|flv|swf|html|htm|otf|json)\??.*$") {
     # Strip any cookies before static files are inserted into cache.
@@ -215,6 +220,11 @@ sub vcl_fetch {
        */
       set beresp.ttl = 0s;
     }
+  }
+
+  if(beresp.status >= 500){
+    // Cache (public) internal errors, but for only 1s.
+    set beresp.ttl = 1s;
   }
 
   # Allow items to be stale if needed.
