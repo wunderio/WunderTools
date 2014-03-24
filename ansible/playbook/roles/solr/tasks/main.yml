@@ -7,7 +7,7 @@
    - tomcat6-admin-webapps
 
 - name: Download Solr 4.4.0
-  shell: curl -o "{{ cache_path }}/solr-4.4.0.tgz" http://archive.apache.org/dist/lucene/solr/4.4.0/solr-4.4.0.tgz
+  shell: curl --retry 5 -s -o "{{ cache_path }}/solr-4.4.0.tgz" http://archive.apache.org/dist/lucene/solr/4.4.0/solr-4.4.0.tgz
     creates="{{ cache_path }}/solr-4.4.0.tgz"
 
 - name: Unpack Solr 4.4.0
