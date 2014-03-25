@@ -1,7 +1,12 @@
-
 Project reference setup with ansible & vagrant
 
 -------------------------------------------------------------------------------
+Requrements
+    - Vagrant 1.5.x
+    - https://github.com/fgrehm/vagrant-cachier
+The plugin can be installed with the command
+    $ vagrant plugin install vagrant-cachier
+    
 Introduction
 
 Start by running:
