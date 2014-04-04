@@ -1,7 +1,13 @@
-
 Project reference setup with ansible & vagrant
 
 -------------------------------------------------------------------------------
+Requirements
+	- Vagrant 1.5.x
+	- https://github.com/fgrehm/vagrant-cachier
+	 	 $ vagrant plugin install vagrant-cachier
+	- Ansible in your host machine. For OS X:
+	 	 brew install ansible
+
 Introduction
 
 Start by running:

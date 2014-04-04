@@ -11,6 +11,13 @@ function status_shutdown() {
   exit();
 }
 
+// We want to ignore _ping.php from New Relic statistics,
+// because with 180rpm and less than 10s avg response times,
+// _ping.php skews the overall statistics significantly.
+if (extension_loaded('newrelic')) {
+  newrelic_ignore_transaction();
+}
+
 header("HTTP/1.0 503 Service Unavailable");
 
 // Drupal bootstrap.
