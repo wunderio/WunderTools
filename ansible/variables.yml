@@ -27,7 +27,7 @@ php:
     - key: memory_limit
       val: 512M
     - key: realpath_cache_size
-      val: 256K
+      val: 1M
     - key: realpath_cache_ttl
       val: 7200
     - key: max_execution_time

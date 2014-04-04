@@ -15,10 +15,11 @@ site_profile="site" # Site install profile in code/profiles
 config_file="$base/conf/config.sh" # configuration 
 post_make="$base/conf/prepare.sh" # post make
 
-store_old_builds=true
+store_old_builds=false
 builds_to_keep=4
 
-command=$1 # Command to run
+# Grab last paramater as the command
+for command in $@; do :; done
 
 drush=$(which drush 2> /dev/null) # Drush command file
 drush_make_script="$base/conf/site.make" # Make script
@@ -28,14 +29,17 @@ temp_build_dir="$builds_dir/build_new" # Active current build dir
 old_builds_dir="$builds_dir/builds" # Directory for old builds
 files_dir="$builds_dir/files" # Files directory for symbolic linking
 drush_params="" # Drush parameters that are always passed
+link_command="ln -s"
 
 # Source directories
 code_modules_dir=$base/code/modules
+code_libraries_dir=$base/code/libraries
 code_themes_dir=$base/code/themes
 code_profiles_dir=$base/code/profiles
 
 # Drupal internal paths for modules, themes and profiles
 modules_path=sites/all/modules
+libraries_path=sites/all/libraries
 themes_path=sites/all/themes
 profiles_path=profiles
 files_path=sites/default/files
@@ -69,17 +73,47 @@ else
 	error "This project does not yet have $config_file. Please set it up."
 fi
 
+while [ $# -gt 0 ]
+do
+	case "$1" in
+	-p|--production )
+		link_command="cp -r"
+		notice "Production build!"
+		;;
+	-b|--backup )
+		store_old_builds=true
+		notice "Will backup previous build!"
+		;;
+	esac
+	shift
+done
+
+
 ###############################################################################
 # Functions
 
 # Post make setup
 post_make() {
+
+	# Ensure directories exist
+	mkdir -p $temp_build_dir/$modules_path
+	mkdir -p $temp_build_dir/$libraries_path
+	mkdir -p $temp_build_dir/$themes_path
+
 	# Link code directories
 	for file in $code_modules_dir/*
 	do
 		name=${file##*/}
 		if [ -d $file -a ! -d $temp_build_dir/$modules_path/$name ]; then
-			ln -s $file $temp_build_dir/$modules_path/$name
+			$link_command $file $temp_build_dir/$modules_path/$name
+		fi		
+	done
+	# Link lib directories
+	for file in $code_libraries_dir/*
+	do
+		name=${file##*/}
+		if [ -d $file -a ! -d $temp_build_dir/$libraries_path/$name ]; then
+			$link_command $file $temp_build_dir/$libraries_path/$name
 		fi		
 	done
 	# Link theme directories
@@ -87,7 +121,7 @@ post_make() {
 	do
 		name=${file##*/}
 		if [ -d $file -a ! -d $temp_build_dir/$themes_path/$name ]; then
-			ln -s $file $temp_build_dir/$themes_path/$name
+			$link_command $file $temp_build_dir/$themes_path/$name
 		fi		
 	done
 	# Link theme directories
@@ -95,7 +129,7 @@ post_make() {
 	do
 		name=${file##*/}
 		if [ -d $file -a ! -d $temp_build_dir/$profiles_path/$name ]; then
-			ln -s $file $temp_build_dir/$profiles_path/$name
+			$link_command $file $temp_build_dir/$profiles_path/$name
 		fi		
 	done
 	if [ -d $files_dir ]; then
@@ -209,14 +243,13 @@ purge_build() {
 
 # Clean up builds directory
 remove_old_builds() {
-
-		notice "Removing old builds..."
-        files=($(find $old_builds_dir -mindepth 1 -maxdepth 1 -type d|sort -r))
-        for (( i = 0 ; i < ${#files[@]} ; i++ )) do
-            if [ $i -gt $builds_to_keep ]; then
-            	rm -rf ${files[$i]}
-            fi
-        done
+	notice "Removing old builds..."
+    files=($(find $old_builds_dir -mindepth 1 -maxdepth 1 -type d|sort -r))
+    for (( i = 0 ; i < ${#files[@]} ; i++ )) do
+        if [ $i -gt $builds_to_keep ]; then
+        	rm -rf ${files[$i]}
+        fi
+    done
 }
 
 # Update the current build
@@ -228,12 +261,21 @@ update_build() {
 
 # Print help
 usage() {
-	echo "Usage $0 command"
+	echo "usage $0 [-p|--production,-b|--backup] <command>"
+	echo ""
 	echo "Where command is one of:"
-	echo "  new - Create a new fresh build ready for installation"
-	echo "  update - Update current build"
-	echo "  purge - Clean up the current build"
-	echo "  clean - Remove old builds ($builds_to_keep builds kept)"
+	echo "  new     Create a new fresh build ready for installation"
+	echo "  update  Update current build"
+	echo "  purge   Clean up the current build"
+	echo "  clean   Remove old builds ($builds_to_keep builds kept)"
+	echo ""
+	echo "Options:"
+	echo "  -p, --production"
+	echo "     Build by using copy instead of symlink. This is useful"
+	echo "     when deploying to production."
+	echo ""
+	echo "  -b, --backup"
+	echo "     Backup previous build."
 }
 
 control_c() {
@@ -250,6 +292,7 @@ trap control_c SIGINT
 # MAIN SCRIPT START
 
 check_requirements
+
 
 case $command in
 	new )

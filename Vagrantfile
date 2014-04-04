@@ -10,6 +10,10 @@ ANSIBLE_INVENTORY = "ansible/inventory"
 # Write the inventory file for ansible
 FileUtils.mkdir_p ANSIBLE_INVENTORY
 File.open(ANSIBLE_INVENTORY + "/hosts", 'w') { |file| file.write("[vagrant]\n" + INSTANCE_IP) }
+# Link the ansible playbook
+unless File.exist?("ansible/playbook/vagrant.yml")
+	FileUtils.ln_s "../vagrant.yml", "ansible/playbook/vagrant.yml"
+end
 
 # And never anything below this line
 VAGRANTFILE_API_VERSION = "2"

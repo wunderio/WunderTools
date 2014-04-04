@@ -1,18 +1,12 @@
 #!/bin/bash
 
-param=$1
+param="$@"
 
 if [ -z "$WKV_SITE_ENV" ]; then
 
 	dir="ansible/playbook"
 
-	if vagrant status|grep default|egrep -q "running|not created"; then
-		cd $dir
-		if [ ! -f vagrant.yml ]; then
-			echo "Symlink playbook for vagrant."
-			ln -s ../vagrant.yml vagrant.yml 
-		fi
-		cd -
+	if vagrant status|grep default|egrep -q "not running|not created|sus"; then
 		vagrant up
 	fi
 
