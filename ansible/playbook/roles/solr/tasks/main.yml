@@ -38,5 +38,5 @@
     - restart tomcat6
 
 - name: Ensure tomcat6 and solr are running
-  service: name=redis state=started enabled=yes
+  service: name=tomcat6 state=started enabled=yes
 
