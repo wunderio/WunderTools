@@ -7,12 +7,14 @@ INSTANCE_CPUS     = "2"
 INSTANCE_IP       = "192.168.10.10"
 ANSIBLE_INVENTORY = "ansible/inventory"
 
+dir = File.dirname(__FILE__) + '/'
+
 # Write the inventory file for ansible
-FileUtils.mkdir_p ANSIBLE_INVENTORY
-File.open(ANSIBLE_INVENTORY + "/hosts", 'w') { |file| file.write("[vagrant]\n" + INSTANCE_IP) }
+FileUtils.mkdir_p dir + ANSIBLE_INVENTORY
+File.open(dir + ANSIBLE_INVENTORY + "/hosts", 'w') { |file| file.write("[vagrant]\n" + INSTANCE_IP) }
 # Link the ansible playbook
-unless File.exist?("ansible/playbook/vagrant.yml")
-	FileUtils.ln_s "../vagrant.yml", "ansible/playbook/vagrant.yml"
+unless File.exist?(dir + "ansible/playbook/vagrant.yml")
+	FileUtils.ln_s "../vagrant.yml", dir + "ansible/playbook/vagrant.yml"
 end
 
 # And never anything below this line
