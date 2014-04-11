@@ -29,7 +29,7 @@ temp_build_dir="$builds_dir/build_new" # Active current build dir
 old_builds_dir="$builds_dir/builds" # Directory for old builds
 files_dir="$builds_dir/files" # Files directory for symbolic linking
 drush_params="" # Drush parameters that are always passed
-link_command="ln -s"
+link_command="ln"
 
 # Source directories
 code_modules_dir=$base/code/modules
@@ -77,7 +77,7 @@ while [ $# -gt 0 ]
 do
 	case "$1" in
 	-p|--production )
-		link_command="cp -r"
+		link_command="cp"
 		notice "Production build!"
 		;;
 	-b|--backup )
@@ -92,6 +92,31 @@ done
 ###############################################################################
 # Functions
 
+link() {
+	from=$1
+	to=$2
+	case "$link_command" in
+	ln )
+		# Sorry, but for the time being we'll use python :)
+		# This one will create a relative symbolink link $from to $to
+		python - "$from" "$to" <<END
+import sys
+import os
+import string
+source = sys.argv[1]
+destination = sys.argv[2]
+relative = os.path.relpath(source, destination)
+relative = relative.replace('../', '', 1)
+os.symlink(relative, destination)
+END
+		;;
+	cp )
+		cp -r $file $temp_build_dir/$profiles_path/$name	
+		;;
+	esac	
+}
+
+
 # Post make setup
 post_make() {
 
@@ -105,7 +130,7 @@ post_make() {
 	do
 		name=${file##*/}
 		if [ -d $file -a ! -d $temp_build_dir/$modules_path/$name ]; then
-			$link_command $file $temp_build_dir/$modules_path/$name
+			link $file $temp_build_dir/$modules_path/$name
 		fi		
 	done
 	# Link lib directories
@@ -113,7 +138,7 @@ post_make() {
 	do
 		name=${file##*/}
 		if [ -d $file -a ! -d $temp_build_dir/$libraries_path/$name ]; then
-			$link_command $file $temp_build_dir/$libraries_path/$name
+			link $file $temp_build_dir/$libraries_path/$name
 		fi		
 	done
 	# Link theme directories
@@ -121,7 +146,7 @@ post_make() {
 	do
 		name=${file##*/}
 		if [ -d $file -a ! -d $temp_build_dir/$themes_path/$name ]; then
-			$link_command $file $temp_build_dir/$themes_path/$name
+			link $file $temp_build_dir/$themes_path/$name
 		fi		
 	done
 	# Link theme directories
@@ -129,11 +154,11 @@ post_make() {
 	do
 		name=${file##*/}
 		if [ -d $file -a ! -d $temp_build_dir/$profiles_path/$name ]; then
-			$link_command $file $temp_build_dir/$profiles_path/$name
+			link $file $temp_build_dir/$profiles_path/$name
 		fi		
 	done
 	if [ -d $files_dir ]; then
-		ln -s $files_dir $temp_build_dir/$files_path
+		link $files_dir $temp_build_dir/$files_path 1
 	fi
 
 	# Prep settings.php
@@ -237,7 +262,7 @@ purge_build() {
 		notice "Purging..."
 		$drush $drush_params --root=$build_dir -y sql-dump > $build_dir/dump.sql
 		# We dont need any of this so redirect to null
-		$drush $drush_params --root=$build_dir -y sql-drop &> /dev/null
+		#$drush $drush_params --root=$build_dir -y sql-drop &> /dev/null
 	fi
 }
 
