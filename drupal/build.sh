@@ -111,7 +111,7 @@ os.symlink(relative, destination)
 END
 		;;
 	cp )
-		cp -r $file $temp_build_dir/$profiles_path/$name	
+		cp -r "$from" "$to"
 		;;
 	esac	
 }
@@ -158,7 +158,11 @@ post_make() {
 		fi		
 	done
 	if [ -d $files_dir ]; then
+		# Do not copy the files, but always link
+		old=$link_command
+		link_command='ln'
 		link $files_dir $temp_build_dir/$files_path 1
+		link_command=$old
 	fi
 
 	# Prep settings.php
