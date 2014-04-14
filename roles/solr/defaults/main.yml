@@ -1,5 +1,8 @@
 
+
 solr_user: tomcat
 solr_group: tomcat
 
-cache_path: /tmp
+cache_path: /tmp/vagrant-cache
+
+solr_version: 4.7.0
