@@ -43,3 +43,12 @@
     action: mysql_user user="" state="absent"
   - name: Remove the MySQL test database
     action: mysql_db db=test state=absent
+
+  - name: Setup databases
+    mysql_db: name={{ item.key }} state=present
+    with_dict: databases
+
+  - name: Setup database users
+    mysql_user: name={{ item.value.user }} password={{ item.value.pass }} priv={{ item.key }}.*:ALL state=present
+    with_dict: databases
+
