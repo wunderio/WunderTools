@@ -1,12 +1,5 @@
 # This Playbook will setup and install Drush
 
-
-drupal: {
-  db_name: "drupal",
-  db_user: "drupal",
-  db_pwd: "password",
-}
-
 composer: {
   path: "/usr/lib/composer",
 }
@@ -14,6 +7,6 @@ composer: {
 drush: {
 # Specify which version of Drush to install - comment to disable
 # See a list of versions at http://pear.drush.org/
-  version: "5.9.0",
+  version: "6.*",
 }
 
