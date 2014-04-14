@@ -22,8 +22,6 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-	Vagrant.require_version ">= 1.4.0"
-
 	########################################
 	# Default configuration
 	########################################
@@ -33,13 +31,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 	config.vm.network :private_network, ip: INSTANCE_IP
 
-	# Cachier and an ssh tweak
-	config.cache.auto_detect = true
-	# config.ssh.forward_agent = true
-
 	# Sync folders
 	config.vm.synced_folder ".", "/vagrant", nfs: true
-	
+
+	# Vagrant cachier
+	if Vagrant.has_plugin?("vagrant-cachier")
+		config.cache.scope = :box
+		config.cache.synced_folder_opts = {
+			type: :nfs,
+			mount_options: ['rw', 'vers=3', 'tcp', 'nolock']
+		}
+	end
+
 	########################################
 	# Configuration for virtualbox
 	########################################
