@@ -63,7 +63,7 @@ php:
  #    - key: apc.user_ttl
  #      val: 7200
  #    - key: apc.stat
- #      val: 0
+ #      val: 1
  # - section: suhosin
  #   options:
  #     - key: suhosin.mail.protect
