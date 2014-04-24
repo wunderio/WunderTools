@@ -2,12 +2,13 @@
 ---
 # file: roles/web-front/defaults/main.yml
 
-# Drupal
-drupal: {
-  db_name: "drupal",
-  db_user: "drupal",
-  db_pwd: "password",
-}
+# file: roles/web-front/defaults/main.yml
+
+# Databases
+databases: 
+  drupal:
+    user: drupal
+    pass: password
 
 drush: {
   version: "6.*",
