@@ -1,12 +1,4 @@
 ---
-# Prepare database for drupal
-- name: Setup database for Drupal
-  mysql_db: name={{ drupal.db_user }} state=present
-  when: drupal
-
-- name: Setup database user for Drupal
-  mysql_user: name={{ drupal.db_user }} password={{ drupal.db_pwd }} priv={{ drupal.db_name }}.*:ALL state=present
-  when: drupal
 
 - name: Allow phar execution
   lineinfile:
