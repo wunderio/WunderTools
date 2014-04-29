@@ -53,7 +53,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 	config.vm.provider :virtualbox do |vb|
 		vb.name = INSTANCE_NAME
-		vb.customize ["modifyvm", :id, "--memory", INSTANCE_MEM, "--ioapic", "on", "--rtcuseutc", "on", "--cpus", INSTANCE_CPUS]
+		vb.customize ["modifyvm", :id, "--memory", INSTANCE_MEM, "--cpus", INSTANCE_CPUS, "--ioapic", "on", "--rtcuseutc", "on", "--natdnshostresolver1", "on"]
 	end
 
 	########################################
