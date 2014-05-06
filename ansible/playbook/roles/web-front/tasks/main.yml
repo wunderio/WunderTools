@@ -24,8 +24,6 @@
   # Nginx configuration files
   - name: nginx.conf
     template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
-  - name: php-fpm www.conf
-    template: src=www.conf.j2 dest=/etc/php-fpm.d/www.conf
   - name: upstream_phpcgi.conf
     template: src=upstream_phpcgi.conf.j2 dest=/etc/nginx/conf.d/upstream_phpcgi.conf
   - name: appcluster_upstream.conf
@@ -60,6 +58,8 @@
     when: php_package == "php55u"
 
 # PHP configuration ini file
+  - name: php-fpm www.conf
+    template: src=www.conf.j2 dest=/etc/php-fpm.d/www.conf
   - name: Prepare php {{ php_ini_file }}
     lineinfile:
       dest={{ php_ini_file }}
