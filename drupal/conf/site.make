@@ -6,7 +6,7 @@ projects[drupal][version] = 7.28
 core = 7.0
 api = 2
 
-projects[ctools][version] = 1.5
+projects[ctools][version] = 1.4
 projects[ctools][subdir] = contrib
 
 projects[views][version] = 3.8
