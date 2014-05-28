@@ -2,11 +2,11 @@
 ; ----------------
 
 projects[drupal][type] = core
-projects[drupal][version] = 7.26
+projects[drupal][version] = 7.28
 core = 7.0
 api = 2
 
-projects[ctools][version] = 1.3
+projects[ctools][version] = 1.5
 projects[ctools][subdir] = contrib
 
 projects[views][version] = 3.8
@@ -15,7 +15,7 @@ projects[views][subdir] = contrib
 projects[entity][version] = 1.2
 projects[entity][subdir] = contrib
 
-projects[rules][version] = 2.6
+projects[rules][version] = 2.7
 projects[rules][subdir] = contrib
 
 projects[redis][version] = 2.6
