@@ -68,6 +68,8 @@ php:
     - key: opcache.revalidate_freq
       val: 0
 
+fpm_user: 'nginx'
+fpm_group: 'nginx'
 fpm_pm_max_children: '50'
 fpm_pm_start_servers: '15'
 fpm_pm_min_spare_servers: '10'
@@ -75,6 +77,7 @@ fpm_pm_max_spare_servers: '35'
 fpm_pm_max_requests: '500'
 
 # Nginx
+user: nginx
 worker_processes: 4
 default_port: 8080
 nginx_sites:
