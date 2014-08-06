@@ -27,7 +27,7 @@ build_dir="$builds_dir/current" # Active current build dir
 temp_build_dir="$builds_dir/build_new" # Active current build dir
 old_builds_dir="$builds_dir/builds" # Directory for old builds
 files_dir="$builds_dir/files" # Files directory for symbolic linking
-drush_params="" # Drush parameters that are always passed
+drush_params="--concurrency=10" # Drush parameters that are always passed
 link_command="ln"
 
 # Source directories
@@ -237,7 +237,13 @@ make_build() {
 	then
 		build_time=`date -r $build_dir +"%Y-%m-%d-%H%M%S"`
 		mv $build_dir $old_builds_dir/$build_time
+
+		if [ $? -ne 0 ]; then
+		    error "Hmm. Something went wrong while trying to move/remove the old build. You can try to manually remove $build_dir and then rename $temp_build_dir to $build_dir"
+		fi
 	fi
+
+
 
 	post_make
 
