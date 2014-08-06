@@ -15,7 +15,6 @@ site_profile="site" # Site install profile in code/profiles
 config_file="$base/conf/config.sh" # configuration 
 post_make="$base/conf/prepare.sh" # post make
 
-store_old_builds=false
 builds_to_keep=4
 
 # Grab last paramater as the command
@@ -79,10 +78,6 @@ do
 	-p|--production )
 		link_command="cp"
 		notice "Production build!"
-		;;
-	-b|--backup )
-		store_old_builds=true
-		notice "Will backup previous build!"
 		;;
 	esac
 	shift
@@ -237,18 +232,11 @@ make_build() {
 		error "There seems to be a problem in your drush make file."
 	fi
 
-	# Store old build dir
-	if $store_old_builds
+	# Store old build dir if it exists
+	if [ -e $build_dir ]
 	then
-		# Store old build dir if it exists
-		if [ -e $build_dir ]
-		then
-			build_time=`date -r $build_dir +"%Y-%m-%d-%H%M%S"`
-			mv $build_dir $old_builds_dir/$build_time
-		fi
-	else
-		# Remove old build dir
-		rm -rf $build_dir
+		build_time=`date -r $build_dir +"%Y-%m-%d-%H%M%S"`
+		mv $build_dir $old_builds_dir/$build_time
 	fi
 
 	post_make
