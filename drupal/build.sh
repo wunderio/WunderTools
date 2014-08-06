@@ -27,7 +27,7 @@ build_dir="$builds_dir/current" # Active current build dir
 temp_build_dir="$builds_dir/build_new" # Active current build dir
 old_builds_dir="$builds_dir/builds" # Directory for old builds
 files_dir="$builds_dir/files" # Files directory for symbolic linking
-drush_params="--concurrency=10" # Drush parameters that are always passed
+drush_params="--strict=0 --concurrency=10" # Drush parameters that are always passed
 link_command="ln"
 
 # Source directories
