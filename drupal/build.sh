@@ -260,7 +260,7 @@ purge_build() {
 		notice "Purging..."
 		$drush $drush_params --root=$build_dir -y sql-dump > $build_dir/dump.sql
 		# We dont need any of this so redirect to null
-		#$drush $drush_params --root=$build_dir -y sql-drop &> /dev/null
+		$drush $drush_params --root=$build_dir -y sql-drop &> /dev/null
 	fi
 }
 
