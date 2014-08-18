@@ -29,7 +29,7 @@ innodb_buffer_pool_size		= {{ innodb_buffer_pool_size }}
 innodb_log_buffer_size		= {{ innodb_log_buffer_size	}}
 innodb_file_per_table		= {{ innodb_file_per_table }}
 innodb_open_files		= {{ innodb_open_files }}
-innodb_io_capacity		= {{ innodb_io_capacity }}
+innodb_io_capacity		= {{ innodb_io_capacity }}
 innodb_flush_method		= {{ innodb_flush_method }}
 innodb_data_file_path		= {{ innodb_data_file_path }}
 innodb_additional_mem_pool_size = {{ innodb_additional_mem_pool_size }}
@@ -43,28 +43,28 @@ bulk_insert_buffer_size		= {{ bulk_insert_buffer_size }}
 max_connections			= {{ max_connections }}
 thread_cache_size		= {{ thread_cache_size }}
 table_open_cache 		= {{ table_open_cache }}
-wait_timeout			= {{ wait_timeout	}}
-tmp_table_size          	= {{ tmp_table_size }}
+wait_timeout			= {{ wait_timeout	}}
+tmp_table_size          	= {{ tmp_table_size }}
 max_heap_table_size     	= {{ max_heap_table_size }}
 join_buffer_size 		= {{ join_buffer_size }}
 sort_buffer_size		= {{ sort_buffer_size }}
 
-query_cache_limit		= {{ query_cache_limit }}
+query_cache_limit		= {{ query_cache_limit }}
 query_cache_size		= {{ query_cache_size }}
 
-myisam_recover          	= {{ myisam_recover }}
+myisam_recover          	= {{ myisam_recover }}
 key_buffer_size         	= {{ key_buffer_size }}
 table_cache             	= {{ table_cache }}
-myisam_sort_buffer_size 	= {{ myisam_sort_buffer_size }}
-concurrent_insert       	= {{ concurrent_insert }}
-read_buffer_size        	= {{ read_buffer_size }}
-read_rnd_buffer_size    	= {{ read_rnd_buffer_size }}
+myisam_sort_buffer_size 	= {{ myisam_sort_buffer_size }}
+concurrent_insert       	= {{ concurrent_insert }}
+read_buffer_size        	= {{ read_buffer_size }}
+read_rnd_buffer_size    	= {{ read_rnd_buffer_size }}
 
-log_warnings	      		= {{ log_warnings	}}
+log_warnings	      		= {{ log_warnings	}}
 slow_query_log        		= {{ slow_query_log }}
 slow_query_log_file   		= /var/log/mysql/mariadb-slow.log
-long_query_time       		= {{ long_query_time }}
-log_slow_verbosity      	= {{ log_slow_verbosity }}
+long_query_time       		= {{ long_query_time }}
+log_slow_verbosity      	= {{ log_slow_verbosity }}
 
 [mysqldump]
 quick

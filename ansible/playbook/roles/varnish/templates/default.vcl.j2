@@ -192,7 +192,7 @@ sub vcl_fetch {
   }
 
   # If Drupal page cache is enabled, it will send a X-Drupal-Cache header, and for anonoymous "Cache-Control: public, max-age=x."-headers.
-  # In those cases, Varnish normally  uses the max-age value directly for do determine how long it is cached (ttl).
+  # In those cases, Varnish normally  uses the max-age value directly for do determine how long it is cached (ttl).
   # We can set the TTL for all content to 12h. Lets do it only if Varnish already thinks it is cacheable, and not a page-cache-item.
   if(beresp.status == 200 && beresp.ttl > 0s && !beresp.http.X-Drupal-Cache){
     # Default TTL for all content is 12h

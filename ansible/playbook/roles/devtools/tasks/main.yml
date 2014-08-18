@@ -9,28 +9,28 @@
   shell: gem install bundler
 
 - name: Development packages
-  yum: pkg={{ item }} state=installed
+  yum: pkg={{ item }} state=installed
   with_items:
     - "{{ development_packages }}"
 
-- name: PHP | XDebug
+- name: PHP | XDebug
   yum: pkg={{ php_package }}-pecl-xdebug state=installed
   tags: ntp
 
-- name: PHP | Add section to the xdebug.ini file if it is missing
+- name: PHP | Add section to the xdebug.ini file if it is missing
   lineinfile: dest=/etc/php.d/xdebug.ini
     regexp='^[XDebug]'
     insertbefore=BOF
     line='[XDebug]'
 
-- name: PHP | Set up xdebug.ini
+- name: PHP | Set up xdebug.ini
   ini_file: dest=/etc/php.d/xdebug.ini
-    section={{ item.0.section }}
+    section={{ item.0.section }}
     option={{ item.1.key }}
     value={{ item.1.val }}
     backup=yes
   with_subelements:
-    - "{{ xdebug }}"
+    - "{{ xdebug }}"
     - options
   notify:
     - restart php-fpm
@@ -51,9 +51,9 @@
 - name: MAILCATCHER | Launch mailcatcher
   command: mailcatcher --ip=0.0.0.0
 
-- name: MAILCATCHER | Add sendmail_path setting to {{ php_ini_file }}
-  ini_file: dest={{ php_ini_file }}
-    section="{{ item.0.section }}"
+- name: MAILCATCHER | Add sendmail_path setting to {{ php_ini_file }}
+  ini_file: dest={{ php_ini_file }}
+    section="{{ item.0.section }}"
     option="{{ item.1.key }}"
     value="{{ item.1.val }}"
     backup=yes
