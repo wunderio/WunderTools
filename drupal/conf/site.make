@@ -2,7 +2,7 @@
 ; ----------------
 
 projects[drupal][type] = core
-projects[drupal][version] = 7.28
+projects[drupal][version] = 7.31
 core = 7.0
 api = 2
 
