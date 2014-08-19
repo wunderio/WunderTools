@@ -12,7 +12,7 @@ Introduction
 
 Start by running:
 	
-	$ ./build.sh new
+	$ ./build.sh new
 
 This will do the following:
 	
@@ -35,7 +35,7 @@ Drush is usable without ssh access with the drush.sh script e.g:
 
 To open up ssh access to the virtual machine:
 
-	$ vagrant ssh
+	$ vagrant ssh
 
 -------------------------------------------------------------------------------
 Useful things
@@ -122,4 +122,4 @@ Pushing:
 
 Committing (as usual):
 
-	$ git commit -m "message"
+	$ git commit -m "message"

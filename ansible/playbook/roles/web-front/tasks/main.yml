@@ -49,7 +49,7 @@
 
 # PHP version specific setup:
 # Written as such since the following fails:
-#  - include: "{{ php_package }}.yml"
+#  - include: "{{ php_package }}.yml"
 
   - include: "php53u.yml"
     when: php_package == "php53u"
@@ -60,21 +60,21 @@
 # PHP configuration ini file
   - name: php-fpm www.conf
     template: src=www.conf.j2 dest=/etc/php-fpm.d/www.conf
-  - name: Prepare php {{ php_ini_file }}
+  - name: Prepare php {{ php_ini_file }}
     lineinfile:
-      dest={{ php_ini_file }}
-      regexp='^[{{ item.section }}]'
+      dest={{ php_ini_file }}
+      regexp='^[{{ item.section }}]'
       insertafter=EOF
-      line='[{{ item.section }}]'
+      line='[{{ item.section }}]'
       create=True
       mode=644
     with_items: 
       - "{{ php }}"
 
   # PHP configuration files
-  - name: Provision php {{ php_ini_file }}
-    ini_file: dest={{ php_ini_file }}
-      section="{{ item.0.section }}"
+  - name: Provision php {{ php_ini_file }}
+    ini_file: dest={{ php_ini_file }}
+      section="{{ item.0.section }}"
       option="{{ item.1.key }}"
       value="{{ item.1.val }}"
       backup=yes

@@ -7,24 +7,24 @@
    - tomcat6-admin-webapps
 
 - name: Downloading Solr
-  shell: curl --retry 5 -s -o "{{ cache_path }}/solr-{{ solr_version }}.tgz" http://archive.apache.org/dist/lucene/solr/{{ solr_version }}/solr-{{ solr_version }}.tgz
-    creates="{{ cache_path }}/solr-{{ solr_version }}.tgz"
+  shell: curl --retry 5 -s -o "{{ cache_path }}/solr-{{ solr_version }}.tgz" http://archive.apache.org/dist/lucene/solr/{{ solr_version }}/solr-{{ solr_version }}.tgz
+    creates="{{ cache_path }}/solr-{{ solr_version }}.tgz"
 
 - name: Unpack Solr
-  shell: tar xfz "{{ cache_path }}/solr-{{ solr_version }}.tgz" -C /root
-    creates=/root/solr-{{ solr_version }}
+  shell: tar xfz "{{ cache_path }}/solr-{{ solr_version }}.tgz" -C /root
+    creates=/root/solr-{{ solr_version }}
 
 - name: Copy server.xml
   copy: src=server.xml dest=/etc/tomcat6/server.xml owner={{ solr_user }} group={{ solr_group }} mode=644
 
 - name: Setup war
-  shell: creates=/var/lib/tomcat6/webapps/solr.war chdir=/root/solr-{{ solr_version }} service tomcat6 stop && sleep 10 && cp dist/solr-{{ solr_version }}.war /var/lib/tomcat6/webapps/solr.war && service tomcat6 start && sleep 10
+  shell: creates=/var/lib/tomcat6/webapps/solr.war chdir=/root/solr-{{ solr_version }} service tomcat6 stop && sleep 10 && cp dist/solr-{{ solr_version }}.war /var/lib/tomcat6/webapps/solr.war && service tomcat6 start && sleep 10
 
 - name: Copy libraries
-  shell: creates=/usr/share/tomcat6/lib/jcl-over-slf4j-1.6.6.jar chdir=/root/solr-{{ solr_version }} cp -r example/lib/ext/* /usr/share/tomcat6/lib/
+  shell: creates=/usr/share/tomcat6/lib/jcl-over-slf4j-1.6.6.jar chdir=/root/solr-{{ solr_version }} cp -r example/lib/ext/* /usr/share/tomcat6/lib/
 
 - name: Copy configurations
-  shell: creates=/var/lib/tomcat6/solr chdir=/root/solr-{{ solr_version }} cp -r example/solr /var/lib/tomcat6/solr
+  shell: creates=/var/lib/tomcat6/solr chdir=/root/solr-{{ solr_version }} cp -r example/solr /var/lib/tomcat6/solr
 
 - name: Copy solr.xml
   copy: src=solr.xml dest=/etc/tomcat6/Catalina/localhost/solr.xml owner={{ solr_user }} group={{ solr_group }} mode=644
