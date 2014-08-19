@@ -15,7 +15,7 @@ site_profile="site" # Site install profile in code/profiles
 config_file="$base/conf/config.sh" # configuration 
 post_make="$base/conf/prepare.sh" # post make
 
-builds_to_keep=4
+builds_to_keep=1
 
 # Grab last paramater as the command
 for command in $@; do :; done
@@ -29,6 +29,13 @@ old_builds_dir="$builds_dir/builds" # Directory for old builds
 files_dir="$builds_dir/files" # Files directory for symbolic linking
 drush_params="--strict=0 --concurrency=10" # Drush parameters that are always passed
 link_command="ln"
+
+# md5 command to use
+md5=$(which md5sum)
+if [ -z $md5 ]
+then
+ 	md5=$(which md5)
+fi
 
 # Source directories
 code_modules_dir=$base/code/modules
@@ -59,6 +66,10 @@ error() {
 
 if [ -z "$drush" ]; then
 	error "Drush seems to be missing."
+fi
+
+if [ -z "$md5" ]; then
+	error "md5 (or md5sum) seems to be missing."
 fi
 
 if [ -z "$WKV_SITE_ENV" ]; then
@@ -177,7 +188,7 @@ include '$settings_directory/$WKV_SITE_ENV.settings.php';" >> $temp_build_dir/$s
 	if [ -e $post_make ]
 	then
 		notice "Post make script..."
-		$post_make $base $temp_build_dir
+		$post_make $base $temp_build_dir $command
 	fi
 }
 
@@ -222,7 +233,19 @@ check_requirements() {
 # Make a fresh build
 make_build() {
 
-	notice "Building..."
+	buildhash=($($md5 $drush_make_script))
+	# If there is an existing build
+	if [ -e $build_dir/buildhash ]
+	then
+		oldbuildhash=$(<$build_dir/buildhash)
+		if [ "$buildhash" == "$oldbuildhash" ]
+		then
+			notice "Make file has not changed - skipping make"
+			return
+		fi
+	fi
+
+	notice "Making..."
 
 	$drush $drush_params --root=$temp_build_dir -y --translations=fi make $drush_make_script $temp_build_dir
 
@@ -235,20 +258,19 @@ make_build() {
 	# Store old build dir if it exists
 	if [ -e $build_dir ]
 	then
-		build_time=`date -r $build_dir +"%Y-%m-%d-%H%M%S"`
+		build_time=`date +"%Y-%m-%d-%H%M%S"`
 		mv $build_dir $old_builds_dir/$build_time
-
 		if [ $? -ne 0 ]; then
 		    error "Hmm. Something went wrong while trying to move/remove the old build. You can try to manually remove $build_dir and then rename $temp_build_dir to $build_dir"
 		fi
 	fi
 
-
-
 	post_make
 
 	# Replace old build with new one
 	mv $temp_build_dir $build_dir
+
+	echo $buildhash > $build_dir/buildhash
 
 	# Run cleanup
 	remove_old_builds
@@ -261,6 +283,8 @@ purge_build() {
 		$drush $drush_params --root=$build_dir -y sql-dump > $build_dir/dump.sql
 		# We dont need any of this so redirect to null
 		$drush $drush_params --root=$build_dir -y sql-drop &> /dev/null
+		# Remove hash file
+		rm $build_dir/buildhash
 	fi
 }
 
@@ -268,8 +292,11 @@ purge_build() {
 remove_old_builds() {
 	notice "Removing old builds..."
     files=($(find $old_builds_dir -mindepth 1 -maxdepth 1 -type d|sort -r))
-    for (( i = 0 ; i < ${#files[@]} ; i++ )) do
-        if [ $i -gt $builds_to_keep ]; then
+    for (( i = 0 ; i < ${#files[@]} ; i++ ))
+    do
+        if [ $i -gt $builds_to_keep ]
+        then
+        	notify "removing ${files[$i]}"
         	rm -rf ${files[$i]}
         fi
     done
@@ -347,3 +374,4 @@ case $command in
 		usage
 	;;
 esac
+
