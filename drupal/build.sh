@@ -15,7 +15,7 @@ site_profile="site" # Site install profile in code/profiles
 config_file="$base/conf/config.sh" # configuration 
 post_make="$base/conf/prepare.sh" # post make
 
-builds_to_keep=1
+builds_to_keep=2
 
 # Grab last paramater as the command
 for command in $@; do :; done
@@ -34,7 +34,7 @@ link_command="ln"
 md5=$(which md5sum)
 if [ -z $md5 ]
 then
- 	md5=$(which md5)
+ 	md5="$(which md5) -q"
 fi
 
 # Source directories
@@ -296,7 +296,7 @@ remove_old_builds() {
     do
         if [ $i -gt $builds_to_keep ]
         then
-        	notify "removing ${files[$i]}"
+        	notice "Removing ${files[$i]}"
         	rm -rf ${files[$i]}
         fi
     done
