@@ -23,3 +23,4 @@ projects[varnish][subdir] = contrib
 
 projects[views][version] = 3.8
 projects[views][subdir] = contrib
+
