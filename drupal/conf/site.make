@@ -9,13 +9,11 @@ api = 2
 projects[ctools][version] = 1.4
 projects[ctools][subdir] = contrib
 
-projects[entity][version] = 1.2
+projects[entity][version] = 1.5
 projects[entity][subdir] = contrib
 
-projects[redis][version] = 2.6
+projects[redis][version] = 2.11
 projects[redis][subdir] = contrib
-projects[redis][patch][redis-sockets] = "http://drupal.org/files/redis-RedisPHP-sockets-1528912-11.patch"
-projects[redis][patch][clear-all] = "http://drupal.org/files/issues/cache_clear_all-2140897-1.patch"
 
 projects[rules][version] = 2.7
 projects[rules][subdir] = contrib
