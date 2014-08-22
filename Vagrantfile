@@ -27,20 +27,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	########################################
 
 	config.vm.hostname = INSTANCE_HOSTNAME
-	config.vm.box      = "centos-6.5-x86_64"
+	config.vm.box      = "centos-6.5-x86_64-v0"
 
 	config.vm.network :private_network, ip: INSTANCE_IP
 
 	# Sync folders
-	config.vm.synced_folder ".", "/vagrant", nfs: true
+	config.vm.synced_folder ".", "/vagrant", type: :nfs
 
 	# Vagrant cachier
 	if Vagrant.has_plugin?("vagrant-cachier")
 		config.cache.scope = :box
-		config.cache.synced_folder_opts = {
-			type: :nfs,
-			mount_options: ['rw', 'vers=3', 'tcp', 'nolock']
-		}
+		config.cache.synced_folder_opts = {type: :nfs}
 	end
 
 	########################################
@@ -48,7 +45,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	########################################
 
 	config.vm.provider "virtualbox" do |v, override|
-		override.vm.box_url = "https://www.dropbox.com/s/vc2lxmybl4cyfpx/centos64-vb43.box?dl=1"
+		override.vm.box_url = "https://www.dropbox.com/s/wa0vs54lgngfcrx/vb-centos-6.5-x86_64-v0.box?dl=1"
 	end
 
 	config.vm.provider :virtualbox do |vb|
@@ -61,7 +58,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	########################################
 
 	config.vm.provider "vmware_fusion" do |v, override|
-		override.vm.box_url = "https://www.dropbox.com/s/9ln4acvgpl5h1ao/centos64-vmware.box?dl=1"
+		override.vm.box_url = "https://www.dropbox.com/s/0vcowil5b6nrvam/vm-centos-6.5-x86_64-v0.box?dl=1"
 	end
 
 	config.vm.provider "vmware_fusion" do |vb|

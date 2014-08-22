@@ -27,7 +27,7 @@ build_dir="$builds_dir/current" # Active current build dir
 temp_build_dir="$builds_dir/build_new" # Active current build dir
 old_builds_dir="$builds_dir/builds" # Directory for old builds
 files_dir="$builds_dir/files" # Files directory for symbolic linking
-drush_params="--strict=0 --concurrency=10" # Drush parameters that are always passed
+drush_params="--strict=0 --concurrency=20" # Drush parameters that are always passed
 link_command="ln"
 
 # md5 command to use
@@ -292,11 +292,14 @@ purge_build() {
 remove_old_builds() {
 	notice "Removing old builds..."
     files=($(find $old_builds_dir -mindepth 1 -maxdepth 1 -type d|sort -r))
+    sync
+    sleep 2
     for (( i = 0 ; i < ${#files[@]} ; i++ ))
     do
         if [ $i -gt $builds_to_keep ]
         then
         	notice "Removing ${files[$i]}"
+        	find ${files[$i]} -type f -exec rm -rf {} \;
         	rm -rf ${files[$i]}
         fi
     done
