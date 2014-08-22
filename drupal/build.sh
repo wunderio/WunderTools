@@ -299,6 +299,7 @@ remove_old_builds() {
         if [ $i -gt $builds_to_keep ]
         then
         	notice "Removing ${files[$i]}"
+        	chmod u+w -R ${files[$i]} 
         	find ${files[$i]} -type f -exec rm -rf {} \;
         	rm -rf ${files[$i]}
         fi
