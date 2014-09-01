@@ -29,6 +29,7 @@ old_builds_dir="$builds_dir/builds" # Directory for old builds
 files_dir="$builds_dir/files" # Files directory for symbolic linking
 drush_params="--strict=0 --concurrency=20" # Drush parameters that are always passed
 link_command="ln"
+forcemake=false
 
 # md5 command to use
 md5=$(which md5sum)
@@ -89,6 +90,10 @@ do
 	-p|--production )
 		link_command="cp"
 		notice "Production build!"
+		;;
+	-f|--force )
+		forcemake=true
+		notice "Forcing make!"
 		;;
 	esac
 	shift
@@ -235,7 +240,7 @@ make_build() {
 
 	buildhash=($($md5 $drush_make_script))
 	# If there is an existing build
-	if [ -e $build_dir/buildhash ]
+	if [ $forcemake == false ] && [ -e $build_dir/buildhash ]
 	then
 		oldbuildhash=$(<$build_dir/buildhash)
 		if [ "$buildhash" == "$oldbuildhash" ]
@@ -328,8 +333,8 @@ usage() {
 	echo "     Build by using copy instead of symlink. This is useful"
 	echo "     when deploying to production."
 	echo ""
-	echo "  -b, --backup"
-	echo "     Backup previous build."
+	echo "  -f, --force"
+	echo "     Force make when make is skipped."
 }
 
 control_c() {
