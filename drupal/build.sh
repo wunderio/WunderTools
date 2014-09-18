@@ -1,386 +1,319 @@
-#!/bin/bash
+#!/usr/bin/env python
 
-###############################################################################
-#
-# DO NOT MODIFY THIS FILE
-#
-# Use the file $conf_file to override default settings
-# and the $post_make file to run manual patches etc. after drush make
-#
-###############################################################################
-
-base=$(cd "$(dirname "$0")"; pwd) # Base path
-site_name="site" # Make file name without .make
-site_profile="site" # Site install profile in code/profiles
-config_file="$base/conf/config.sh" # configuration 
-post_make="$base/conf/prepare.sh" # post make
-
-builds_to_keep=2
-
-# Grab last paramater as the command
-for command in $@; do :; done
-
-drush=$(which drush 2> /dev/null) # Drush command file
-drush_make_script="$base/conf/site.make" # Make script
-builds_dir="$base" # Directory where we build sites
-build_dir="$builds_dir/current" # Active current build dir
-temp_build_dir="$builds_dir/build_new" # Active current build dir
-old_builds_dir="$builds_dir/builds" # Directory for old builds
-files_dir="$builds_dir/files" # Files directory for symbolic linking
-drush_params="--strict=0 --concurrency=20" # Drush parameters that are always passed
-link_command="ln"
-forcemake=false
-
-# md5 command to use
-md5=$(which md5sum)
-if [ -z $md5 ]
-then
- 	md5="$(which md5) -q"
-fi
-
-# Source directories
-code_modules_dir=$base/code/modules
-code_libraries_dir=$base/code/libraries
-code_themes_dir=$base/code/themes
-code_profiles_dir=$base/code/profiles
-
-# Drupal internal paths for modules, themes and profiles
-modules_path=sites/all/modules
-libraries_path=sites/all/libraries
-themes_path=sites/all/themes
-profiles_path=profiles
-files_path=sites/default/files
-
-settings_directory="$base/conf"
-settings_file=sites/default/settings.php
-
-# Print a notification message
-notice() {
-	echo -e "\e[1;33m** BUILD NOTICE: $1\e[00m"
-}
-
-# Print error and exit
-error() {
-	echo -e "\e[1;31m** BUILD ERROR: $1\e[00m"
-	exit -1
-}
-
-if [ -z "$drush" ]; then
-	error "Drush seems to be missing."
-fi
-
-if [ -z "$md5" ]; then
-	error "md5 (or md5sum) seems to be missing."
-fi
-
-if [ -z "$WKV_SITE_ENV" ]; then
-	error "You need to define WKV_SITE_ENV before using build.sh"
-fi
-
-if [ -e $config_file ]; then
-	# Include site specific overrides for the settings
-	source $config_file
-else
-	error "This project does not yet have $config_file. Please set it up."
-fi
-
-while [ $# -gt 0 ]
-do
-	case "$1" in
-	-p|--production )
-		link_command="cp"
-		notice "Production build!"
-		;;
-	-f|--force )
-		forcemake=true
-		notice "Forcing make!"
-		;;
-	esac
-	shift
-done
-
-
-###############################################################################
-# Functions
-
-link() {
-	from=$1
-	to=$2
-	case "$link_command" in
-	ln )
-		# Sorry, but for the time being we'll use python :)
-		# This one will create a relative symbolink link $from to $to
-		python - "$from" "$to" <<END
+import getopt
 import sys
+import yaml
 import os
-import string
-source = sys.argv[1]
-destination = sys.argv[2]
-relative = os.path.relpath(source, destination)
-relative = relative.replace('../', '', 1)
-os.symlink(relative, destination)
-END
-		;;
-	cp )
-		cp -r "$from" "$to"
-		;;
-	esac	
-}
+import subprocess
+import shutil
+import hashlib
+import datetime
+import shlex
+import stat
+
+# Build scripts version string.
+build_sh_version_string = "build.sh 0.1"
+
+# Maker class.
+class Maker:
+
+	def __init__(self, settings):
+
+		self.drush = settings.get('drush', 'drush')
+		self.temp_build_dir = os.path.abspath(settings['temporary'])
+		self.final_build_dir = os.path.abspath(settings['final'])
+		self.old_build_dir = os.path.abspath(settings.get('previous', 'previous'))
+		self.makefile = os.path.abspath(settings.get('makefile', 'conf/site.make'))
+		self.profile_name = settings.get('profile', 'standard')
+		self.site_name = settings.get('site', 'A drupal site')
+		self.settings = settings
+		self.store_old_buids = True
+		self.makefile_hash = hashlib.md5(self.makefile).hexdigest()
+
+	# Run make
+	def make(self):
+		self._precheck()
+		self.notice("Building")
+		self._drush(self._collect_make_args())
+		print "done"
+		f = open(self.temp_build_dir + "/buildhash", "w")
+		f.write(self.makefile_hash)
+		f.close()
+		# Remove default.settings.php
+		os.remove(self.temp_build_dir + "/sites/default/default.settings.php")
+		# Link and copy required files
+		self._link()
+		self._copy()
+
+	# Existing final build?
+	def hasExistingBuild(self):
+		return os.path.isdir(self.final_build_dir)
+
+    # Backup current final build
+	def backup(self):
+		self.notice("Backing up current build")
+		if self.hasExistingBuild():
+			self._backup()
+
+    # Purge current final build
+	def purge(self):
+		self.notice("Purging current build")
+		if self.hasExistingBuild():
+			self._wipe()
+
+	# Finalize new build to be the final build
+	def finalize(self):
+		self.notice("Finalizing new build")
+		if os.path.isdir(self.final_build_dir):
+			shutil.rmtree(self.final_build_dir)
+		os.rename(self.temp_build_dir, self.final_build_dir)
+
+	# Print notice
+	def notice(self, *args):
+		print "\033[92m** BUILD NOTICE: \033[0m" + ' '.join(str(a) for a in args)
+
+	# Print errror
+	def error(self, *args):
+		print "\033[91m** BUILD NOTICE: \033[0m" + ' '.join(str(a) for a in args)
+
+	# Print warning
+	def warning(self, *args):
+		print "\033[93m** BUILD WARNING: \033[0m" + ' '.join(str(a) for a in args)
+
+    # Run install
+	def install(self):
+		self._drush([
+			"--root=" + format(self.final_build_dir),
+			"site-install",
+			self.profile_name,
+			"install_configure_form.update_status_module='array(FALSE,FALSE)'"
+			"--account-name=admin",
+			"--account-pass=admin",
+			"--site-name=" + self.site_name,
+			"-y"
+		]);
+
+    # Update existing final build
+	def update(self):
+		if self._drush([
+			"--root=" + format(self.final_build_dir),
+			'updatedb',
+			'--y',
+			self.final_build_dir + '/db.sql'
+		], True):
+			self.notice("Update process completed")
+		else:
+			self.warning("Unable to update")
 
 
-# Post make setup
-post_make() {
+	# Execute a shell command
+	def shell(self, command): 
+		if isinstance(command, list):
+			for step in command:
+				value = subprocess.call(shlex.split(step)) == 0
+				if not value:
+					return False
+			return True
+		else:
+			return subprocess.call(shlex.split(command)) == 0
+
+	# Execute given step
+	def execute(self, step):
+		
+		command = False
+		if isinstance(step, dict):
+			step, command = step.popitem()
+	
+		if step == 'make':
+			self.make()
+		elif step == 'backup':
+			self.backup()
+		elif step == 'purge':
+			self.purge()
+		elif step == 'finalize':
+			self.finalize()
+		elif step == 'install':
+			self.install()
+		elif step == 'update':
+			self.update()
+		elif step == 'shell':
+			self.shell(command)
+		else:
+			print "Unknown step " + step
+
+
+	# Collect make args
+	def _collect_make_args(self): 
+		return [
+			"--strict=0",
+			"--concurrency=20"
+			"-y",
+			"make",
+			self.makefile,
+			self.temp_build_dir
+		]
+
+
+    # Handle link
+	def _link(self):
+		if not "link" in self.settings:
+			return
+		for tuple in self.settings['link']:
+			source, target = tuple.popitem()
+			target = self.temp_build_dir + "/" + target
+			self._link_files(source, target)
+
+    # Handle copy
+	def _copy(self):
+		if not "copy" in self.settings:
+			return
+		for tuple in self.settings['copy']:
+			source, target = tuple.popitem()
+			target = self.temp_build_dir + "/" + target
+			self._copy_files(source, target)
+
+	# Execute a drush command
+	def _drush(self, args, quiet = False):
+		if quiet:
+			FNULL = open(os.devnull, 'w')
+			return subprocess.call([self.drush] + args, stdout=FNULL, stderr=FNULL) == 0
+		return subprocess.call([self.drush] + args) == 0
 
 	# Ensure directories exist
-	mkdir -p $temp_build_dir/$modules_path
-	mkdir -p $temp_build_dir/$libraries_path
-	mkdir -p $temp_build_dir/$themes_path
+	def _precheck(self):
+		# Remove old build it if exists
+		if os.path.isdir(self.temp_build_dir):
+			shutil.rmtree(self.temp_build_dir)
+		if not os.path.isdir(self.old_build_dir):
+			os.mkdir(self.old_build_dir)
 
-	# Link code directories
-	for file in $code_modules_dir/*
-	do
-		name=${file##*/}
-		if [ -d $file -a ! -d $temp_build_dir/$modules_path/$name ]; then
-			link $file $temp_build_dir/$modules_path/$name
-		fi		
-	done
-	# Link lib directories
-	for file in $code_libraries_dir/*
-	do
-		name=${file##*/}
-		if [ -d $file -a ! -d $temp_build_dir/$libraries_path/$name ]; then
-			link $file $temp_build_dir/$libraries_path/$name
-		fi		
-	done
-	# Link theme directories
-	for file in $code_themes_dir/*
-	do
-		name=${file##*/}
-		if [ -d $file -a ! -d $temp_build_dir/$themes_path/$name ]; then
-			link $file $temp_build_dir/$themes_path/$name
-		fi		
-	done
-	# Link theme directories
-	for file in $code_profiles_dir/*
-	do
-		name=${file##*/}
-		if [ -d $file -a ! -d $temp_build_dir/$profiles_path/$name ]; then
-			link $file $temp_build_dir/$profiles_path/$name
-		fi		
-	done
-	if [ -d $files_dir ]; then
-		# Do not copy the files, but always link
-		old=$link_command
-		link_command='ln'
-		link $files_dir $temp_build_dir/$files_path 1
-		link_command=$old
-	fi
+	# Backup existing final build
+	def _backup(self):
+		if self._drush([
+			"--root=" + format(self.final_build_dir),
+			'sql-dump',
+			self.final_build_dir + '/db.sql'
+		], True):
+			self.notice("Database dump taken")
+		else:
+			self.warning("No database dump taken")
 
-	# Prep settings.php
-	echo "<?php
-// ** DO NOT EDIT ** THIS FILE IS AUTOMATICALLY GENERATED BY THE BUILD PROCESS" >> $temp_build_dir/$settings_file
+		name = datetime.datetime.now()
+		name = name.isoformat()
+		
+		# Restore write rights to sites/default folder:
+		mode = os.stat(self.final_build_dir + "/sites/default").st_mode
+		os.chmod(self.final_build_dir + "/sites/default", mode|stat.S_IWRITE)
+		shutil.copytree(self.final_build_dir, self.old_build_dir + "/" + name)
 
-	if [ -e $settings_directory/$WKV_SITE_ENV.settings.php ]
-	then
-		echo "
-include '$settings_directory/$WKV_SITE_ENV.settings.php';" >> $temp_build_dir/$settings_file
-	else
-		notice "No local settings.php file defined: TIP! You can create one at $settings_directory/$WKV_SITE_ENV.settings.php"
-	fi
+	# Wipe existing final build
+	def _wipe(self):
+		if self._drush([
+			'--root=' + format(self.final_build_dir),
+			'sql-drop',
+			'--y'
+		], True):
+			self.notice("Tables dropped")
+		else:
+			self.notice("No tables dropped")
+		shutil.rmtree(self.final_build_dir)
 
-  echo "include '$settings_directory/global.settings.php';" >> $temp_build_dir/$settings_file
-	# post make script
-	if [ -e $post_make ]
-	then
-		notice "Post make script..."
-		$post_make $base $temp_build_dir $command
-	fi
-}
+	# Symlink file from source to target
+	def _link_files(self, source, target):
+		source = os.path.relpath(source, os.path.dirname(target))
+		os.symlink(source, target)
 
-# Requirements checking
-check_requirements() {
+	# Copy file from source to target
+	def _copy_files(self, source, target):
+		shutil.copytree(source, target)
 
-	local error=false
-	local dirs=(
-		"$drush_make_script"
-	)
-	for dir in ${dirs[@]}
-	do
-		if [ ! -e $dir ]
-		then
-			echo "$dir does not exist"
-			error=true
-		fi
-	done
 
-	local commands=(
-		"drush"
-		"git"
-		"curl"
-		"unzip"
-	)
+# Print help function
+def help():
+	print 'build.sh [options] [command] [site]'
+	print '[command] is one of new, update or clean'
+	print '[site] defines the site to build, defaults to default'
+	print 'Options:'
+	print ' -h --help'
+	print '			Print this help'
+	print ' -c --config'
+	print '			Configuration file to use, defaults to conf/site.yml'
+	print ' -v --version'
 
-	for cmd in ${commands[@]}
-	do
-		hash $cmd 2>&- || { echo >&2 "The command $cmd seems to be missing or inaccessible"; error=true; }
-	done
+# Print version function.
+def version():
+	print build_sh_version_string
 
-	if [ $error == true ]
-	then
-		error "Please fix the problems and try again"
-	fi
+# Program main:
+def main(argv):
 
-	# Ensure the build directories exists
-	mkdir -p $old_builds_dir
-	mkdir -p $files_dir
-}
+	# Default configuration file to use:
+	config_file = 'conf/site.yml'
 
-# Make a fresh build
-make_build() {
+	# Parse options:
+	try:
+		opts, args = getopt.getopt(argv, "hcv", ["help", "config=", "version"])
+	except getopt.GetoptError:
+		help()
+		return
 
-	buildhash=($($md5 $drush_make_script))
-	# If there is an existing build
-	if [ $forcemake == false ] && [ -e $build_dir/buildhash ]
-	then
-		oldbuildhash=$(<$build_dir/buildhash)
-		if [ "$buildhash" == "$oldbuildhash" ]
-		then
-			notice "Make file has not changed - skipping make"
+	for opt, arg in opts:
+		if opt in ('-h', "--help"):
+			help()
 			return
-		fi
-	fi
+		elif opt in ("-c", "--config"):
+			config_file = arg
+		elif opt in ("-v", "--version"):
+			version()
+			return
 
-	notice "Making..."
+	try:
 
-	$drush $drush_params --root=$temp_build_dir -y --translations=fi make $drush_make_script $temp_build_dir
+		# Get the settings file YAML contents.
+		f = open(config_file)
+		if f:
+			settings = yaml.safe_load(f)
+			f.close()
+		else:
+			print "No configuration file"
+			return
 
-	rc=$?
-	if [[ $rc != 0 ]]
-	then
-		error "There seems to be a problem in your drush make file."
-	fi
+		command = args[0]
 
-	# Store old build dir if it exists
-	if [ -e $build_dir ]
-	then
-		build_time=`date +"%Y-%m-%d-%H%M%S"`
-		mv $build_dir $old_builds_dir/$build_time
-		if [ $? -ne 0 ]; then
-		    error "Hmm. Something went wrong while trying to move/remove the old build. You can try to manually remove $build_dir and then rename $temp_build_dir to $build_dir"
-		fi
-	fi
+		# Default site is "default"
+		site = 'default'
+		try:
+			site = args[1]
+		except IndexError:
+			site = 'default'
 
-	post_make
+		sites = []
+		sites.append(site)
 
-	# Replace old build with new one
-	mv $temp_build_dir $build_dir
+		for site in sites:
 
-	echo $buildhash > $build_dir/buildhash
+			# Copy defaults.
+			site_settings = settings["default"].copy()
 
-	# Run cleanup
-	remove_old_builds
-}
+			# If not the default site, update it with defaults.
+			if site != "default":
+				site_settings.update(settings[site])
 
-# Purge the current build
-purge_build() {
-	if [ -d $current_build_dir ]; then
-		notice "Purging..."
-		$drush $drush_params --root=$build_dir -y sql-dump > $build_dir/dump.sql
-		# We dont need any of this so redirect to null
-		$drush $drush_params --root=$build_dir -y sql-drop &> /dev/null
-		# Remove hash file
-		rm $build_dir/buildhash
-	fi
-}
+			# Create the site maker based on the settings
+			maker = Maker(site_settings)
 
-# Clean up builds directory
-remove_old_builds() {
-	notice "Removing old builds..."
-    files=($(find $old_builds_dir -mindepth 1 -maxdepth 1 -type d|sort -r))
-    sync
-    sleep 2
-    for (( i = 0 ; i < ${#files[@]} ; i++ ))
-    do
-        if [ $i -gt $builds_to_keep ]
-        then
-        	notice "Removing ${files[$i]}"
-        	chmod u+w -R ${files[$i]} 
-        	find ${files[$i]} -type f -exec rm -rf {} \;
-        	rm -rf ${files[$i]}
-        fi
-    done
-}
+			# Execute the command(s).
+			if command in settings['commands']:
+				command_set = settings['commands'][command]
+				for step in command_set:
+					maker.execute(step)
+			else:
+				print "No such command defined as '" + command + "'"
 
-# Update the current build
-update_build() {
-	notice "Updating..."
-	$drush $drush_params --root=$build_dir updatedb --y
-	$drush $drush_params --root=$build_dir cc all
-}
+	except Exception, errtxt:
 
-# Print help
-usage() {
-	echo "usage $0 [-p|--production,-b|--backup] <command>"
-	echo ""
-	echo "Where command is one of:"
-	echo "  new     Create a new fresh build ready for installation"
-	echo "  update  Update current build"
-	echo "  purge   Clean up the current build"
-	echo "  clean   Remove old builds ($builds_to_keep builds kept)"
-	echo ""
-	echo "Options:"
-	echo "  -p, --production"
-	echo "     Build by using copy instead of symlink. This is useful"
-	echo "     when deploying to production."
-	echo ""
-	echo "  -f, --force"
-	echo "     Force make when make is skipped."
-}
+		print "ERROR: %s" % (errtxt)
 
-control_c() {
-	echo ""
-	notice "Cancelled - Previous build remains intact"
-	# if prev build dir exists
-	# remove 
-	exit 1
-}
-
-trap control_c SIGINT
-
-###############################################################################
-# MAIN SCRIPT START
-
-check_requirements
-
-
-case $command in
-	new )
-		if [ -e $build_dir ]
-		then
-			purge_build
-		fi
-		make_build
-	;;
-	clean )
-		remove_old_builds
-	;;
-	purge )
-		if [ ! -e $build_dir ]
-		then
-			error "There is no current build to purge!"
-		fi
-		purge_build
-	;;
-	update )
-		if [ ! -e $build_dir ]
-		then
-			error "There is no current build to update!"
-		fi
-		make_build
-		update_build
-	;;
-	* )
-		usage
-	;;
-esac
-
+# Entry point.
+if __name__ == "__main__":
+	main(sys.argv[1:])
