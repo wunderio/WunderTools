@@ -278,7 +278,11 @@ def main(argv):
 			print "No configuration file"
 			return
 
-		command = args[0]
+		try:			
+			command = args[0]
+		except IndexError:
+			help()
+			return
 
 		# Default site is "default"
 		site = 'default'
