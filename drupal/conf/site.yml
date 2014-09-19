@@ -1,0 +1,89 @@
+---
+
+# Default environment is Vagrant:
+default:
+
+  makefile: conf/site.make
+  temporary: _build
+  final: current
+  previous: builds
+  profile: ansibleref 
+  site: Ansibleref
+
+  link:
+    - files: sites/default/files
+    - code/modules/custom: sites/all/modules/custom
+    - code/modules/features: sites/all/modules/features
+    - code/libraries/geoip: sites/all/libraries/geopip
+    - code/libraries/simplehtmldom: sites/all/libraries/simplehtmldom
+    - code/profiles/ansibleref: profiles/ansibleref
+    - conf/vagrant.settings.php: sites/default/settings.php
+    - code/themes/ansibleref: sites/all/themes/ansibleref
+
+# Local environment:
+local:
+  link:
+    - files: sites/default/files
+    - code/modules/custom: sites/all/modules/custom
+    - code/modules/features: sites/all/modules/features
+    - code/libraries/geoip: sites/all/libraries/geopip
+    - code/libraries/simplehtmldom: sites/all/libraries/simplehtmldom
+    - code/profiles/ansibleref: profiles/ansibleref
+    - code/themes/ansibleref: sites/all/themes/ansibleref
+    - conf/local.settings.php: sites/default/settings.php
+
+# Test environment:
+test:
+  link:
+    - files: sites/default/files
+
+  copy:
+    - code/modules/custom: sites/all/modules/custom
+    - code/modules/features: sites/all/modules/features
+    - code/libraries/geoip: sites/all/libraries/geopip
+    - code/libraries/simplehtmldom: sites/all/libraries/simplehtmldom
+    - code/profiles/ansibleref: profiles/ansibleref
+    - code/themes/ansibleref: sites/all/themes/ansibleref
+    - conf/prod.settings.php: sites/default/settings.php
+
+# Production environment:
+production:
+
+  link:
+    - files: sites/default/files
+
+  copy:
+    - code/modules/custom: sites/all/modules/custom
+    - code/modules/features: sites/all/modules/features
+    - code/libraries/geoip: sites/all/libraries/geopip
+    - code/libraries/simplehtmldom: sites/all/libraries/simplehtmldom
+    - code/profiles/ansibleref: profiles/ansibleref
+    - code/themes/ansibleref: sites/all/themes/ansibleref
+    - conf/prod.settings.php: sites/default/settings.php
+
+# Command sets:
+commands:
+  new:
+    - make
+    - backup
+    - purge
+    - finalize
+    - install
+    - shell: cp conf/_ping.php current
+    - shell: chmod -Rf 775 current/sites/all/modules/contrib/views_sexy_throbber
+#    - shell: drush --root=`pwd -P`/current fra -y
+
+  update:
+    - make
+    - backup
+    - finalize
+    - update
+    - shell: cp conf/_ping.php current
+    - shell: chmod -Rf 775 current/sites/all/modules/contrib/views_sexy_throbber
+
+  package:
+    - make
+    - shell: cp conf/_ping.php _build
+    - shell: tar cvfz package.tgz _build
+    - shell: rm -rf _build
+
