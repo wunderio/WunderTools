@@ -225,8 +225,10 @@ class Maker:
 
 	# Copy file from source to target
 	def _copy_files(self, source, target):
-		shutil.copytree(source, target)
-
+		if os.path.isfile(source):
+			shutil.copyfile(source, target)
+		else:
+			shutil.copytree(source, target)
 
 # Print help function
 def help():
