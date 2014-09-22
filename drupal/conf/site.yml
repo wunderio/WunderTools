@@ -7,62 +7,64 @@ default:
   temporary: _build
   final: current
   previous: builds
-  profile: ansibleref 
-  site: Ansibleref
+  profile: wk 
+  site: Wundersite
 
+  # In development environments we want to use symlinks, note settings.php
   link:
     - files: sites/default/files
     - code/modules/custom: sites/all/modules/custom
     - code/modules/features: sites/all/modules/features
-    - code/libraries/geoip: sites/all/libraries/geopip
-    - code/libraries/simplehtmldom: sites/all/libraries/simplehtmldom
-    - code/profiles/ansibleref: profiles/ansibleref
+    - code/themes/custom: sites/all/themes/custom
+    - code/profiles/wk: profiles/wk
     - conf/vagrant.settings.php: sites/default/settings.php
-    - code/themes/ansibleref: sites/all/themes/ansibleref
 
 # Local environment:
 local:
+
+  # Local is sometimes used outside of Vagrant boxes, for example with MAMP)
   link:
     - files: sites/default/files
     - code/modules/custom: sites/all/modules/custom
     - code/modules/features: sites/all/modules/features
-    - code/libraries/geoip: sites/all/libraries/geopip
-    - code/libraries/simplehtmldom: sites/all/libraries/simplehtmldom
-    - code/profiles/ansibleref: profiles/ansibleref
-    - code/themes/ansibleref: sites/all/themes/ansibleref
+    - code/themes/custom: sites/all/themes/custom
+    - code/profiles/wk: profiles/wk
     - conf/local.settings.php: sites/default/settings.php
 
 # Test environment:
 test:
+
+  # Test environment only symlinks files
   link:
     - files: sites/default/files
 
+  # Other files are copied, note settings.php
   copy:
     - code/modules/custom: sites/all/modules/custom
     - code/modules/features: sites/all/modules/features
-    - code/libraries/geoip: sites/all/libraries/geopip
-    - code/libraries/simplehtmldom: sites/all/libraries/simplehtmldom
-    - code/profiles/ansibleref: profiles/ansibleref
-    - code/themes/ansibleref: sites/all/themes/ansibleref
-    - conf/prod.settings.php: sites/default/settings.php
+    - code/themes/custom: sites/all/themes/custom
+    - code/profiles/wk: profiles/wk
+    - conf/test.settings.php: sites/default/settings.php
 
 # Production environment:
 production:
-
+  
+  # Prod environment only symlinks files
   link:
     - files: sites/default/files
 
+  # Other files are copied, note settings.php
   copy:
     - code/modules/custom: sites/all/modules/custom
     - code/modules/features: sites/all/modules/features
-    - code/libraries/geoip: sites/all/libraries/geopip
-    - code/libraries/simplehtmldom: sites/all/libraries/simplehtmldom
-    - code/profiles/ansibleref: profiles/ansibleref
-    - code/themes/ansibleref: sites/all/themes/ansibleref
+    - code/themes/custom: sites/all/themes/custom
+    - code/profiles/wk: profiles/wk
     - conf/prod.settings.php: sites/default/settings.php
 
 # Command sets:
 commands:
+
+  # Basic new site functionality
   new:
     - make
     - backup
@@ -70,17 +72,19 @@ commands:
     - finalize
     - install
     - shell: cp conf/_ping.php current
-    - shell: chmod -Rf 775 current/sites/all/modules/contrib/views_sexy_throbber
-#    - shell: drush --root=`pwd -P`/current fra -y
 
+
+  # Basic site update functionality
   update:
     - make
     - backup
     - finalize
     - update
     - shell: cp conf/_ping.php current
-    - shell: chmod -Rf 775 current/sites/all/modules/contrib/views_sexy_throbber
 
+  # This is just an example on how to create custom commands,
+  # this will create a .tgz out of the drupal installation without
+  # touching the current installation.
   package:
     - make
     - shell: cp conf/_ping.php _build
