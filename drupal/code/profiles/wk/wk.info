@@ -2,3 +2,28 @@ name = WK Site Profile
 core = 7.x
 description = WK Site Profile
 
+;Core
+
+dependencies[] = block
+dependencies[] = dblog
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = image
+dependencies[] = list
+dependencies[] = locale
+dependencies[] = menu
+dependencies[] = options
+dependencies[] = path
+dependencies[] = shortcut
+dependencies[] = syslog
+dependencies[] = taxonomy
+
+; Contrib
+
+dependencies[] = admin_views
+dependencies[] = entity
+dependencies[] = entity_translation
+dependencies[] = memcache
+dependencies[] = rules
+dependencies[] = varnish
+dependencies[] = views
