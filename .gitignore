@@ -1,8 +1,3 @@
-# Generic ones
-.DS_Store
 .vagrant
-drupal/current
-drupal/builds
-drupal/files
-.idea
-ansible/inventory/hosts
+vagrant.yml
+.DS_Store

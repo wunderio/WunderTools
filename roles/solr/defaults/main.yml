@@ -5,4 +5,4 @@ solr_group: tomcat
 
 cache_path: /tmp/vagrant-cache
 
-solr_version: 4.7.0
+solr_version: 4.9.0

@@ -3,7 +3,7 @@
 
   # Install repositories
   - name: Get WK repository
-    get_url: dest=/tmp/wk-release.rpm url=http://wkrepo:xeehae9eeX@repo.wunder.io/CentOS/6/x86_64/wk-release-0.2-1.WK.x86_64.rpm
+    get_url: dest=/tmp/wk-release.rpm url=https://wkrepo:xeehae9eeX@repo.wunder.io/CentOS/6/x86_64/wk-release-0.1-1.WK.x86_64.rpm
   - name: Install WK repository
     yum: pkg=/tmp/wk-release.rpm state=installed
   - name: Install EPEL key
