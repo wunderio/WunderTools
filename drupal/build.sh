@@ -10,9 +10,65 @@ import hashlib
 import datetime
 import shlex
 import stat
+import re
 
 # Build scripts version string.
-build_sh_version_string = "build.sh 0.1"
+build_sh_version_string = "build.sh 0.2"
+
+# Sitt.make item (either a project/library from the site.make)
+class MakeItem:
+
+	def __init__(self, type, name):
+		self.type = type
+		self.name = name
+		self.version = 'UNDEFINED'
+		if self.type == 'libraries':
+			self.project_type = 'library'
+		else:
+			self.project_type = 'module'
+		self.download_args = {}
+
+	# Parse a line from site.make for this project/lib
+	def parse(self, line):
+
+		# Project type
+		type = re.compile("^[^\[]*\[[^\]]*\]\[download\]\[([^\]]*)\]\s*=\s*(.*)$")
+		t = type.match(line)
+		if t:
+			self.download_args[t.group(1)] = t.group(2)
+
+		# Version number
+		version = re.compile("^.*\[version\]\s*=\s*(.*)$")
+		v = version.match(line)
+		if v:
+			self.version = v.group(1)
+
+		# Project type
+		type = re.compile("^[^\[]*\[[^\]]*\]\[type\]\s*=\s*(.*)$")
+		t = type.match(line)
+		if t:
+			self.project_type = t.group(1)
+
+	# Validate site.make item, returns a string describing the issue or False if no issues
+	def validate(self):
+		if 'type' in self.download_args:
+			version = re.compile("[0-9]\.[0-9]")
+			if self.download_args['type'] == 'git' and 'revision' not in self.download_args:
+				return "No 'revision' defined."
+			elif self.download_args['type'] == 'file' and 'url' in self.download_args and version.match(self.download_args['url']):
+				return "URL does not seem to have a version number in it."
+		elif 'dev' in self.version:
+			return "Development version in use"
+		return False
+
+# BuildError exception class.
+class BuildError(Exception):
+	
+	def __init__(self, value):
+		self.value = value
+
+	def __str__(self):
+		return repr(self.value)
 
 # Maker class.
 class Maker:
@@ -30,11 +86,38 @@ class Maker:
 		self.store_old_buids = True
 		self.makefile_hash = hashlib.md5(self.makefile).hexdigest()
 
+		self._validate_makefile()
+
+	# Quickly validate the drush make file
+	def _validate_makefile(self):
+		f = open(self.makefile)
+		if f:
+			content = f.readlines()
+			projects = {}
+			prog = re.compile("^([^\[]*)\[([^\]]*)\]\[([^\]]*)\].*$")
+			for line in content:
+				m = prog.match(line)
+				if m:
+					name = m.group(2)
+					if name not in projects:
+						projects[name] = MakeItem(m.group(1), name)
+					projects[name].parse(line)
+
+			errors = False
+			for item in projects:
+				error = projects[item].validate()
+				if error:
+					errors = True
+					self.warning(projects[item].name + ': ' + error)
+			if errors:
+				self.warning("The make file is volatile - it is not ready for production use")
+
 	# Run make
 	def make(self):
 		self._precheck()
 		self.notice("Building")
-		self._drush(self._collect_make_args())
+		if not self._drush(self._collect_make_args()):
+			raise BuildError("Make failed - check your makefile")
 		print "done"
 		f = open(self.temp_build_dir + "/buildhash", "w")
 		f.write(self.makefile_hash)
@@ -55,6 +138,16 @@ class Maker:
 		if self.hasExistingBuild():
 			self._backup()
 
+	def cleanup(self):
+		import time
+		compare = time.time() - (60*60*24)
+		for f in os.listdir(self.old_build_dir):
+			fullpath = os.path.join(self.old_build_dir, f)
+			if os.stat(fullpath).st_mtime < compare:
+		  		if os.path.isdir(fullpath):
+		  			self.notice("Removing old build " + f)
+		   			shutil.rmtree(f)
+
     # Purge current final build
 	def purge(self):
 		self.notice("Purging current build")
@@ -74,7 +167,7 @@ class Maker:
 
 	# Print errror
 	def error(self, *args):
-		print "\033[91m** BUILD NOTICE: \033[0m" + ' '.join(str(a) for a in args)
+		print "\033[91m** BUILD ERROR: \033[0m" + ' '.join(str(a) for a in args)
 
 	# Print warning
 	def warning(self, *args):
@@ -82,7 +175,7 @@ class Maker:
 
     # Run install
 	def install(self):
-		self._drush([
+		if not self._drush([
 			"--root=" + format(self.final_build_dir),
 			"site-install",
 			self.profile_name,
@@ -91,7 +184,8 @@ class Maker:
 			"--account-pass=admin",
 			"--site-name=" + self.site_name,
 			"-y"
-		]);
+		]):
+			raise BuildError("Install failed.");
 
     # Update existing final build
 	def update(self):
@@ -136,6 +230,8 @@ class Maker:
 			self.install()
 		elif step == 'update':
 			self.update()
+		elif step == 'cleanup':
+			self.cleanup()
 		elif step == 'shell':
 			self.shell(command)
 		else:
@@ -218,17 +314,33 @@ class Maker:
 			self.notice("No tables dropped")
 		shutil.rmtree(self.final_build_dir)
 
+	def _ensure_container(self, filepath):
+		# Ensure target directory exists
+		target_container = os.path.dirname(filepath)
+		if not os.path.exists(target_container):
+			self.notice("Created directory " + target_container) 
+			os.makedirs(target_container)
+
 	# Symlink file from source to target
 	def _link_files(self, source, target):
-		source = os.path.relpath(source, os.path.dirname(target))
-		os.symlink(source, target)
+		self._ensure_container(target)
+		if os.path.exists(source) and not os.path.exists(target):
+			source = os.path.relpath(source, os.path.dirname(target))
+			os.symlink(source, target)
+		else:
+			raise BuildError("Can't link " + source + " to " + target)
 
 	# Copy file from source to target
 	def _copy_files(self, source, target):
-		if os.path.isfile(source):
-			shutil.copyfile(source, target)
+		self._ensure_container(target)
+		if os.path.exists(source) and not os.path.exists(target):
+			if os.path.isdir(source):
+				shutil.copytree(source, target)
+			else:
+				shutil.copyfile(source, target)
 		else:
-			shutil.copytree(source, target)
+			raise BuildError("Can't copy " + source + " to " + target)
+
 
 # Print help function
 def help():
@@ -316,9 +428,10 @@ def main(argv):
 			else:
 				print "No such command defined as '" + command + "'"
 
+
 	except Exception, errtxt:
 
-		print "ERROR: %s" % (errtxt)
+		print "\033[91m** BUILD ERROR: \033[0m%s" % (errtxt)
 
 # Entry point.
 if __name__ == "__main__":
