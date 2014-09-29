@@ -13,7 +13,7 @@ import stat
 import re
 
 # Build scripts version string.
-build_sh_version_string = "build.sh 0.2"
+build_sh_version_string = "build.sh 0.3"
 
 # Sitt.make item (either a project/library from the site.make)
 class MakeItem:
@@ -26,12 +26,13 @@ class MakeItem:
 			self.project_type = 'library'
 		else:
 			self.project_type = 'module'
+		
 		self.download_args = {}
 
 	# Parse a line from site.make for this project/lib
 	def parse(self, line):
 
-		# Project type
+		# Download related items
 		type = re.compile("^[^\[]*\[[^\]]*\]\[download\]\[([^\]]*)\]\s*=\s*(.*)$")
 		t = type.match(line)
 		if t:
@@ -52,13 +53,13 @@ class MakeItem:
 	# Validate site.make item, returns a string describing the issue or False if no issues
 	def validate(self):
 		if 'type' in self.download_args:
-			version = re.compile("[0-9]\.[0-9]")
+			version = re.compile("[0-9]+\.[0-9]+")
 			if self.download_args['type'] == 'git' and 'revision' not in self.download_args:
-				return "No 'revision' defined."
-			elif self.download_args['type'] == 'file' and 'url' in self.download_args and version.match(self.download_args['url']):
-				return "URL does not seem to have a version number in it."
+				return "No revision defined for a git download"
+			elif self.download_args['type'] == 'file' and 'url' in self.download_args and not version.match(self.download_args['url']):
+				return "URL does not seem to have a version number in it (" + self.download_args['url'] + ")"
 		elif 'dev' in self.version:
-			return "Development version in use"
+			return "Development version in use (" + self.version + ")"
 		return False
 
 # BuildError exception class.
@@ -86,6 +87,7 @@ class Maker:
 		self.store_old_buids = True
 		self.makefile_hash = hashlib.md5(self.makefile).hexdigest()
 
+	def test(self):
 		self._validate_makefile()
 
 	# Quickly validate the drush make file
@@ -110,7 +112,9 @@ class Maker:
 					errors = True
 					self.warning(projects[item].name + ': ' + error)
 			if errors:
-				self.warning("The make file is volatile - it is not ready for production use")
+				self.error("The make file is volatile - it is not ready for production use")
+			else:
+				self.notice("Everything looks good!")
 
 	# Run make
 	def make(self):
@@ -234,6 +238,8 @@ class Maker:
 			self.cleanup()
 		elif step == 'shell':
 			self.shell(command)
+		elif step == 'test':
+			self.test()
 		else:
 			print "Unknown step " + step
 
@@ -345,7 +351,7 @@ class Maker:
 # Print help function
 def help():
 	print 'build.sh [options] [command] [site]'
-	print '[command] is one of new, update or clean'
+	print '[command] is one of the commands defined in the configuration file'
 	print '[site] defines the site to build, defaults to default'
 	print 'Options:'
 	print ' -h --help'
@@ -353,6 +359,8 @@ def help():
 	print ' -c --config'
 	print '			Configuration file to use, defaults to conf/site.yml'
 	print ' -v --version'
+	print '			Print version information'
+
 
 # Print version function.
 def version():
@@ -363,10 +371,11 @@ def main(argv):
 
 	# Default configuration file to use:
 	config_file = 'conf/site.yml'
+	do_build = True
 
 	# Parse options:
 	try:
-		opts, args = getopt.getopt(argv, "hcv", ["help", "config=", "version"])
+		opts, args = getopt.getopt(argv, "hc:vt", ["help", "config=", "version", "test"])
 	except getopt.GetoptError:
 		help()
 		return
@@ -379,18 +388,13 @@ def main(argv):
 			config_file = arg
 		elif opt in ("-v", "--version"):
 			version()
-			return
 
 	try:
 
 		# Get the settings file YAML contents.
 		f = open(config_file)
-		if f:
-			settings = yaml.safe_load(f)
-			f.close()
-		else:
-			print "No configuration file"
-			return
+		settings = yaml.safe_load(f)
+		f.close()
 
 		try:			
 			command = args[0]
@@ -419,14 +423,16 @@ def main(argv):
 
 			# Create the site maker based on the settings
 			maker = Maker(site_settings)
+			settings['commands']['test'] = {'test'}
 
-			# Execute the command(s).
-			if command in settings['commands']:
-				command_set = settings['commands'][command]
-				for step in command_set:
-					maker.execute(step)
-			else:
-				print "No such command defined as '" + command + "'"
+			if do_build:
+				# Execute the command(s).
+				if command in settings['commands']:
+					command_set = settings['commands'][command]
+					for step in command_set:
+						maker.execute(step)
+				else:
+					print "No such command defined as '" + command + "'"
 
 
 	except Exception, errtxt:
