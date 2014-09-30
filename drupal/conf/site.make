@@ -20,3 +20,4 @@ projects[rules][version] = 2.7
 projects[varnish][version] = 1.0-beta2
 projects[views][version] = 1.2
 projects[views][version] = 3.8
+

@@ -1,29 +1,9 @@
 ---
-# file: roles/cache/tasks/main.yml
 
-  # Install Remi repository
-  - name: Get Remi repository
-    get_url: dest=/tmp/remi-release.rpm url=http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
-  - name: Install Remi repository
-    yum: pkg=/tmp/remi-release.rpm state=installed
+# Install memcached
+- name: install memcached
+  yum: pkg=memcached state=installed
+  tags: memcached
 
-  # Install redis
-  - action: command yum-config-manager --enable remi
-  - action: yum state=installed pkg=redis
-  - action: command yum-config-manager --disable remi
-
-  - name: Ensure redis is running now and on boot
-    service: name=redis state=started enabled=yes
-
-  - name: Ensure redis is configured
-    template: src=redis.conf.j2 dest=/etc/redis.conf
-    notify:
-      - restart redis
-      
-  # Install memcached
-  - name: install memcached
-    yum: pkg=memcached state=installed
-    tags: memcached
-  
-  - name: Ensure memcached is running now and on boot
-    service: name=memcached state=started enabled=yes
+- name: Ensure memcached is running now and on boot
+  service: name=memcached state=started enabled=yes

@@ -1,22 +1,6 @@
 ---
 # file: roles/web-front/tasks/main.yml
 
-  # Install repositories
-  - name: Get WK repository
-    get_url: dest=/tmp/wk-release.rpm url=https://wkrepo:xeehae9eeX@repo.wunder.io/CentOS/6/x86_64/wk-release-0.1-1.WK.x86_64.rpm
-  - name: Install WK repository
-    yum: pkg=/tmp/wk-release.rpm state=installed
-  - name: Install EPEL key
-    shell: rpm --import http://ftp.riken.jp/Linux/fedora/epel/RPM-GPG-KEY-EPEL-6
-  - name: Get EPEL repository
-    get_url: dest=/tmp/epel-release.rpm url=http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-  - name: Install EPEL repository
-    yum: pkg=/tmp/epel-release.rpm state=installed
-  - name: Get IUS repository
-    get_url: dest=/tmp/ius-release.rpm url=http://dl.iuscommunity.org/pub/ius/stable/CentOS/6/x86_64/ius-release-1.0-13.ius.centos6.noarch.rpm
-  - name: Install IUS repository
-    yum: pkg=/tmp/ius-release.rpm state=installed
-
   # Install nginx
   - name: Install nginx server
     yum: pkg=nginx state=installed

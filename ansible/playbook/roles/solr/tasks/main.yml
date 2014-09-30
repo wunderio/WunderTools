@@ -7,7 +7,7 @@
    - tomcat6-admin-webapps
 
 - name: Downloading Solr
-  shell: curl --retry 5 -s -o "{{ cache_path }}/solr-{{ solr_version }}.tgz" http://www.nic.funet.fi/pub/mirrors/apache.org/lucene/solr/{{ solr_version }}/solr-{{ solr_version }}.tgz
+  shell: curl --retry 5 -s -o "{{ cache_path }}/solr-{{ solr_version }}.tgz" "{{ solr_url }}{{ solr_version }}/solr-{{ solr_version }}.tgz"
     creates="{{ cache_path }}/solr-{{ solr_version }}.tgz"
 
 - name: Unpack Solr

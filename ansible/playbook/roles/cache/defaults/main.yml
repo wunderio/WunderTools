@@ -1,7 +1,0 @@
----
-# file: roles/cache/defaults/main.yml
-
-socket: true
-bind_ip: 127.0.0.1
-max_memory: 256mb
-max_memory_policy: allkeys-lru

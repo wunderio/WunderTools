@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# build.sh by the Wunderful People at Wunderkraut
 
 import getopt
 import sys
@@ -112,7 +113,7 @@ class Maker:
 					errors = True
 					self.warning(projects[item].name + ': ' + error)
 			if errors:
-				self.error("The make file is volatile - it is not ready for production use")
+				raise BuildError("The make file is volatile - it is not ready for production use")
 			else:
 				self.notice("Everything looks good!")
 
@@ -423,7 +424,7 @@ def main(argv):
 
 			# Create the site maker based on the settings
 			maker = Maker(site_settings)
-			settings['commands']['test'] = {'test'}
+			settings['commands']['test'] = {"test": "test"}
 
 			if do_build:
 				# Execute the command(s).
@@ -438,6 +439,7 @@ def main(argv):
 	except Exception, errtxt:
 
 		print "\033[91m** BUILD ERROR: \033[0m%s" % (errtxt)
+		exit(1)
 
 # Entry point.
 if __name__ == "__main__":

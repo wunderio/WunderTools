@@ -37,28 +37,28 @@ php:
    options:
     - key: date.timezone
       val: Europe/Helsinki
- - section: APC
-   options: 
-    - key: apc.shm_size
-      val: 256M
-    - key: apc.ttl
-      val: 0
-    - key: apc.user_ttl
-      val: 7200
-    - key: apc.stat
-      val: 0
- - section: suhosin
-   options:
-     - key: suhosin.mail.protect
-       val: 2
-     - key: suhosin.filter.action
-       val: 402
-     - key: suhosin.log.syslog
-       val: S_ALL & ~S_SQL
-     - key: suhosin.post.max_vars
-       val: 1000
-     - key: suhosin.request.max_vars
-       val: 1000
+ # - section: APC
+ #   options: 
+ #    - key: apc.shm_size
+ #      val: 256M
+ #    - key: apc.ttl
+ #      val: 0
+ #    - key: apc.user_ttl
+ #      val: 7200
+ #    - key: apc.stat
+ #      val: 0
+ # - section: suhosin
+ #   options:
+ #     - key: suhosin.mail.protect
+ #       val: 2
+ #     - key: suhosin.filter.action
+ #       val: 402
+ #     - key: suhosin.log.syslog
+ #       val: S_ALL & ~S_SQL
+ #     - key: suhosin.post.max_vars
+ #       val: 1000
+ #     - key: suhosin.request.max_vars
+ #       val: 1000
  - section: OPCACHE
    options:
     - key: opcache.memory
@@ -81,13 +81,13 @@ user: nginx
 worker_processes: 4
 default_port: 8080
 nginx_sites:
-  - hostname: local.matkavekka.fi local.matkavekka.com
+  - hostname: local.ansibleref.fi local.ansibleref.com
     port: 8080 default_server
     docroot: /vagrant/docroot
     accesslog: true
     accesslog_params: main buffer=32k
     errorlog: true
-    logprefix: local.matkavekka.x
+    logprefix: local.ansibleref.fi
     ssl: false
     sslproxy: false
     ssl_certificate: default.crt
