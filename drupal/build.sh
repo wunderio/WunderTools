@@ -55,8 +55,9 @@ class MakeItem:
 	def validate(self):
 		if 'type' in self.download_args:
 			version = re.compile(".*[0-9]+\.[0-9]+.*")
-			if self.download_args['type'] == 'git' and 'revision' not in self.download_args:
-				return "No revision defined for a git download"
+			if self.download_args['type'] == 'git':
+				if 'tag' not in self.download_args and 'revision' not in self.download_args:
+					return "No revision or tag defined for a git download"
 			elif self.download_args['type'] == 'file' and 'url' in self.download_args and not version.match(self.download_args['url']):
 				return "URL does not seem to have a version number in it (" + self.download_args['url'] + ")"
 		elif 'dev' in self.version:
