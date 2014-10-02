@@ -217,6 +217,15 @@ class Maker:
 		else:
 			return subprocess.call(shlex.split(command)) == 0
 
+	def append(self, command):
+		files = command.split(">")
+		if len(files) > 1:
+			with open(files[1].strip(), "a") as target:
+			    target.write(open(files[0].strip(), "rb").read())
+		else:
+			raise BuildError("Append commands syntax is: source > target")
+		exit(1)
+
 	# Execute given step
 	def execute(self, step):
 		
@@ -238,6 +247,8 @@ class Maker:
 			self.update()
 		elif step == 'cleanup':
 			self.cleanup()
+		elif step == 'append':
+			self.append(command)
 		elif step == 'shell':
 			self.shell(command)
 		elif step == 'test':

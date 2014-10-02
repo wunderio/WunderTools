@@ -64,6 +64,9 @@ production:
 # Command sets:
 commands:
 
+  # Steps:
+  #  - append: conf/robots.txt > current/robots.txt
+
   # Basic new site functionality
   new:
     - make

@@ -20,4 +20,5 @@ projects[rules][version] = 2.7
 projects[varnish][version] = 1.0-beta2
 projects[views][version] = 1.2
 projects[views][version] = 3.8
-
+projects[views_bulk_operations][version] = 3.2
+projects[field_collection][version] = 1.0-beta7

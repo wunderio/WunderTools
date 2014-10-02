@@ -39,6 +39,6 @@ dependencies[] = rules_ui
 dependencies[] = varnish
 dependencies[] = views
 dependencies[] = views_ui
-
+dependencies[] = views_bulk_operations
 
 
