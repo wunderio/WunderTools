@@ -307,7 +307,7 @@ class Maker:
 		if self._drush([
 			"--root=" + format(self.final_build_dir),
 			'sql-dump',
-			self.final_build_dir + '/db.sql'
+			'--result-file=' + self.final_build_dir + '/db.sql'
 		], True):
 			self.notice("Database dump taken")
 		else:
