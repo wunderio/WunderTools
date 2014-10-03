@@ -22,3 +22,5 @@ projects[views][version] = 1.2
 projects[views][version] = 3.8
 projects[views_bulk_operations][version] = 3.2
 projects[field_collection][version] = 1.0-beta7
+projects[search_api][version] = 1.13
+projects[search_api_solr][version] = 1.6

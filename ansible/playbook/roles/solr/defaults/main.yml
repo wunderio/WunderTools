@@ -7,7 +7,7 @@ cache_path: /tmp/vagrant-cache
 
 # Container folder for solr downloads
 #solr_url: http://www.nic.funet.fi/pub/mirrors/apache.org/lucene/solr/
-solr_url: ftp://ftp.funet.fi/pub/mirrors/apache.org/lucene/solr/
+solr_url: ftp://www.nic.funet.fi/pub/mirrors/apache.org/lucene/solr/
 
 # Version
-solr_version: 4.10.1
+solr_version: 4.7.2
