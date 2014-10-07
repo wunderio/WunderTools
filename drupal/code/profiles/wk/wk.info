@@ -5,18 +5,28 @@ description = WK Site Profile
 ;Core
 
 dependencies[] = block
+dependencies[] = color
+dependencies[] = comment
+dependencies[] = contextual
+dependencies[] = dashboard
 dependencies[] = dblog
 dependencies[] = field_ui
 dependencies[] = file
+dependencies[] = help
 dependencies[] = image
 dependencies[] = list
 dependencies[] = locale
 dependencies[] = menu
+dependencies[] = number
 dependencies[] = options
+dependencies[] = overlay
 dependencies[] = path
+dependencies[] = rdf
+dependencies[] = search
 dependencies[] = shortcut
 dependencies[] = syslog
 dependencies[] = taxonomy
+dependencies[] = toolbar
 
 ; Contrib
 
@@ -25,5 +35,10 @@ dependencies[] = entity
 dependencies[] = entity_translation
 dependencies[] = memcache
 dependencies[] = rules
+dependencies[] = rules_admin
 dependencies[] = varnish
 dependencies[] = views
+dependencies[] = views_ui
+dependencies[] = views_bulk_operations
+
+
