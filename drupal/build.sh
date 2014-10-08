@@ -224,7 +224,6 @@ class Maker:
 			    target.write(open(files[0].strip(), "rb").read())
 		else:
 			raise BuildError("Append commands syntax is: source > target")
-		exit(1)
 
 	# Execute given step
 	def execute(self, step):
