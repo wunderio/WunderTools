@@ -22,7 +22,7 @@ $databases = array (
 $conf['cache_backends'][] = 'sites/all/modules/contrib/memcache/memcache.inc';
 $conf['cache_class_cache_form'] = 'DrupalDatabaseCache';
 $conf['cache_default_class'] = 'MemCacheDrupal';
-$conf['memcache_key_prefix'] = 'plus';
+$conf['memcache_key_prefix'] = 'wk';
 
 $conf['cache_backends'][] = 'sites/all/modules/contrib/varnish/varnish.cache.inc';
 $conf['cache_class_cache_page']  = 'VarnishCache';
