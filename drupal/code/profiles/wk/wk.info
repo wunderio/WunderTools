@@ -31,14 +31,16 @@ dependencies[] = toolbar
 ; Contrib
 
 dependencies[] = admin_views
+dependencies[] = devel
 dependencies[] = entity
 dependencies[] = entity_translation
 dependencies[] = memcache
+dependencies[] = pathologic
 dependencies[] = rules
 dependencies[] = rules_admin
 dependencies[] = varnish
 dependencies[] = views
-dependencies[] = views_ui
 dependencies[] = views_bulk_operations
+dependencies[] = views_ui
 
 
