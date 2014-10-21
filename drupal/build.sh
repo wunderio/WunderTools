@@ -152,7 +152,7 @@ class Maker:
 			if os.stat(fullpath).st_mtime < compare:
 		  		if os.path.isdir(fullpath):
 		  			self.notice("Removing old build " + f)
-		   			shutil.rmtree(f)
+		   			shutil.rmtree(fullpath)
 
     # Purge current final build
 	def purge(self):
