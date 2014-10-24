@@ -17,6 +17,8 @@ innodb_open_file: '16384'
 innodb_flush_log_at_trx_commit: '0'
 innodb_support_xa: '0'
 innodb_buffer_pool_instances: '5'
+innodb_lock_wait_timeout: '15'
+innodb_stats_on_metadata: '0'
 
 # General configurations
 max_allowed_packet: '256M'
