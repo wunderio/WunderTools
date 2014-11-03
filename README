@@ -56,6 +56,9 @@ Solr responds in
 MailCatcher responds in
 	http://x.x.x.x:1080
 
+Docs are in
+  http://x.x.x.x:8080/
+
 -------------------------------------------------------------------------------
 Vagrant + Ansible configuration
 
