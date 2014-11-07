@@ -6,6 +6,9 @@
    - tomcat6
    - tomcat6-admin-webapps
 
+- name: Make sure {{ cache_path }} exists
+  action: file path={{ cache_path }} state=directory
+
 - name: Downloading Solr
   shell: curl --retry 5 -s -o "{{ cache_path }}/solr-{{ solr_version }}.tgz" "{{ solr_url }}{{ solr_version }}/solr-{{ solr_version }}.tgz"
     creates="{{ cache_path }}/solr-{{ solr_version }}.tgz"
