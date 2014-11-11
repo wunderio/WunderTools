@@ -28,7 +28,7 @@
     creates=/etc/yum.repos.d/ius.repo
 
 - name: Enable WK repository
-  shell: rpm -Uhv https://wkrepo:xeehae9eeX@repo.wunder.io/CentOS/6/x86_64/wk-release-0.1-1.WK.x86_64.rpm
+  shell: rpm -Uhv http://wkrepo:xeehae9eeX@repo.wunder.io/CentOS/6/x86_64/wk-release-0.1-1.WK.x86_64.rpm
     creates=/etc/yum.repos.d/wk.repo
 
 # Basic packages
