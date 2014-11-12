@@ -26,8 +26,9 @@ projects[pathologic][version] = 2.12
 projects[rules][version] = 2.7
 projects[search_api][version] = 1.13
 projects[search_api_solr][version] = 1.6
-projects[varnish][version] = 1.0-beta2
+projects[varnish][version] = 1.0-beta3
 projects[views][version] = 1.2
 projects[views][version] = 3.8
 projects[views_bulk_operations][version] = 3.2
-projects[webform][version] = 4.0
+projects[webform][version] = 4.1
+
