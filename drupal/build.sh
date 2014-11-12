@@ -82,7 +82,7 @@ class Maker:
 		self.temp_build_dir = os.path.abspath(settings['temporary'])
 		self.final_build_dir = os.path.abspath(settings['final'])
 		self.old_build_dir = os.path.abspath(settings.get('previous', 'previous'))
-		self.makefile = os.path.abspath(settings.get('makefile', 'conf/site.make'))
+		self.makefile = os.path.abspath(settings.get('makefile', 'conf/hslfi.make'))
 		self.profile_name = settings.get('profile', 'standard')
 		self.site_name = settings.get('site', 'A drupal site')
 		self.settings = settings
@@ -419,7 +419,10 @@ def main(argv):
 		try:
 			site = args[1]
 		except IndexError:
-			site = 'default'
+			if 'WKV_SITE_ENV' in os.environ:
+				site = os.environ['WKV_SITE_ENV']
+			else:
+				site = 'default'
 
 		sites = []
 		sites.append(site)
@@ -429,6 +432,21 @@ def main(argv):
 			# Copy defaults.
 			site_settings = settings["default"].copy()
 
+			if not site in settings:
+				new_site = False
+				for site_name in settings:
+					if 'aliases' in settings[site_name]:
+						if isinstance(settings[site_name]['aliases'], basestring):
+							site_aliases = [ settings[site_name]['aliases'] ]
+						else:
+							site_aliases = settings[site_name]['aliases']
+						if site in site_aliases:
+							new_site = site_name
+							break
+				if not new_site:
+					raise BuildError("The site " + site + " is not defined")
+				site = new_site
+
 			# If not the default site, update it with defaults.
 			if site != "default":
 				site_settings.update(settings[site])
@@ -436,6 +454,8 @@ def main(argv):
 			# Create the site maker based on the settings
 			maker = Maker(site_settings)
 			settings['commands']['test'] = {"test": "test"}
+
+			maker.notice("Using configuration " + site)
 
 			if do_build:
 				# Execute the command(s).
