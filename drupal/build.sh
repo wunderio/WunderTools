@@ -14,7 +14,7 @@ import stat
 import re
 
 # Build scripts version string.
-build_sh_version_string = "build.sh 0.3"
+build_sh_version_string = "build.sh 0.4"
 
 # Sitt.make item (either a project/library from the site.make)
 class MakeItem:
@@ -124,7 +124,6 @@ class Maker:
 		self.notice("Building")
 		if not self._drush(self._collect_make_args()):
 			raise BuildError("Make failed - check your makefile")
-		print "done"
 		f = open(self.temp_build_dir + "/buildhash", "w")
 		f.write(self.makefile_hash)
 		f.close()
@@ -139,10 +138,12 @@ class Maker:
 		return os.path.isdir(self.final_build_dir)
 
     # Backup current final build
-	def backup(self):
+	def backup(self, params):
+		if not params:
+			params = {}
 		self.notice("Backing up current build")
 		if self.hasExistingBuild():
-			self._backup()
+			self._backup(params)
 
 	def cleanup(self):
 		import time
@@ -235,7 +236,7 @@ class Maker:
 		if step == 'make':
 			self.make()
 		elif step == 'backup':
-			self.backup()
+			self.backup(command)
 		elif step == 'purge':
 			self.purge()
 		elif step == 'finalize':
@@ -302,23 +303,38 @@ class Maker:
 			os.mkdir(self.old_build_dir)
 
 	# Backup existing final build
-	def _backup(self):
-		if self._drush([
-			"--root=" + format(self.final_build_dir),
-			'sql-dump',
-			'--result-file=' + self.final_build_dir + '/db.sql'
-		], True):
-			self.notice("Database dump taken")
+	def _backup(self, params):
+
+		if 'skip-database' in params:
+			self.notice("Database dump skipped as requested")
 		else:
-			self.warning("No database dump taken")
+			if self._drush([
+				"--root=" + format(self.final_build_dir),
+				'sql-dump',
+				'--result-file=' + self.final_build_dir + '/db.sql'
+			], True):
+				self.notice("Database dump taken")
+			else:
+				self.warning("No database dump taken")
 
 		name = datetime.datetime.now()
 		name = name.isoformat()
-		
+
+		from collections import defaultdict
+
+		to_ignore = defaultdict(set)
+
+		if 'ignore' in params:
+			for path in params['ignore']:
+				dirname, filename = os.path.split(path)
+				to_ignore[self.final_build_dir + "/" + dirname].add(filename)
+	
 		# Restore write rights to sites/default folder:
 		mode = os.stat(self.final_build_dir + "/sites/default").st_mode
 		os.chmod(self.final_build_dir + "/sites/default", mode|stat.S_IWRITE)
-		shutil.copytree(self.final_build_dir, self.old_build_dir + "/" + name)
+		shutil.copytree(self.final_build_dir, self.old_build_dir + "/" + name,
+			ignore=lambda path, files: to_ignore[path])
+
 
 	# Wipe existing final build
 	def _wipe(self):
@@ -400,6 +416,7 @@ def main(argv):
 			config_file = arg
 		elif opt in ("-v", "--version"):
 			version()
+			return 
 
 	try:
 
@@ -423,6 +440,9 @@ def main(argv):
 				site = os.environ['WKV_SITE_ENV']
 			else:
 				site = 'default'
+
+		# ToDo: Ask for verification when running build new on prod
+		# ToDo: Ask for verification when running build without WKV_SITE_ENV or specified site
 
 		sites = []
 		sites.append(site)
