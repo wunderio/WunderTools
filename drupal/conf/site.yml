@@ -3,6 +3,8 @@
 # Default environment is Vagrant:
 default:
 
+  aliases: vagrant
+
   makefile: conf/site.make
   temporary: _build
   final: current
@@ -15,6 +17,7 @@ default:
     - files: sites/default/files
     - code/modules/custom: sites/all/modules/custom
     - code/modules/features: sites/all/modules/features
+    - code/modules/drupal.org: sites/all/modules/drupal.org
     - code/themes/custom: sites/all/themes/custom
     - code/profiles/wk: profiles/wk
     - conf/vagrant.settings.php: sites/default/settings.php
@@ -49,6 +52,8 @@ test:
 # Production environment:
 production:
   
+  aliases: prod
+
   # Prod environment only symlinks files
   link:
     - files: sites/default/files
