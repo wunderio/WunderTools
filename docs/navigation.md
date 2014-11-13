@@ -3,4 +3,5 @@
 [Theme](theme.md)
 [Features](features.md)
 [Views](views.md)
+[Integrations](integrations.md)
 [Hacks](hacks.md)

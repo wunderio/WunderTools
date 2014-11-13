@@ -103,6 +103,11 @@ varnish_backends:
     port: 8080
 ssl_ip_fix: false
 
+#Docs
+docs:
+  hostname : 'docs.local.ansibleref.com'
+  dir : '/vagrant/docs'
+  
 # Nginx
 worker_processes: '1'
 nginx_sites:
@@ -122,13 +127,13 @@ nginx_sites:
     nocdnhostname: 'www.wunder.io'
     redirect: false
     redirecthost: 'https://www.wunder.io'
-  - hostname: 'docs.local.ansibleref.com'
+  - hostname: "{{ docs.hostname }}"
     port: '8080'
-    docroot: '/vagrant/docs'
+    docroot: "{{ docs.dir }}"
     accesslog: true
     accesslog_params: 'main buffer=32k'
     errorlog: true
-    logprefix: 'docs.local.ansibleref.com'
+    logprefix: "{{ docs.hostname }}"
     ssl: false
     sslproxy: false
     ssl_certificate: default.crt

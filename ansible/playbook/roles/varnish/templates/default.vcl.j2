@@ -178,7 +178,7 @@ inet_pton(AF_INET, xff_ip, client_ip_ia);
   unset req.http.Accept-Language;
   unset req.http.user-agent;
 
-  if (req.http.host == "docs.local.ansibleref.com") {
+  if (req.http.host == "{{ docs.hostname }}") {
     return (pass);
   }
 
