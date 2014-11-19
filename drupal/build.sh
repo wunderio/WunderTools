@@ -14,7 +14,7 @@ import stat
 import re
 
 # Build scripts version string.
-build_sh_version_string = "build.sh 0.4"
+build_sh_version_string = "build.sh 0.6"
 
 # Sitt.make item (either a project/library from the site.make)
 class MakeItem:
@@ -87,6 +87,7 @@ class Maker:
 		self.site_name = settings.get('site', 'A drupal site')
 		self.settings = settings
 		self.store_old_buids = True
+		self.linked = False
 		self.makefile_hash = hashlib.md5(self.makefile).hexdigest()
 
 	def test(self):
@@ -129,15 +130,13 @@ class Maker:
 		f.close()
 		# Remove default.settings.php
 		os.remove(self.temp_build_dir + "/sites/default/default.settings.php")
-		# Link and copy required files
-		self._link()
-		self._copy()
+
 
 	# Existing final build?
 	def hasExistingBuild(self):
 		return os.path.isdir(self.final_build_dir)
 
-    # Backup current final build
+	# Backup current final build
 	def backup(self, params):
 		if not params:
 			params = {}
@@ -151,21 +150,33 @@ class Maker:
 		for f in os.listdir(self.old_build_dir):
 			fullpath = os.path.join(self.old_build_dir, f)
 			if os.stat(fullpath).st_mtime < compare:
-		  		if os.path.isdir(fullpath):
-		  			self.notice("Removing old build " + f)
-		   			shutil.rmtree(fullpath)
+				if os.path.isdir(fullpath):
+					self.notice("Removing old build " + f)
+					shutil.rmtree(fullpath)
 
-    # Purge current final build
+	# Purge current final build
 	def purge(self):
 		self.notice("Purging current build")
 		if self.hasExistingBuild():
 			self._wipe()
 
+	# Link
+	def link(self):
+		# Link and copy required files
+		self._link()
+		self._copy()
+		self.linked = True	
+
 	# Finalize new build to be the final build
 	def finalize(self):
 		self.notice("Finalizing new build")
 		if os.path.isdir(self.final_build_dir):
+			self._ensure_writable(self.final_build_dir)
 			shutil.rmtree(self.final_build_dir)
+
+		# Make sure linking has happened
+		if not self.linked:
+			self.link()
 		os.rename(self.temp_build_dir, self.final_build_dir)
 
 	# Print notice
@@ -180,7 +191,7 @@ class Maker:
 	def warning(self, *args):
 		print "\033[93m** BUILD WARNING: \033[0m" + ' '.join(str(a) for a in args)
 
-    # Run install
+	# Run install
 	def install(self):
 		if not self._drush([
 			"--root=" + format(self.final_build_dir),
@@ -194,7 +205,7 @@ class Maker:
 		]):
 			raise BuildError("Install failed.");
 
-    # Update existing final build
+	# Update existing final build
 	def update(self):
 		if self._drush([
 			"--root=" + format(self.final_build_dir),
@@ -222,7 +233,7 @@ class Maker:
 		files = command.split(">")
 		if len(files) > 1:
 			with open(files[1].strip(), "a") as target:
-			    target.write(open(files[0].strip(), "rb").read())
+				target.write(open(files[0].strip(), "rb").read())
 		else:
 			raise BuildError("Append commands syntax is: source > target")
 
@@ -251,6 +262,8 @@ class Maker:
 			self.append(command)
 		elif step == 'shell':
 			self.shell(command)
+		elif step == 'link':
+			self.link()
 		elif step == 'test':
 			self.test()
 		else:
@@ -261,7 +274,7 @@ class Maker:
 	def _collect_make_args(self): 
 		return [
 			"--strict=0",
-			"--concurrency=20"
+			"--concurrency=20",
 			"-y",
 			"make",
 			self.makefile,
@@ -269,16 +282,22 @@ class Maker:
 		]
 
 
-    # Handle link
+	# Handle link
 	def _link(self):
 		if not "link" in self.settings:
 			return
 		for tuple in self.settings['link']:
 			source, target = tuple.popitem()
 			target = self.temp_build_dir + "/" + target
-			self._link_files(source, target)
+			if source.endswith('*'):
+				path = source[:-1]
+				paths = [path + name for name in os.listdir(path) if os.path.isdir(path + name)]
+				for source in paths:
+					self._link_files(source, target + "/" + os.path.basename(source))
+			else:
+				self._link_files(source, target)
 
-    # Handle copy
+	# Handle copy
 	def _copy(self):
 		if not "copy" in self.settings:
 			return
@@ -328,10 +347,11 @@ class Maker:
 			for path in params['ignore']:
 				dirname, filename = os.path.split(path)
 				to_ignore[self.final_build_dir + "/" + dirname].add(filename)
-	
+
 		# Restore write rights to sites/default folder:
 		mode = os.stat(self.final_build_dir + "/sites/default").st_mode
 		os.chmod(self.final_build_dir + "/sites/default", mode|stat.S_IWRITE)
+		
 		shutil.copytree(self.final_build_dir, self.old_build_dir + "/" + name,
 			ignore=lambda path, files: to_ignore[path])
 
@@ -346,7 +366,20 @@ class Maker:
 			self.notice("Tables dropped")
 		else:
 			self.notice("No tables dropped")
+		self._ensure_writable(self.final_build_dir)
 		shutil.rmtree(self.final_build_dir)
+
+	# Ensure we have write access to the given dir
+	def _ensure_writable(self, path): 
+		for root, dirs, files in os.walk(path):  
+			for momo in dirs:  
+				file = os.path.join(root, momo)
+				mode = os.stat(file).st_mode
+				os.chmod(file, mode|stat.S_IWRITE)
+			for momo in files:
+				file = os.path.join(root, momo)
+				mode = os.stat(file).st_mode
+				os.chmod(file, mode|stat.S_IWRITE)
 
 	def _ensure_container(self, filepath):
 		# Ensure target directory exists
