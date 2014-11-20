@@ -212,7 +212,7 @@ class Maker:
 			'updatedb',
 			'--y',
 			self.final_build_dir + '/db.sql'
-		], True):
+		]):
 			self.notice("Update process completed")
 		else:
 			self.warning("Unable to update")
