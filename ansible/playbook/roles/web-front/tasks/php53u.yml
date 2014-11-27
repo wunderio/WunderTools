@@ -1,5 +1,14 @@
 ---
 # file: roles/web-front/tasks/php53u.yml
+  - name: Install ius archive repository
+    shell: rpm -Uhv http://dl.iuscommunity.org/pub/ius/archive/CentOS/6/x86_64/ius-release-1.0-11.ius.centos6.noarch.rpm
+      creates=/etc/yum.repos.d/ius-archive.repo
+
+  - name: Enable ius archive repository
+    ini_file: dest=/etc/yum.repos.d/ius-archive.repo
+              section=ius-archive
+              option=enabled
+              value=1
 
 # Install all php packages
   - name: Install php-fpm
