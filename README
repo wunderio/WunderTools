@@ -1,6 +1,18 @@
 Project reference setup with ansible & vagrant
 
 -------------------------------------------------------------------------------
+Setup
+
+You can setup the IP address and the url of your vagrant machine on the 
+Vagrantfile.
+
+Edit the variables.yml file to setup the URL and dir for the docs of your project.
+
+Remember to add also the entries in your hosts file for both the drupal install and
+the docs.
+
+
+-------------------------------------------------------------------------------
 Requirements
 	- Vagrant 1.5.x
 	- https://github.com/fgrehm/vagrant-cachier
@@ -36,6 +48,7 @@ Drush is usable without ssh access with the drush.sh script e.g:
 To open up ssh access to the virtual machine:
 
 	$ vagrant ssh
+	
 
 -------------------------------------------------------------------------------
 Useful things
@@ -57,8 +70,15 @@ MailCatcher responds in
 	http://x.x.x.x:1080
 
 Docs are in
-  http://x.x.x.x:8080/
-
+        http://x.x.x.x:8080/index.html
+        You can setup the dir where the docs are taken from and their URL from the
+        variables.yml file.
+        
+        #Docs
+        docs:
+          hostname : 'docs.local.ansibleref.com'
+          dir : '/vagrant/docs'
+        
 -------------------------------------------------------------------------------
 Vagrant + Ansible configuration
 
