@@ -45,7 +45,7 @@
   gem: name="i18n" state=present user_install=no version=0.6.9
 
 - name: MAILCATCHER | Install mailcatcher gem
-  gem: name="mailcatcher" state=latest user_install=no
+  gem: name="mailcatcher" state=present user_install=no version=0.5.12
 
 - name: MAILCATCHER | Kill mailcatcher if it's running
   command: pkill mailcatcher
