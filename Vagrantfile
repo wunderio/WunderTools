@@ -4,7 +4,7 @@ INSTANCE_NAME     = "ansibleref"
 INSTANCE_HOSTNAME = "local.ansibleref.com"
 INSTANCE_MEM      = "4000" 
 INSTANCE_CPUS     = "2"
-INSTANCE_IP       = "192.168.10.165"
+INSTANCE_IP       = "192.168.103.165"
 ANSIBLE_INVENTORY = "ansible/inventory"
 
 dir = File.dirname(__FILE__) + '/'
@@ -27,7 +27,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	########################################
 
 	config.vm.hostname = INSTANCE_HOSTNAME
-	config.vm.box      = "centos-6.5-x86_64-v0"
+	config.vm.box      = "centos-6.6-x86_64-v0"
 
 	config.vm.network :private_network, ip: INSTANCE_IP
 
@@ -49,7 +49,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	########################################
 
 	config.vm.provider "virtualbox" do |v, override|
-		override.vm.box_url = "https://www.dropbox.com/s/wa0vs54lgngfcrx/vb-centos-6.5-x86_64-v0.box?dl=1"
+		override.vm.box_url = "https://www.dropbox.com/s/mo7tjw15z5ep6p6/vb-centos-6.6-x86_64-v0.box?dl=1"
 	end
 
 	config.vm.provider :virtualbox do |vb|
@@ -62,7 +62,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	########################################
 
 	config.vm.provider "vmware_fusion" do |v, override|
-		override.vm.box_url = "https://www.dropbox.com/s/0vcowil5b6nrvam/vm-centos-6.5-x86_64-v0.box?dl=1"
+		override.vm.box_url = "https://www.dropbox.com/s/tcp23ka9hlhhsel/vm-centos-6.6-x86_64-v0.box?dl=1"
 	end
 
 	config.vm.provider "vmware_fusion" do |vb|
