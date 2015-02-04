@@ -2,8 +2,6 @@
 ---
 # file: roles/web-front/defaults/main.yml
 
-# file: roles/web-front/defaults/main.yml
-
 # Databases
 databases: 
   drupal:
