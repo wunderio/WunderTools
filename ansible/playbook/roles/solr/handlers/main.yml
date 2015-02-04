@@ -1,10 +1,10 @@
 ---
-# Handlers for tomcat6
-- name: start tomcat6
-  service: name=tomcat6 state=running
 
-- name: restart tomcat6
-  service: name=tomcat6 state=restarted
+- name: start solr
+  service: name=solr state=running
 
-- name: reload tomcat6
-  service: name=tomcat6 state=reloaded
+- name: restart solr
+  service: name=solr state=restarted
+
+- name: reload solr
+  service: name=solr state=reloaded
