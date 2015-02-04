@@ -1,7 +1,9 @@
 
 
-solr_user: tomcat
-solr_group: tomcat
+solr_path: /usr/local/share/solr
+solr_log_path: /var/log/solr
+solr_user: solr
+solr_group: solr
 
 cache_path: /tmp/vagrant-cache
 

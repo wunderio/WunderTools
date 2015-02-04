@@ -4,7 +4,7 @@ INSTANCE_NAME     = "ansibleref"
 INSTANCE_HOSTNAME = "local.ansibleref.com"
 INSTANCE_MEM      = "4000" 
 INSTANCE_CPUS     = "2"
-INSTANCE_IP       = "192.168.103.165"
+INSTANCE_IP       = "192.168.10.165"
 ANSIBLE_INVENTORY = "ansible/inventory"
 
 dir = File.dirname(__FILE__) + '/'

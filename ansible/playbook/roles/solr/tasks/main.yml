@@ -1,45 +1,43 @@
 
-- name: Install tomcat6
-  yum: name={{ item }} state=installed
-  with_items:
-   - java-1.6.0-openjdk
-   - tomcat6
-   - tomcat6-admin-webapps
+  - name: Install JRE
+    yum: pkg=jre state=installed
 
-- name: Make sure {{ cache_path }} exists
-  action: file path={{ cache_path }} state=directory
+  - name: Make sure {{ cache_path }} exists
+    action: file path={{ cache_path }} state=directory
 
-- name: Downloading Solr
-  shell: curl --retry 5 -s -o "{{ cache_path }}/solr-{{ solr_version }}.tgz" "{{ solr_url }}{{ solr_version }}/solr-{{ solr_version }}.tgz"
-    creates="{{ cache_path }}/solr-{{ solr_version }}.tgz"
+  - name: Download solr
+    shell: curl --retry 5 -s -o "{{ cache_path }}/solr-{{ solr_version }}.tgz" "{{ solr_url }}{{ solr_version }}/solr-{{ solr_version }}.tgz"
+      creates="{{ cache_path }}/solr-{{ solr_version }}.tgz"
 
-- name: Unpack Solr
-  shell: tar xfz "{{ cache_path }}/solr-{{ solr_version }}.tgz" -C /root
-    creates=/root/solr-{{ solr_version }}
+  - name: Create group for solr
+    group: name=solr    
 
-- name: Copy server.xml
-  copy: src=server.xml dest=/etc/tomcat6/server.xml owner={{ solr_user }} group={{ solr_group }} mode=644
+  - name: Create user for solr
+    user: name=solr
+          home={{ solr_path }}
+          group=solr
 
-- name: Setup war
-  shell: creates=/var/lib/tomcat6/webapps/solr.war chdir=/root/solr-{{ solr_version }} service tomcat6 stop && sleep 10 && cp dist/solr-{{ solr_version }}.war /var/lib/tomcat6/webapps/solr.war && service tomcat6 start && sleep 10
+  - name: Ensure solr dir exists
+    action: file path={{ solr_path }} state=directory owner={{ solr_user }} group={{ solr_group }} mode=0755
 
-- name: Copy libraries
-  shell: creates=/usr/share/tomcat6/lib/jcl-over-slf4j-1.6.6.jar chdir=/root/solr-{{ solr_version }} cp -r example/lib/ext/* /usr/share/tomcat6/lib/
+  - name: Ensure log dir exists
+    action: file path={{ solr_log_path }} state=directory owner={{ solr_user }} group={{ solr_group }}
 
-- name: Copy configurations
-  shell: creates=/var/lib/tomcat6/solr chdir=/root/solr-{{ solr_version }} cp -r example/solr /var/lib/tomcat6/solr
+  - name: Unpack solr
+    shell: tar xfz "{{ cache_path }}/solr-{{ solr_version }}.tgz" -C {{ solr_path }} --strip-components 1
+      creates="{{ solr_path }}/example"
 
-- name: Copy solr.xml
-  copy: src=solr.xml dest=/etc/tomcat6/Catalina/localhost/solr.xml owner={{ solr_user }} group={{ solr_group }} mode=644
+  - name: Chown solr installation
+    shell: chown -R {{ solr_user }}:{{ solr_group }} {{ solr_path }}
 
-- name: Copy web.xml
-  copy: src=web.xml dest=/var/lib/tomcat6/webapps/solr/WEB-INF/web.xml owner={{ solr_user }} group={{ solr_group }} mode=644
+  - name: Create collection for Drupal
+    shell: cp -r {{ solr_path }}/example {{ solr_path }}/drupal
+      creates="{{ solr_path }}/drupal"
 
-- name: Chown tomcat6 lib directory
-  shell: chown -R tomcat:tomcat /var/lib/tomcat6
-  notify:
-    - restart tomcat6
+  - name: Solr init.d file
+    copy: src=solr_init dest=/etc/init.d/solr mode=0755
 
-- name: Ensure tomcat6 and solr are running
-  service: name=tomcat6 state=started enabled=yes
-
+  - name: Solr sysconfig file
+    template: src=solr_sysconfig.j2 dest=/etc/sysconfig/solr
+    notify:
+      - restart solr
