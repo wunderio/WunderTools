@@ -27,12 +27,12 @@
     shell: tar xfz "{{ cache_path }}/solr-{{ solr_version }}.tgz" -C {{ solr_path }} --strip-components 1
       creates="{{ solr_path }}/example"
 
-  - name: Chown solr installation
-    shell: chown -R {{ solr_user }}:{{ solr_group }} {{ solr_path }}
-
   - name: Create collection for Drupal
     shell: cp -r {{ solr_path }}/example {{ solr_path }}/drupal
       creates="{{ solr_path }}/drupal"
+
+  - name: Chown solr installation
+    shell: chown -R {{ solr_user }}:{{ solr_group }} {{ solr_path }}
 
   - name: Solr init.d file
     copy: src=solr_init dest=/etc/init.d/solr mode=0755
