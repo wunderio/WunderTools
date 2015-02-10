@@ -17,10 +17,12 @@ function parse_yaml {
 }
 
 eval $(parse_yaml conf/ansible.yml "ANSIBLE_")
-git subtree add --prefix ansible/playbook $ANSIBLE_remote $ANSIBLE_branch --squash
-if [ -n "$ANSIBLE_revision" ]; then
-  cd ansible/playbook
-  git reset --hard $ANSIBLE_revision
+if [ ! -d "ansible/playbook" ]; then
+  git clone  -b $ANSIBLE_branch $ANSIBLE_remote ansible/playbook 
+  if [ -n "$ANSIBLE_revision" ]; then
+    cd ansible/playbook
+    #git reset --hard $ANSIBLE_revision
+  fi
 fi
 
 
