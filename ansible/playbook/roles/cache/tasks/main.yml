@@ -1,9 +1,0 @@
----
-
-# Install memcached
-- name: install memcached
-  yum: pkg=memcached state=installed
-  tags: memcached
-
-- name: Ensure memcached is running now and on boot
-  service: name=memcached state=started enabled=yes

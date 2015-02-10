@@ -1,6 +1,0 @@
----
-# file: roles/common/handlers/main.yml
-- name: restart ntpd
-  service: name=ntpd state=restarted
-- name: restart rsyslog
-  service: name=rsyslog state=restarted
