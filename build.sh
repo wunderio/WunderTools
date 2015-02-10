@@ -26,8 +26,8 @@ if [ ! -d "ansible/playbook" ]; then
   fi
 fi
 if [ -n "$buildsh_revision" ]; then
-  curl -O drupal/build.sh https://raw.githubusercontent.com/tcmug/build.sh/$buildsh_revision/build.sh
+  curl -o drupal/build.sh https://raw.githubusercontent.com/tcmug/build.sh/$buildsh_revision/build.sh
 else
-  curl -O drupal/build.sh https://raw.githubusercontent.com/tcmug/build.sh/$buildsh_branch/build.sh
+  curl -o drupal/build.sh https://raw.githubusercontent.com/tcmug/build.sh/$buildsh_branch/build.sh
 fi
 
