@@ -1,10 +1,14 @@
+require 'yaml'
 
-# Only change these if possible:
-INSTANCE_NAME     = "ansibleref"
-INSTANCE_HOSTNAME = "local.ansibleref.com"
-INSTANCE_MEM      = "4000" 
-INSTANCE_CPUS     = "2"
-INSTANCE_IP       = "192.168.10.165"
+# local variables
+settings = YAML.load_file 'conf/vagrant_local.yml'
+
+INSTANCE_NAME     = settings['name']
+INSTANCE_HOSTNAME = settings['hostname']
+INSTANCE_MEM      = settings['mem']
+INSTANCE_CPUS     = settings['cpus']
+INSTANCE_IP       = settings['ip']
+INSTANCE_BOX      = settings['box']
 ANSIBLE_INVENTORY = "ansible/inventory"
 
 dir = File.dirname(__FILE__) + '/'
@@ -14,7 +18,7 @@ FileUtils.mkdir_p dir + ANSIBLE_INVENTORY
 File.open(dir + ANSIBLE_INVENTORY + "/hosts", 'w') { |file| file.write("[vagrant]\n" + INSTANCE_IP) }
 # Link the ansible playbook
 unless File.exist?(dir + "ansible/playbook/vagrant.yml")
-	FileUtils.ln_s "../vagrant.yml", dir + "ansible/playbook/vagrant.yml"
+	FileUtils.ln_s "../../conf/vagrant.yml", dir + "ansible/playbook/vagrant.yml"
 end
 
 # And never anything below this line
@@ -78,7 +82,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.vm.provision "ansible" do |ansible|
 		#ansible.verbose        = "v"
 		ansible.inventory_path = ANSIBLE_INVENTORY
-		ansible.extra_vars     = "ansible/variables.yml"
+		ansible.extra_vars     = "conf/variables.yml"
 		ansible.playbook       = "ansible/playbook/vagrant.yml"
 		ansible.limit          = "all"
 	end
