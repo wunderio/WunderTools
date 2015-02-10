@@ -16,13 +16,18 @@ function parse_yaml {
    }'
 }
 
-eval $(parse_yaml conf/ansible.yml "ANSIBLE_")
+echo "Building"
+eval $(parse_yaml conf/project.yml)
 if [ ! -d "ansible/playbook" ]; then
-  git clone  -b $ANSIBLE_branch $ANSIBLE_remote ansible/playbook 
-  if [ -n "$ANSIBLE_revision" ]; then
+  git clone  -b $ansible_branch $ansible_remote ansible/playbook 
+  if [ -n "$ansible_revision" ]; then
     cd ansible/playbook
     #git reset --hard $ANSIBLE_revision
   fi
 fi
-
+if [ -n "$buildsh_revision" ]; then
+  curl -O drupal/build.sh https://raw.githubusercontent.com/tcmug/build.sh/$buildsh_revision/build.sh
+else
+  curl -O drupal/build.sh https://raw.githubusercontent.com/tcmug/build.sh/$buildsh_branch/build.sh
+fi
 
