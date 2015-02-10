@@ -1,5 +1,9 @@
 #!/usr/bin/env python
+# *****************************************************************************
 # build.sh by the Wunderful People at Wunderkraut
+#
+# https://github.com/tcmug/build.sh
+# *****************************************************************************
 
 import getopt
 import sys
@@ -14,7 +18,7 @@ import stat
 import re
 
 # Build scripts version string.
-build_sh_version_string = "build.sh 0.6"
+build_sh_version_string = "build.sh 0.7"
 
 # Sitt.make item (either a project/library from the site.make)
 class MakeItem:
@@ -90,8 +94,32 @@ class Maker:
 		self.linked = False
 		self.makefile_hash = hashlib.md5(self.makefile).hexdigest()
 
+		# See if drush is installed
+		if not self._which('drush'):
+			raise BuildError('Drush missing!?')
+
 	def test(self):
 		self._validate_makefile()
+
+	# Check if given program exists 
+	# http://stackoverflow.com/questions/377017/test-if-executable-exists-in-python
+	def _which(self, program):
+		import os
+		def is_exe(fpath):
+			return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+
+		fpath, fname = os.path.split(program)
+		if fpath:
+			if is_exe(program):
+				return program
+		else:
+			for path in os.environ["PATH"].split(os.pathsep):
+				path = path.strip('"')
+				exe_file = os.path.join(path, program)
+				if is_exe(exe_file):
+					return exe_file
+
+		return None
 
 	# Quickly validate the drush make file
 	def _validate_makefile(self):
@@ -210,24 +238,31 @@ class Maker:
 		if self._drush([
 			"--root=" + format(self.final_build_dir),
 			'updatedb',
-			'--y',
-			self.final_build_dir + '/db.sql'
+			'--y'
 		]):
 			self.notice("Update process completed")
 		else:
 			self.warning("Unable to update")
 
+	# Ask user for verification
+	def verify(self, text):
+		if text:
+			response = raw_input(text)
+		else:
+			response = raw_input("Type yes to verify that you know what you are doing: ")
+		if response.lower() != "yes":
+			raise BuildError("Cancelled by user")
 
 	# Execute a shell command
 	def shell(self, command): 
 		if isinstance(command, list):
 			for step in command:
-				value = subprocess.call(shlex.split(step)) == 0
+				value = os.system(command) == 0
 				if not value:
 					return False
 			return True
 		else:
-			return subprocess.call(shlex.split(command)) == 0
+			return os.system(command) == 0
 
 	def append(self, command):
 		files = command.split(">")
@@ -260,6 +295,8 @@ class Maker:
 			self.cleanup()
 		elif step == 'append':
 			self.append(command)
+		elif step == 'verify':
+			self.verify(command)
 		elif step == 'shell':
 			self.shell(command)
 		elif step == 'link':
