@@ -24,7 +24,7 @@ if [[ $1 == 'up' || $1 == 'provision' ]]; then
     git clone  -b $ansible_branch $ansible_remote ansible/playbook 
     if [ -n "$ansible_revision" ]; then
       cd ansible/playbook
-      #git reset --hard $ANSIBLE_revision
+      git reset --hard $ANSIBLE_revision
       cd $path
     fi
   else
