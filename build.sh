@@ -20,16 +20,16 @@ if [[ $1 == 'up' || $1 == 'provision' ]]; then
   path="`pwd`"
 
   eval $(parse_yaml conf/project.yml)
-  if [ ! -d "ansible/playbook" ]; then
-    git clone  -b $ansible_branch $ansible_remote ansible/playbook 
+  if [ ! -d "ansible" ]; then
+    git clone  -b $ansible_branch $ansible_remote ansible
     if [ -n "$ansible_revision" ]; then
-      cd ansible/playbook
+      cd ansible
       git reset --hard $ANSIBLE_revision
       cd $path
     fi
   else
     if [ -z "$ansible_revision" ]; then
-      cd ansible/playbook
+      cd ansible
       git pull
       cd $path
     fi
