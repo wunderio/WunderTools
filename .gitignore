@@ -5,6 +5,5 @@ drupal/current
 drupal/builds
 drupal/build.sh
 .idea
-ansible/inventory/hosts
-ansible/playbook
+ansible
 local.*
