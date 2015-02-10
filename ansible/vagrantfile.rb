@@ -1,7 +1,8 @@
 require 'yaml'
 
+dir = File.dirname(__FILE__) + '/../'
 # local variables
-settings = YAML.load_file 'conf/vagrant_local.yml'
+settings = YAML.load_file dir + 'conf/vagrant_local.yml'
 
 INSTANCE_NAME     = settings['name']
 INSTANCE_HOSTNAME = settings['hostname']
@@ -11,9 +12,8 @@ INSTANCE_IP       = settings['ip']
 INSTANCE_BOX      = settings['box']
 ANSIBLE_INVENTORY = "ansible/inventory"
 
-dir = File.dirname(__FILE__) + '/../'
 
-system(dir + "/build.sh")
+system(dir + "ansible/build.sh")
 # Write the inventory file for ansible
 FileUtils.mkdir_p dir + ANSIBLE_INVENTORY
 File.open(dir + ANSIBLE_INVENTORY + "/hosts", 'w') { |file| file.write("[vagrant]\n" + INSTANCE_IP) }
