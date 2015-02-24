@@ -9,7 +9,7 @@ default:
   temporary: _build
   final: current
   previous: builds
-  profile: wk 
+  profile: wk
   site: Wundersite
 
   # In development environments we want to use symlinks, note settings.php
@@ -20,6 +20,7 @@ default:
     - code/themes/custom: sites/all/themes/custom
     - code/profiles/wk: profiles/wk
     - conf/vagrant.settings.php: sites/default/settings.php
+    - conf/aliases.drushrc.php: sites/default/aliases.drushrc.php
 
 # Local environment:
 local:
@@ -32,6 +33,7 @@ local:
     - code/themes/custom: sites/all/themes/custom
     - code/profiles/wk: profiles/wk
     - conf/local.settings.php: sites/default/settings.php
+    - conf/aliases.drushrc.php: sites/default/aliases.drushrc.php
 
 # Test environment:
 test:
@@ -48,9 +50,10 @@ test:
     - code/profiles/wk: profiles/wk
     - conf/test.settings.php: sites/default/settings.php
 
+
 # Production environment:
 production:
-  
+
   aliases: prod
 
   # Prod environment only symlinks files
