@@ -3,6 +3,7 @@
 .vagrant
 drupal/current
 drupal/builds
+drupal/build.sh
 .idea
 ansible
 local.*
