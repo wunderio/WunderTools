@@ -1,6 +1,0 @@
----
-# file: roles/monitoring/handlers/main.yml
-- name: restart newrelic-sysmond
-  service: name=newrelic-sysmond state=restarted
-- name: restart sensu-client
-  service: name=sensu-client state=restarted

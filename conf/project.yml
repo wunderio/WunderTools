@@ -1,0 +1,7 @@
+ansible:
+  remote: git@gitlab.com:wunderkraut-finland/WunderMachina.git
+  branch: master 
+  revision: 
+buildsh:
+  branch: develop
+  revision:

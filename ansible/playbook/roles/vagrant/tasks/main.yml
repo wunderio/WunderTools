@@ -1,7 +1,0 @@
----
-# file: roles/vagrant/tasks/main.yml
-
-  - name: Vagrant | Add nginx user to the games group to prevent access problems to the drupal files directory.
-    user: name=nginx
-          state=present
-          groups="nginx,games"

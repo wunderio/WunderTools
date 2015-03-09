@@ -24,12 +24,13 @@ Introduction
 
 Start by running:
 	
-	$ ./build.sh new
+	$ vagrant up
 
 This will do the following:
 	
+  - clone the latest WunderMachina ansible/vagrant setup (or the version specified in conf/project.yml)
 	- Bring up & provision the virtual machine (if needed)
-	- Build the drupal site under drupal/current
+  - Build the drupal site under drupal/current (not yet actually)
 
 After finishing provisioning (first time is always slow) and building the site
 you need to install the Drupal site in http://x.x.x.x:8080/install.php
@@ -90,11 +91,20 @@ Variable overrides are defined in ansible/variables.yml.
 
 You should only bother with the following:
 
+  Vagrant box setup
+    conf/vagrant.yml
+
 	What components do you want to install?
-		ansible/vagrant.yml
+		conf/vagrant.yml
 
 	And how are those set up?
-		ansible/variables.yml
+		conf/variables.yml
+
+You can also fix your vagrant/ansible base setup to certain branch/revision
+    conf/project.yml
+  There you can also do the same for build.sh
+
+
 
 -------------------------------------------------------------------------------
 Debugging tools
@@ -122,29 +132,4 @@ Example sublime text project configuration (via Project->Edit Project):
 		}
 	}
 }
-
-
--------------------------------------------------------------------------------
-Ansible configuration as a git subtree
-
-The directory ansible/playbook contains the ansible configuration as a git 
-subtree. These commands are here provided not because you need to run them (you
-very rarely have to) but for a reference only.
-
-Adding:
-
-	$ git subtree add --prefix ansible/playbook <url> master --squash
-
-Pulling:
-
-	$ git subtree pull --prefix ansible/playbook <url> master --squash
-
-Pushing:
-
-	$ git subtree push --prefix ansible/playbook <url> master --squash
-
-Committing (as usual):
-
-	$ git commit -m "message"
-
 

@@ -1,5 +1,0 @@
-[wk]
-name=WK internal repo
-baseurl=http://wkrepo:xeehae9eeX@repo.wunder.io/CentOS/6/x86_64
-enabled=1
-gpgcheck=0
