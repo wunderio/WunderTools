@@ -8,7 +8,7 @@ $path[] = '.vagrant';
 $path = implode('/', $path);
 $key = shell_exec('find ' . $path . ' -iname private_key');
 if (!$key) {
-  $key = '~/.vagrant.d/insecure_private_key';
+  $key = '$HOME/.vagrant.d/insecure_private_key';
 }
 $key = rtrim($key);
 
