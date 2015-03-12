@@ -15,7 +15,7 @@ drush: {
 }
 
 # PHP
-php_package: php53u
+php_package: php55u
 
 # Sections APC and suhosin are only for php53u
 # OPCACHE is for php55u, PHP section is shared
@@ -55,36 +55,36 @@ php:
    options:
     - key: date.timezone
       val: Europe/Helsinki
- - section: APC
-   options: 
-    - key: apc.shm_size
-      val: 256M
-    - key: apc.ttl
-      val: 0
-    - key: apc.user_ttl
-      val: 7200
-    - key: apc.stat
-      val: 1
- - section: suhosin
-   options:
-     - key: suhosin.mail.protect
-       val: 2
-     - key: suhosin.filter.action
-       val: 402
-     - key: suhosin.log.syslog
-       val: S_ALL & ~S_SQL
-     - key: suhosin.post.max_vars
-       val: 1000
-     - key: suhosin.request.max_vars
-       val: 1000
-# - section: OPCACHE
-#   options:
-#    - key: opcache.memory
-#      val: 256
-#    - key: opcache.validate
-#      val: 1
-#    - key: opcache.revalidate_freq
+# - section: APC
+#   options: 
+#    - key: apc.shm_size
+#      val: 256M
+#    - key: apc.ttl
 #      val: 0
+#    - key: apc.user_ttl
+#      val: 7200
+#    - key: apc.stat
+#      val: 1
+# - section: suhosin
+#   options:
+#     - key: suhosin.mail.protect
+#       val: 2
+#     - key: suhosin.filter.action
+#       val: 402
+#     - key: suhosin.log.syslog
+#       val: S_ALL & ~S_SQL
+#     - key: suhosin.post.max_vars
+#       val: 1000
+#     - key: suhosin.request.max_vars
+#       val: 1000
+ - section: OPCACHE
+   options:
+    - key: opcache.memory
+      val: 256
+    - key: opcache.validate
+      val: 1
+    - key: opcache.revalidate_freq
+      val: 0
 
 # MariaDB
 mysql_root_password: 1asirjg9834t35t
