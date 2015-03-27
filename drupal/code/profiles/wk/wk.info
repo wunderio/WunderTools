@@ -19,7 +19,6 @@ dependencies[] = locale
 dependencies[] = menu
 dependencies[] = number
 dependencies[] = options
-dependencies[] = overlay
 dependencies[] = path
 dependencies[] = rdf
 dependencies[] = search
@@ -31,6 +30,7 @@ dependencies[] = toolbar
 ; Contrib
 
 dependencies[] = admin_views
+dependencies[] = coffee
 dependencies[] = devel
 dependencies[] = entity
 dependencies[] = entity_translation
