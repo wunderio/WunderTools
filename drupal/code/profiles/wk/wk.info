@@ -6,7 +6,6 @@ description = WK Site Profile
 
 dependencies[] = block
 dependencies[] = contextual
-dependencies[] = dblog
 dependencies[] = field_ui
 dependencies[] = file
 dependencies[] = help
