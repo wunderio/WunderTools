@@ -28,7 +28,6 @@ dependencies[] = toolbar
 
 dependencies[] = admin_views
 dependencies[] = coffee
-dependencies[] = devel
 dependencies[] = entity
 dependencies[] = entity_translation
 dependencies[] = memcache
