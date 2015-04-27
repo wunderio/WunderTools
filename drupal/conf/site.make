@@ -7,9 +7,6 @@ api = 2
 projects[drupal][type] = core
 projects[drupal][version] = 7.36
 
-; PATCH: user_save might on occasion delete images from users
-projects[drupal][patch][935592] = https://www.drupal.org/files/issues/935592-89.patch
-
 defaults[projects][subdir] = "contrib"
 
 ; Contrib
