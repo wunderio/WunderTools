@@ -27,3 +27,9 @@ projects[varnish][version] = 1.0-beta3
 projects[views][version] = 3.10
 projects[views_bulk_operations][version] = 3.2
 projects[webform][version] = 4.7
+
+projects[language_hierarchy][download][revision] = b7d59dd873f2159d38a258a60ff26fa900060be7
+projects[language_hierarchy][download][branch] = 7.x-1.x
+projects[language_hierarchy][patch][] = https://www.drupal.org/files/issues/entity-translation-hierarchy-submodule-not-compatible-with-entity-translation-7.x-1.0-beta4-2450929-4.patch
+projects[language_hierarchy][patch][] = https://www.drupal.org/files/issues/incompatibility-drupal-7.36-javascript-2474365-1.patch
+ 
