@@ -24,7 +24,7 @@ projects[rules][version] = 2.9
 projects[search_api][version] = 1.14
 projects[search_api_solr][version] = 1.6
 projects[varnish][version] = 1.0-beta3
-projects[views][version] = 3.10
+projects[views][version] = 3.11
 projects[views_bulk_operations][version] = 3.2
 projects[webform][version] = 4.7
 
