@@ -1,4 +1,7 @@
 Hacks
 =====
 
-Well, this is self explanatory and **very important**.
+This project required no special hacks.
+
+#Hack XXX
+**Except if they were.**
