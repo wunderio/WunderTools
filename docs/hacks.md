@@ -3,5 +3,5 @@ Hacks
 
 This project required no special hacks.
 
-#Hack XXX
-**Except if they were.**
+## Hack XXX
+**Except if did.**
