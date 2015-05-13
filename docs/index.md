@@ -1,18 +1,44 @@
-ANSIBLEREF DOCS
-===================
+[PROJECT] DOCS
+==============
 
-Writing good docs helps you and your colleagues to do a better job! 
-Plus, you'll be **loved** by the support team.
+This file contains the general documentation on the [project] project. It is
+intended for developers who are involved in the project, and to ease the
+handover of activities and support to colleagues.
 
-The index is a good place where to tell a little bit about the project:
+Our customer
+------------
 
-- tell something about the client
-- explain the main goal of the website
-- introduce the key contact persons to ask info from
-- write down where is the site hosted
+The client is [client]. They are [describe the client in 1-3 lines].
 
-#Our customer
-#Website's goal
-#Contacts
-#Hosting info
+Website's goal
+--------------
 
+The main objectives of the site are to [describe the main objectives].
+
+Project management
+------------------
+
+The project is managed using the following tools:
+
+* Git repo: [url1]
+* Ticket system: [url2]
+* Project documentation: [googledocsurls]
+
+Hosting info
+------------
+
+The following servers are used in this project:
+
+* Development [dev_url] user/password
+* Staging [sta_url]     user/passowrd
+* Live site [live_url]
+
+Terminology
+-----------
+
+Definitions of project specific terms and expressions.
+
+### Term 1
+
+If some terms have specific meaning within the project, please document them
+here.
