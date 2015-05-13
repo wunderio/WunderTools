@@ -1,19 +1,22 @@
-PROJECT] DOCS
-===================
+[PROJECT] DOCS
+==============
 
 This file contains the general documentation on the [project] project. It is
 intended for developers who are involved in the project, and to ease the
 handover of activities and support to colleagues.
 
-#Our customer
+Our customer
+------------
 
 The client is [client]. They are [describe the client in 1-3 lines].
 
-#Website's goal
+Website's goal
+--------------
 
 The main objectives of the site are to [describe the main objectives].
 
-#Project management
+Project management
+------------------
 
 The project is managed using the following tools:
 
@@ -21,7 +24,8 @@ The project is managed using the following tools:
 * Ticket system: [url2]
 * Project documentation: [googledocsurls]
 
-#Hosting info
+Hosting info
+------------
 
 The following servers are used in this project:
 
@@ -29,10 +33,12 @@ The following servers are used in this project:
 * Staging [sta_url]     user/passowrd
 * Live site [live_url]
 
-#Terminology
+Terminology
+-----------
 
 Definitions of project specific terms and expressions.
 
-##Term 1
+### Term 1
+
 If some terms have specific meaning within the project, please document them
 here.
