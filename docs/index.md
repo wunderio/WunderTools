@@ -27,11 +27,15 @@ The project is managed using the following tools:
 Hosting info
 ------------
 
-The following servers are used in this project:
+The following environments are used in this project:
 
-* Development [dev_url] user/password
-* Staging [sta_url]     user/passowrd
+* Development [dev_url]
+  - servers:
+* Staging [sta_url]
+  - servers:
 * Live site [live_url]
+  - servers:
+
 
 Terminology
 -----------
