@@ -1,5 +1,5 @@
 ansible:
-  remote: git@gitlab.com:wunderkraut-finland/WunderMachina.git
+  remote: git@github.com:wunderkraut/WunderMachina.git
   branch: master 
   revision: 
 buildsh:

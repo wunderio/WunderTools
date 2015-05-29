@@ -35,9 +35,9 @@ if [[ $1 == 'up' || $1 == 'provision' ]]; then
     fi
   fi
   if [ -n "$buildsh_revision" ]; then
-    curl -o drupal/build.sh https://raw.githubusercontent.com/tcmug/build.sh/$buildsh_revision/build.sh
+    curl -o drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_revision/build.sh
   else
-    curl -o drupal/build.sh https://raw.githubusercontent.com/tcmug/build.sh/$buildsh_branch/build.sh
+    curl -o drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_branch/build.sh
   fi
 fi
 
