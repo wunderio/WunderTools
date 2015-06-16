@@ -11,7 +11,7 @@ databases:
     pass: password
 
 drush: {
-  version: "6.*",
+  version: "dev-master",
 }
 
 # PHP
