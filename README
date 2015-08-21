@@ -1,7 +1,7 @@
-Project reference setup with ansible & vagrant
+#Project reference setup with ansible & vagrant
 
 -------------------------------------------------------------------------------
-Setup
+##Setup
 
 You can setup the IP address and the url of your vagrant machine on the 
 Vagrantfile.
@@ -20,7 +20,7 @@ Requirements
 	- Ansible in your host machine. For OS X:
 	 	 brew install ansible
 
-Introduction
+###Introduction
 
 Start by running:
 	
@@ -52,7 +52,7 @@ To open up ssh access to the virtual machine:
 	
 
 -------------------------------------------------------------------------------
-Useful things
+###Useful things
 
 At the moment IP is configured in 
 	Vagrantfile
@@ -67,8 +67,8 @@ Nginx responds in
 Solr responds in
 	http://x.x.x.x:8983/solr
 
-MailCatcher responds in
-	http://x.x.x.x:1080
+MailHog responds in
+	http://x.x.x.x:8025
 
 Docs are in
         http://x.x.x.x:8080/index.html
@@ -81,7 +81,7 @@ Docs are in
           dir : '/vagrant/docs'
         
 -------------------------------------------------------------------------------
-Vagrant + Ansible configuration
+## Vagrant + Ansible configuration
 
 Vagrant is using Ansible provision stored under the ansible subdirectory.
 The inventory file (which stores the hosts and their IP's) is located under 
@@ -107,7 +107,7 @@ You can also fix your vagrant/ansible base setup to certain branch/revision
 
 
 -------------------------------------------------------------------------------
-Debugging tools
+##Debugging tools
 
 XDebug tools are installed via the devtools role. Everything should work out 
 of the box for PHPStorm. PHP script e.g. drush debugging should also work.
