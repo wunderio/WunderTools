@@ -3,6 +3,7 @@
 .vagrant
 drupal/current
 drupal/builds
+drupal/.make_cache
 .idea
 ansible
 local.*
