@@ -5,7 +5,7 @@
 # file: roles/web-front/defaults/main.yml
 
 # Databases
-databases: 
+databases:
   drupal:
     user: drupal
     pass: password
@@ -24,7 +24,7 @@ php:
  - section: PHP
    options:
     - key: sendmail_path
-      val: /usr/bin/catchmail
+      val: "/usr/sbin/ssmtp -t"
     - key: memory_limit
       val: 512M
     - key: realpath_cache_size
@@ -56,7 +56,7 @@ php:
     - key: date.timezone
       val: Europe/Helsinki
 # - section: APC
-#   options: 
+#   options:
 #    - key: apc.shm_size
 #      val: 256M
 #    - key: apc.ttl
@@ -107,7 +107,7 @@ ssl_ip_fix: false
 docs:
   hostname : 'docs.local.ansibleref.com'
   dir : '/vagrant/docs'
-  
+
 # Nginx
 worker_processes: '1'
 nginx_sites:
