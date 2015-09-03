@@ -20,6 +20,7 @@ default:
     - code/themes/custom: sites/all/themes/custom
     - code/profiles/wk: profiles/wk
     - conf/vagrant.settings.php: sites/default/settings.php
+    - conf/vagrant.services.yml: sites/default/services.yml
     - conf/aliases.drushrc.php: sites/default/aliases.drushrc.php
 
 # Local environment:
