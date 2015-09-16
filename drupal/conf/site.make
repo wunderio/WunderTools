@@ -10,7 +10,7 @@ api = 2
 
 projects[drupal][download][type] = git
 projects[drupal][download][url] = http://git.drupal.org/project/drupal.git
-projects[drupal][download][branch] = 8.0.x
+projects[drupal][download][tag] = 8.0.0-beta15
 
 defaults[projects][subdir] = "contrib"
 
