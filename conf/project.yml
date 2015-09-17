@@ -3,5 +3,5 @@ ansible:
   branch: master 
   revision: 
 buildsh:
-  branch: develop
+  branch: d8
   revision:
