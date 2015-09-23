@@ -1,7 +1,12 @@
 <?php
-
-//FOR DRUPAL 7 ONLY!
+//FOR DRUPAL 8 ONLY!
 //FILE IS SUPPOSED TO BE IN DRUPAL ROOT DIRECTORY (NEXT TO INDEX.PHP)!!
+
+use Drupal\Core\Command\DbDumpApplication;
+use Drupal\Core\Database\Database;
+use Drupal\Core\DrupalKernel;
+use Drupal\Core\Site\Settings;
+use Symfony\Component\HttpFoundation\Request;
 
 // Register our shutdown function so that no other shutdown functions run before this one.
 // This shutdown function calls exit(), immediately short-circuiting any other shutdown functions,
@@ -20,17 +25,25 @@ if (extension_loaded('newrelic')) {
 
 header("HTTP/1.0 503 Service Unavailable");
 
-// Drupal bootstrap.
-define('DRUPAL_ROOT', getcwd());
-require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
-drupal_bootstrap(DRUPAL_BOOTSTRAP_DATABASE);
+// Bootstrap.
+$autoloader = require __DIR__ . '/autoload.php';
+require_once __DIR__ . '/core/includes/bootstrap.inc';
+$request = Request::createFromGlobals();
+Settings::initialize(dirname(dirname(__DIR__)), DrupalKernel::findSitePath($request), $autoloader);
+$kernel = DrupalKernel::createFromRequest($request, $autoloader, 'prod')->boot();
+
+$config = \Drupal::config('core.site_information');
 
 // Build up our list of errors.
 $errors = array();
 
 // Check that the main database is active.
-$result = db_query('SELECT * FROM {users} WHERE uid = 1');
-if (!$result->rowCount()) {
+
+$result = \Drupal\Core\Database\Database::getConnection()
+  ->query('SELECT * FROM {users} WHERE uid = 1')
+  ->fetchAllKeyed();
+
+if (!count($result)) {
   $errors[] = 'Master database not responding.';
 }
 
@@ -60,7 +73,7 @@ if (isset($conf['redis_cache_socket'])) {
   }
 }
 // Check that the files directory is operating properly.
-if ($test = tempnam(variable_get('file_directory_path', conf_path() .'/files'), 'status_check_')) {
+if ($test = tempnam($config->get('file_directory_path', conf_path() .'/files'), 'status_check_')) {
 // Uncomment to check if files are saved in the correct server directory.
 //if (!strpos($test, '/mnt/nfs') === 0) {
 //  $errors[] = 'Files are not being saved in the NFS mount under /mnt/nfs.';
