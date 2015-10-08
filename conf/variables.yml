@@ -13,7 +13,7 @@ databases:
 drush: {
   version: "6.*",
 }
-
+drupal_files: drupal/files
 # PHP
 php_package: php56u
 
