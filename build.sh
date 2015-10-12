@@ -37,6 +37,21 @@ if [[ $1 == "reset" ]]; then
   fi
 # Only run when running vagrant up or provision
 elif [[ $1 == "up" || $1 == "provision" ]]; then
+  # First we check if there is update for this script
+  SELF=$(basename $0)
+  UPDATEURL="https://raw.githubusercontent.com/wunderkraut/Ansibleref/master/build.sh"
+  MD5SELF=$(md5sum $0 | awk '{print $1}')
+  MD5LATEST=$(curl $UPDATEURL 2>&1 | md5sum | awk '{print $1}')
+  if [[ "$MD5SELF" != "$MD5LATEST" ]]; then
+    read -p "There is update for this script available. Update now?" -n 1 -r
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      cd $ROOT
+      curl -o $SELF $UPDATEURL
+      echo "Update complete, please rerun any command you were running previously."
+      echo "Also remember to add updated script to git."
+      exit
+    fi
+  fi
   # Clone and update virtual environment configurations
   if [ ! -d "ansible" ]; then
     git clone  -b $ansible_branch $ansible_remote ansible
