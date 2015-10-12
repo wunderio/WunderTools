@@ -12,7 +12,7 @@ if (!$key) {
 }
 $key = rtrim($key);
 
-$aliases['vagrant'] = array(
+$aliases['local'] = array(
   'parent' => '@parent',
   'site' => 'ansibleref',
   'env' => 'vagrant',
