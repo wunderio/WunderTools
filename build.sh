@@ -44,6 +44,7 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
   MD5LATEST=$(curl -s $UPDATEURL | md5sum | awk '{print $1}')
   if [[ "$MD5SELF" != "$MD5LATEST" ]]; then
     read -p "There is update for this script available. Update now?" -n 1 -r
+    echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
       cd $ROOT
       curl -o $SELF $UPDATEURL
