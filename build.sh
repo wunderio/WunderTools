@@ -41,7 +41,7 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
   SELF=$(basename $0)
   UPDATEURL="https://raw.githubusercontent.com/wunderkraut/Ansibleref/master/build.sh"
   MD5SELF=$(md5sum $0 | awk '{print $1}')
-  MD5LATEST=$(curl $UPDATEURL 2>&1 | md5sum | awk '{print $1}')
+  MD5LATEST=$(curl -s $UPDATEURL | md5sum | awk '{print $1}')
   if [[ "$MD5SELF" != "$MD5LATEST" ]]; then
     read -p "There is update for this script available. Update now?" -n 1 -r
     if [[ $REPLY =~ ^[Yy]$ ]]; then
