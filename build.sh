@@ -17,8 +17,9 @@ function parse_yaml {
    }'
 }
 
-SCRIPT=$(readlink -f $0)
-ROOT=`dirname $SCRIPT`
+pushd `dirname $0` > /dev/null
+ROOT=`pwd -P`
+popd > /dev/null
 # Parse project config
 PROJECTCONF=$ROOT/conf/project.yml
 eval $(parse_yaml $PROJECTCONF)
