@@ -30,7 +30,7 @@ ALIASTARGET=$HOME/.drush/$ALIASFILE
 if command -v md5sum >/dev/null 2>&1; then
   MD5COMMAND="md5sum"
 else
-  MD5COMMAND="md5"
+  MD5COMMAND="md5 -r"
 fi
 
 if [[ $1 == "reset" ]]; then
