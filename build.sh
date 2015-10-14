@@ -27,6 +27,12 @@ ALIASFILE=${project_name}.aliases.drushrc.php
 ALIASPATH=$ROOT/drupal/conf/$ALIASFILE
 ALIASTARGET=$HOME/.drush/$ALIASFILE
 
+if command -v md5sum >/dev/null 2>&1; then
+  MD5COMMAND="md5sum"
+else
+  MD5COMMAND="md5"
+fi
+
 if [[ $1 == "reset" ]]; then
   read -p "This will reset everything! Are you sure?" -n 1 -r
   echo
@@ -41,8 +47,8 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
   # First we check if there is update for this script
   SELF=$(basename $0)
   UPDATEURL="https://raw.githubusercontent.com/wunderkraut/Ansibleref/master/build.sh"
-  MD5SELF=$(md5sum $0 | awk '{print $1}')
-  MD5LATEST=$(curl -s $UPDATEURL | md5sum | awk '{print $1}')
+  MD5SELF=$($MD5COMMAND $0 | awk '{print $1}')
+  MD5LATEST=$(curl -s $UPDATEURL | $MD5COMMAND | awk '{print $1}')
   if [[ "$MD5SELF" != "$MD5LATEST" ]]; then
     read -p "There is update for this script available. Update now?" -n 1 -r
     echo
