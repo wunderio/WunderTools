@@ -20,7 +20,7 @@ default:
     - code/themes/custom: sites/all/themes/custom
     - code/profiles/wk: profiles/wk
     - conf/vagrant.settings.php: sites/default/settings.php
-    - conf/aliases.drushrc.php: sites/default/aliases.drushrc.php
+    - conf/ansibleref.aliases.drushrc.php: sites/default/ansibleref.aliases.drushrc.php
 
 # Local environment:
 local:
@@ -33,7 +33,7 @@ local:
     - code/themes/custom: sites/all/themes/custom
     - code/profiles/wk: profiles/wk
     - conf/local.settings.php: sites/default/settings.php
-    - conf/aliases.drushrc.php: sites/default/aliases.drushrc.php
+    - conf/ansibleref.aliases.drushrc.php: sites/default/ansibleref.aliases.drushrc.php
 
 # Test environment:
 test:
