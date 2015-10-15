@@ -29,5 +29,5 @@ $conf['cache_class_cache_page']  = 'VarnishCache';
 
 // Varnish
 $conf['varnish_version'] = "3";
-
+$conf['simple_environment_indicator'] = '#88b700 Local';
 
