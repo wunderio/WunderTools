@@ -37,9 +37,9 @@ if [[ $1 == "reset" ]]; then
   read -p "This will reset everything! Are you sure?" -n 1 -r
   echo
   if [[ $REPLY =~ ^[Yy]$ ]]; then
-    cd $PATH
+    cd $ROOT
     vagrant destroy
-    rm -r $PATH/ansible
+    rm -r $ROOT/ansible
     rm $ALIASTARGET
   fi
 # Only run when running vagrant up or provision
