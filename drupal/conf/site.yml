@@ -80,8 +80,8 @@ commands:
     - backup
     - purge
     - finalize
-    - install
     - shell: cp conf/_ping.php current
+    - install
 
 
   # Basic site update functionality
