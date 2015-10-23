@@ -26,7 +26,6 @@ dependencies[] = toolbar
 ; Contrib
 
 dependencies[] = admin_views
-dependencies[] = coffee
 dependencies[] = entity
 dependencies[] = entity_translation
 dependencies[] = memcache
@@ -35,7 +34,6 @@ dependencies[] = rules
 dependencies[] = rules_admin
 dependencies[] = varnish
 dependencies[] = views
-dependencies[] = views_bulk_operations
 dependencies[] = views_ui
 
 
