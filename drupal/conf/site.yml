@@ -90,8 +90,8 @@ commands:
     - backup
     - shell: unlink current/sites/default/files
     - finalize
-    - update
     - shell: cp conf/_ping.php current
+    - update
 
   # This is just an example on how to create custom commands,
   # this will create a .tgz out of the drupal installation without
