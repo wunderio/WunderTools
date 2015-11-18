@@ -21,6 +21,7 @@ projects[entity_translation][version] = 1.0-beta4
 projects[features][version] = 2.0
 projects[imagemagick][version] = 1.0
 projects[libraries][version] = 2.2
+projects[views_litepager][version] = 3.0
 projects[memcache][version] = 1.5
 projects[metatag][version] = 1.5
 projects[pathauto][version] = 1.2
