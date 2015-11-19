@@ -110,3 +110,8 @@ commands:
         ignore:
           - sites/default/files
 
+  hotfix:
+    - link
+    - shell: rsync -a _build/ current
+    - shell: rm -r _build
+    - update
