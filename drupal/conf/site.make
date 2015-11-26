@@ -35,7 +35,7 @@ projects[views][version] = 3.11
 ; Admin
 ; --------------------
 
-projects[admin_language][version] = 1.0-beta4
+projects[admin_language][version] = 1.0-beta1
 projects[admin_views][version] = 1.5
 projects[fpa][version] = 2.5
 projects[module_filter][version] = 2.0
