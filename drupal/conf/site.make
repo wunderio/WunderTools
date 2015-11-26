@@ -41,11 +41,6 @@ projects[fpa][version] = 2.5
 projects[module_filter][version] = 2.0
 
 projects[navbar][version] = 1.6
-; TODO patches were for version 1.4
-; need to check if they still apply & are needed
-; Change I-beam cursors in the navbar to be a pointer instead.
-; https://drupal.org/node/2173041
-projects[navbar][patch][] = "https://drupal.org/files/issues/2173041-3-i-beam-menu-hover.patch"
 ; Fix scrolling issues
 projects[navbar][patch][] = "https://drupal.org/files/issues/navbar-2183753-10-ie-navbar-issue.patch"
 
