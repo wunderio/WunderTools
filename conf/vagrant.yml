@@ -11,3 +11,4 @@
    - role: web-front
    - role: drupal
    - role: devtools
+   - role: solr_config

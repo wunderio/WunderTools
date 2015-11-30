@@ -144,3 +144,5 @@ nginx_sites:
     nocdnhostname: 'www.wunder.io'
     redirect: false
     redirecthost: 'https://www.wunder.io'
+
+solr_collection_name: 'ansibleref'

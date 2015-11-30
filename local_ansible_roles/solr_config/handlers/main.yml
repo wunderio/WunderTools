@@ -1,0 +1,2 @@
+#- name: restart solr
+#  service: name=nginx state=restarted
