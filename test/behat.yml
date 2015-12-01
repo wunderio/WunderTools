@@ -11,6 +11,6 @@ default:
     Behat\MinkExtension:
       goutte: ~
       selenium2: ~
-      base_url: http://seven.l
+      base_url: http://local.ansibleref.com
     Drupal\DrupalExtension:
       blackbox: ~

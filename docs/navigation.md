@@ -6,3 +6,5 @@
 [Features](features.md)
 [Views](views.md)
 [Hacks](hacks.md)
+[Testing](testing.md)
+
