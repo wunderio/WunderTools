@@ -29,6 +29,7 @@ projects[rules][version] = 2.9
 projects[search_api][version] = 1.14
 projects[search_api_solr][version] = 1.6
 projects[strongarm][version] = 2.0
+projects[token][version] = 1.6
 projects[varnish][version] = 1.0-beta3
 projects[views][version] = 3.11
 
@@ -46,6 +47,8 @@ projects[navbar][patch][] = "https://drupal.org/files/issues/navbar-2183753-10-i
 
 projects[simplei][version] = 1.0
 projects[simplei][patch][] = http://www.drupal.org/files/issues/2420513-support-for-navbar_1.patch
+
+projects[views_bulk_operations][version] = 3.3
 
 ; Misc improvements & tweaks
 ; --------------------
