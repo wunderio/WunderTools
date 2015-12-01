@@ -7,3 +7,6 @@ drupal/.make_cache
 .idea
 ansible
 local.*
+test/composer.lock
+test/vendor
+test/bin
