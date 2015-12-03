@@ -1,8 +1,8 @@
 ---
 
-- hosts: default
+- hosts: ansibleref-stage
   sudo: true
-  user: vagrant
+  user: root
   roles:
    - { role: base, tags: [ 'base' ] }
    - { role: logentries, tags: [ 'logentries' ] }
