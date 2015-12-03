@@ -1,0 +1,8 @@
+
+---
+
+innodb_buffer_pool_size: "{{ memory_db }}"
+php_fpm_pm_max_children: "{{ memory_app // 2 // php_memory_limit }}"
+php_fpm_pm_start_servers: "{{ php_fpm_pm_max_children|int // 2 }}"
+php_fpm_pm_min_spare_servers: "{{ php_fpm_pm_max_children|int // 2 }}"
+php_fpm_pm_max_spare_servers: "{{ php_fpm_pm_max_children|int // 2 }}"
