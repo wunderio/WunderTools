@@ -1,8 +1,8 @@
 project:
   name: ansibleref
 ansible:
-  remote: git@gitlab.com:wunderkraut-finland/wunsible.git
-  branch: wundermachina 
+  remote: https://github.com/wunderkraut-fi/wundermachina
+  branch: master 
   revision: 
 buildsh:
   branch: develop
