@@ -6,7 +6,7 @@
   roles:
    - { role: base, tags: [ 'base' ] }
    - { role: logentries, tags: [ 'logentries' ] }
-   - { role: appserver, tags: [ 'appserver' ] }
+   - { role: nginx-php-fpm, tags: [ 'nginx-php-fpm' ] }
    - { role: varnish, tags: [ 'varnish' ] }
    - { role: dbserver, tags: [ 'dbserver' ] }
    - { role: sslterminator, tags: [ 'sslterminator' ] }
