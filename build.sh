@@ -46,7 +46,7 @@ if [[ $1 == "reset" ]]; then
 elif [[ $1 == "up" || $1 == "provision" ]]; then
   # First we check if there is update for this script
   SELF=$(basename $0)
-  UPDATEURL="https://raw.githubusercontent.com/wunderkraut/Ansibleref/master/build.sh"
+  UPDATEURL="https://raw.githubusercontent.com/wunderkraut/WunderTools/master/build.sh"
   MD5SELF=$($MD5COMMAND $0 | awk '{print $1}')
   MD5LATEST=$(curl -s $UPDATEURL | $MD5COMMAND | awk '{print $1}')
   if [[ "$MD5SELF" != "$MD5LATEST" ]]; then
