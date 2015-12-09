@@ -88,20 +88,20 @@
               address: 127.0.0.1
               port: 8080
 
-      # BUT, we only use https for this host
-      sslterminators:
-        - server_name: www.test1.com
-          server_forwards: test1.com
-          ssl_certificate: certificate.crt
-          ssl_certificate_key: certificate.key
-          backends:
-            - 127.0.0.1:80
-        - server_name: www.test2.com
-          server_forwards: test2.com
-          ssl_certificate: certificate.crt
-          ssl_certificate_key: certificate.key
-          backends:
-            - 127.0.0.1:80
+    # BUT, we only use https for this host
+    sslterminators:
+      - server_name: www.test1.com
+        server_forwards: test1.com
+        ssl_certificate: certificate.crt
+        ssl_certificate_key: certificate.key
+        backends:
+          - 127.0.0.1:80
+      - server_name: www.test2.com
+        server_forwards: test2.com
+        ssl_certificate: certificate.crt
+        ssl_certificate_key: certificate.key
+        backends:
+          - 127.0.0.1:80
 
     # Databases
     databases:
