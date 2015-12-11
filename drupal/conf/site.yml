@@ -78,9 +78,11 @@ commands:
   new:
     - make
     - backup
+    - shell: chmod -R ug+w current
     - purge
     - finalize
     - shell: cp conf/_ping.php current
+    - shell: chmod -R a-w current
     - install
 
 
@@ -88,9 +90,11 @@ commands:
   update:
     - make
     - backup
+    - shell: chmod -R ug+w current
     - shell: unlink current/sites/default/files
     - finalize
     - shell: cp conf/_ping.php current
+    - shell: chmod -R a-w current
     - update
 
   # This is just an example on how to create custom commands,
@@ -114,6 +118,8 @@ commands:
 
   hotfix:
     - link
+    - shell: chmod -R ug+w current
     - shell: rsync -a _build/ current
     - shell: rm -r _build
+    - shell: chmod -R a-w current
     - update
