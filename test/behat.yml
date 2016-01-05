@@ -2,15 +2,9 @@ default:
   suites:
     default:
       contexts:
-        - FeatureContext
-        - Drupal\DrupalExtension\Context\DrupalContext
-        - Drupal\DrupalExtension\Context\MinkContext
-        - Drupal\DrupalExtension\Context\MessageContext
-        - Drupal\DrupalExtension\Context\DrushContext
+        - FeatureContext:
   extensions:
     Behat\MinkExtension:
       goutte: ~
       selenium2: ~
       base_url: http://local.ansibleref.com
-    Drupal\DrupalExtension:
-      blackbox: ~
