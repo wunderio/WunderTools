@@ -18,6 +18,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
   public function __construct()
   {
     $this->debugger = new Debugger($this);
+    $this->logger = new Logger($this);
   }
 
   /**
@@ -44,4 +45,40 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
   {
       return $this->getSession()->getPage()->find('css',$arg1);
   }
+
+  /**
+   * @Then I should read :arg1
+   */
+  public function iShouldRead($arg1)
+  {
+    $escapedValue = $this->getSession()->getSelectorsHandler()->xpathLiteral($arg1);
+    $text = $this->getSession()->getPage()->find('named', array('content', $escapedValue));
+    if(isset($text) && ($text != NULL)){
+      return true;
+    }else{
+      throw new Exception("Can't find the text: '".$arg1."' on the page.");
+    }
+  }
+  /**
+   * @When I submit the form :arg1
+   */
+  public function iSubmitTheForm($arg1)
+  {
+      $element = $this->getSession()->getPage()->find("css", $arg1);
+      if($element != NULL){
+        var_dump($element);
+      }else{
+        throw new Exception("Can't find any form with the css selector: '".$arg1."' on the page.");
+      }
+  }
+
+
+  /**
+   * @Given I am logged in as :arg1
+   */
+  public function iAmLoggedInAs($arg1)
+  {
+    return $this->logger->iLoginAs($arg1);
+  }
+
 }

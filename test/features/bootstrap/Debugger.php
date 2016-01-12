@@ -18,7 +18,7 @@ class Debugger {
     if (!$scope->getTestResult()->isPassed()) {
       $driver = $this->featureContext->getSession()->getDriver();
       $filename = $this->buildScreenshotFilename($scope);
-      $fileName = str_replace(array(' ', ','), '-', $scope->getName());
+      $fileName = str_replace(array(' ', ','), '-', $scope->getFeature()->getTitle());
       $screenshot = $driver->getScreenshot();
 
       if (!file_exists($this->screenshot_path)){
@@ -39,7 +39,7 @@ class Debugger {
     if (!$scope->getTestResult()->isPassed()) {
       $session = $this->featureContext->getSession();
       $page = $session->getPage();
-      $fileName = str_replace(array(' ', ','), '-', $scope->getName());
+      $fileName = str_replace(array(' ', ','), '-', $scope->getFeature()->getTitle());
 
       if (!file_exists($this->html_dump_path)){
           mkdir($this->html_dump_path);
@@ -54,7 +54,7 @@ class Debugger {
       $htmlCapturePath = $this->html_dump_path . '/' . $fileName . '.html';
       file_put_contents($htmlCapturePath, $html);
 
-      $message = "HTML saved to: " . $this->html_dump_path . "/". $fileName . ".html";
+      $message = "\nHTML saved to: " . $this->html_dump_path . "/". $fileName . ".html";
       $message .= "\nHTML available at: " . $this->html_dump_url . "/". $fileName . ".html";
 
       echo($message);
@@ -62,8 +62,7 @@ class Debugger {
   }
 
     private function buildScreenshotFilename(Behat\Behat\Hook\Scope\AfterStepScope $scope) {
-      $scenarioTitle = str_replace(array(' ', ','), '-', $scope->getName());
-
+      $scenarioTitle = str_replace(array(' ', ','), '-', $scope->getFeature()->getTitle());
       return $this->screenshot_path . '/' . $scenarioTitle . '.png';
     }
 }
