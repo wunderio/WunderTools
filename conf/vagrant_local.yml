@@ -2,5 +2,5 @@ name : ansibleref
 hostname : local.ansibleref.com
 mem : 2000 
 cpus : 2
-ip : 192.168.10.167
+ip : 192.168.10.169
 box : https://www.dropbox.com/s/wa0vs54lgngfcrx/vb-centos-6.5-x86_64-v0.box?dl=1
