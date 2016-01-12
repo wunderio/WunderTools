@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Basic page feature feature.
+ */
+
+include_once 'wk_basic_page_feature.features.inc';
