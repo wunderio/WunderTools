@@ -20,8 +20,7 @@ default:
     - code/themes/custom: sites/all/themes/custom
     - code/profiles/wk: profiles/wk
     - conf/vagrant.settings.php: sites/default/settings.php
-    - conf/vagrant.services.yml: sites/default/services.yml
-    - conf/aliases.drushrc.php: sites/default/aliases.drushrc.php
+    - conf/ansibleref.aliases.drushrc.php: sites/default/ansibleref.aliases.drushrc.php
 
 # Local environment:
 local:
@@ -34,7 +33,7 @@ local:
     - code/themes/custom: sites/all/themes/custom
     - code/profiles/wk: profiles/wk
     - conf/local.settings.php: sites/default/settings.php
-    - conf/aliases.drushrc.php: sites/default/aliases.drushrc.php
+    - conf/ansibleref.aliases.drushrc.php: sites/default/ansibleref.aliases.drushrc.php
 
 # Test environment:
 test:
@@ -79,25 +78,32 @@ commands:
   new:
     - make
     - backup
+    - shell: chmod -R ug+w current
     - purge
     - finalize
-    - install
     - shell: cp conf/_ping.php current
+    - shell: chmod -R a-w current
+    - install
 
 
   # Basic site update functionality
   update:
     - make
     - backup
+    - shell: chmod -R ug+w current
+    - shell: unlink current/sites/default/files
     - finalize
-    - update
     - shell: cp conf/_ping.php current
+    - shell: chmod -R a-w current
+    - update
 
   # This is just an example on how to create custom commands,
   # this will create a .tgz out of the drupal installation without
   # touching the current installation.
   package:
     - make
+    - copy
+    - link
     - shell: cp conf/_ping.php _build
     - shell: tar cvfz package.tgz _build
     - shell: rm -rf _build
@@ -110,3 +116,10 @@ commands:
         ignore:
           - sites/default/files
 
+  hotfix:
+    - link
+    - shell: chmod -R ug+w current
+    - shell: rsync -a _build/ current
+    - shell: rm -r _build
+    - shell: chmod -R a-w current
+    - update
