@@ -5,5 +5,5 @@ ansible:
   branch: master 
   revision: 
 buildsh:
-  branch: develop
+  branch: centos7
   revision:
