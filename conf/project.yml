@@ -1,9 +1,9 @@
 project:
   name: ansibleref
 ansible:
-  remote: git@github.com:wunderkraut-fi/wundermachina.git
-  branch: master 
+  remote: git@github.com:wunderkraut/wundermachina.git
+  branch: centos7 
   revision: 
 buildsh:
-  branch: centos7
+  branch: develop
   revision:
