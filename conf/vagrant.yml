@@ -38,6 +38,10 @@
 
     # </EXAMPLE>
 
+    letsencrypt_email: support@example.com
+    letsencrypt_domains:
+      - ansibleref.com
+      - www.ansibleref.com
 
     newrelic_enabled: False
     newrelic_license_key: "this-is-a-fake-key-replace-with-a-real-1"
