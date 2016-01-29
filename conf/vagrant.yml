@@ -5,14 +5,14 @@
   user: vagrant
   roles:
    - { role: base, tags: [ 'base' ] }
-   - { role: logentries, tags: [ 'logentries' ] }
-   - { role: nginx-php-fpm, tags: [ 'nginx-php-fpm' ] }
-   - { role: drupal, tags: [ 'drupal' ] }
+   - { role: php-fpm, tags: [ 'php-fpm' ] }
+   - { role: nginx, tags: [ 'nginx' ] }
    - { role: varnish, tags: [ 'varnish' ] }
+   - { role: memcached, tags: [ 'memcached' ] }
+   - { role: drush, tags: [ 'drush' ] }
    - { role: dbserver, tags: [ 'dbserver' ] }
+   - { role: drupal-db, tags: [ 'drupal-db' ] }
    - { role: sslterminator, tags: [ 'sslterminator' ] }
-   - { role: monit, tags: [ 'monit' ] }
-   - { role: datadog, tags: [ 'datadog' ] }
 
   tasks:
 
