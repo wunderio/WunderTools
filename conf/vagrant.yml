@@ -12,6 +12,7 @@
    - { role: drush, tags: [ 'drush' ] }
    - { role: dbserver, tags: [ 'dbserver' ] }
    - { role: drupal-db, tags: [ 'drupal-db' ] }
+   - { role: letsencrypt, tags: [ 'letsencrypt' ] }
    - { role: sslterminator, tags: [ 'sslterminator' ] }
 
   tasks:
