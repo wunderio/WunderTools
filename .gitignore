@@ -4,6 +4,8 @@
 drupal/current
 drupal/builds
 drupal/.make_cache
+drupal/files
+drupal/drupal.sqlite
 .idea
 ansible
 local.*
