@@ -14,6 +14,11 @@
    - { role: drupal-db, tags: [ 'drupal-db' ] }
    - { role: letsencrypt, tags: [ 'letsencrypt' ] }
    - { role: sslterminator, tags: [ 'sslterminator' ] }
+# Optional HHVM role.
+# Uncomment and do 'vagrant up' for first run, 'vagrant provision' for
+# already running machine.
+# Tested with varnish, memcached, letsencrypt and sslterminator being disabled.
+#   - { role: hhvm, tags: [ 'hhvm' ] }
 
   tasks:
 
