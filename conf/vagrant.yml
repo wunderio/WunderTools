@@ -15,9 +15,8 @@
    - { role: letsencrypt, tags: [ 'letsencrypt' ] }
    - { role: sslterminator, tags: [ 'sslterminator' ] }
 # Optional HHVM role.
-# Uncomment and do 'vagrant up' for first run, 'vagrant provision' for
-# already running machine.
-# Tested with varnish, memcached, letsencrypt and sslterminator being disabled.
+# Requires WunderMachina branch hhvm-3.11.1-ansible-role
+# More in-depth instrcutions at https://github.com/wunderkraut/WunderTools/wiki/HHVM
 #   - { role: hhvm, tags: [ 'hhvm' ] }
 
   tasks:
