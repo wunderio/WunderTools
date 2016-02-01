@@ -16,7 +16,7 @@
    - { role: sslterminator, tags: [ 'sslterminator' ] }
 # Optional HHVM role.
 # Requires WunderMachina branch hhvm-3.11.1-ansible-role
-# More in-depth instrcutions at https://github.com/wunderkraut/WunderTools/wiki/HHVM
+# More in-depth instructions at https://github.com/wunderkraut/WunderTools/wiki/HHVM
 #   - { role: hhvm, tags: [ 'hhvm' ] }
 
   tasks:
