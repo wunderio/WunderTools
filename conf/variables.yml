@@ -113,7 +113,7 @@ worker_processes: '1'
 nginx_sites:
   - hostname: 'local.ansibleref.com *.local.ansibleref.com'
     port: '8080 default_server'
-    docroot: '/vagrant/drupal/current'
+    docroot: '/vagrant/drupal/current/drupal'
     accesslog: true
     accesslog_params: 'main buffer=32k'
     errorlog: true
