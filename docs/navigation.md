@@ -1,6 +1,6 @@
 [Index](index.md)
 [Development](development.md)
-[Content types](content_types.md)
+[Information_Architecture](information_architecture.md)
 [Theme](theme.md)
 [Modules](modules.md)
 [Features](features.md)
