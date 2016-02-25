@@ -5,6 +5,6 @@ ansible:
   branch: master
   revision:
 buildsh:
-  enabled: false
+  enabled: true
   branch: develop
   revision:
