@@ -76,11 +76,15 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
     fi
   fi
 
-  # Get & update drupal/build.sh
-  if [ -n "$buildsh_revision" ]; then
-    curl -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_revision/build.sh
-  else
-    curl -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_branch/build.sh
+  read -p "Would you like to download the latest build.sh?" -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    # Get & update drupal/build.sh
+    if [ -n "$buildsh_revision" ]; then
+      curl -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_revision/build.sh
+    else
+      curl -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_branch/build.sh
+    fi
   fi
 
   # Ensure drush aliases file is linked
