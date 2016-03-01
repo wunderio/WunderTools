@@ -76,11 +76,13 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
     fi
   fi
 
-  # Get & update drupal/build.sh
-  if [ -n "$buildsh_revision" ]; then
-    curl -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_revision/build.sh
-  else
-    curl -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_branch/build.sh
+  if [ -z "$buildsh_no_include" ]; then
+    # Get & update drupal/build.sh
+    if [ -n "$buildsh_revision" ]; then
+      curl -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_revision/build.sh
+    else
+      curl -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_branch/build.sh
+    fi
   fi
 
   # Ensure drush aliases file is linked
@@ -89,4 +91,3 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
     ln -s $ALIASPATH $ALIASTARGET
   fi
 fi
-
