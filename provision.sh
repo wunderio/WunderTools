@@ -14,4 +14,4 @@ if [ ! -h $PLAYBOOKTARGET ]; then
   ln -s $PLAYBOOKPATH $PLAYBOOKTARGET
 fi
 
-ansible-playbook $PLAYBOOKTARGET -c ssh -i $INVENTORY -e $EXTRA_VARS --ask-sudo-pass
+ansible-playbook $PLAYBOOKTARGET -c ssh -i $INVENTORY -e $EXTRA_VARS --ask-sudo-pass --ask-vault-pass
