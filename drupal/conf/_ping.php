@@ -21,15 +21,22 @@ if (extension_loaded('newrelic')) {
 header("HTTP/1.0 503 Service Unavailable");
 
 // Drupal bootstrap.
+use Drupal\Core\DrupalKernel;
+use Symfony\Component\HttpFoundation\Request;
+
+$autoloader = require_once 'autoload.php';
+$kernel = new DrupalKernel('prod', $autoloader);
+
+$request = Request::createFromGlobals();
+$response = $kernel->handle($request);
+
 define('DRUPAL_ROOT', getcwd());
-require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
-drupal_bootstrap(DRUPAL_BOOTSTRAP_DATABASE);
 
 // Build up our list of errors.
 $errors = array();
 
 // Check that the main database is active.
-$result = db_query('SELECT * FROM {users} WHERE uid = 1');
+$results = \Drupal::service('database')->query('SELECT * FROM users WHERE uid = 1');
 if (!$result->rowCount()) {
   $errors[] = 'Master database not responding.';
 }
