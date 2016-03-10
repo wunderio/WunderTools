@@ -76,6 +76,7 @@ commands:
 
   # Basic new site functionality
   new:
+    - shell: mkdir -p files
     - make
     - backup
     - shell: chmod -R ug+w current
