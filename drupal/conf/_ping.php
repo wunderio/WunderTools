@@ -1,6 +1,6 @@
 <?php
 
-//FOR DRUPAL 7 ONLY!
+//FOR DRUPAL 8 ONLY!
 //FILE IS SUPPOSED TO BE IN DRUPAL ROOT DIRECTORY (NEXT TO INDEX.PHP)!!
 
 // Register our shutdown function so that no other shutdown functions run before this one.
@@ -22,6 +22,7 @@ header("HTTP/1.0 503 Service Unavailable");
 
 // Drupal bootstrap.
 use Drupal\Core\DrupalKernel;
+use Drupal\Core\Site\Settings;
 use Symfony\Component\HttpFoundation\Request;
 
 $autoloader = require_once 'autoload.php';
@@ -36,8 +37,11 @@ define('DRUPAL_ROOT', getcwd());
 $errors = array();
 
 // Check that the main database is active.
-$results = \Drupal::service('database')->query('SELECT * FROM users WHERE uid = 1');
-if (!$result->rowCount()) {
+$result = \Drupal\Core\Database\Database::getConnection()
+  ->query('SELECT * FROM {users} WHERE uid = 1')
+  ->fetchAllKeyed();
+
+if (!count($result)) {
   $errors[] = 'Master database not responding.';
 }
 
@@ -65,19 +69,6 @@ if (isset($conf['redis_cache_socket'])) {
   if (!$redis->connect($conf['redis_cache_socket'])) {
     $errors[] = 'Redis at ' . $conf['redis_cache_socket'] . ' is not available.';
   }
-}
-// Check that the files directory is operating properly.
-if ($test = tempnam(variable_get('file_directory_path', conf_path() .'/files'), 'status_check_')) {
-// Uncomment to check if files are saved in the correct server directory.
-//if (!strpos($test, '/mnt/nfs') === 0) {
-//  $errors[] = 'Files are not being saved in the NFS mount under /mnt/nfs.';
-//}
-  if (!unlink($test)) {
-    $errors[] = 'Could not delete newly create files in the files directory.';
-  }
-}
-else {
-  $errors[] = 'Could not create temporary file in the files directory.';
 }
 
 // Print all errors.
