@@ -63,6 +63,18 @@ if (isset($conf['redis_client_host']) && isset($conf['redis_client_port'])) {
   }
 }
 
+$files_path = \Drupal::service('file_system')->realpath(file_default_scheme() . "://");
+
+// Check that the files directory is operating properly.
+if ($test = tempnam($files_path, 'status_check_')) {
+  if (!unlink($test)) {
+    $errors[] = 'Could not delete newly create files in the files directory.';
+  }
+}
+else {
+  $errors[] = 'Could not create temporary file in the files directory.';
+}
+
 // UNIX socket connection
 if (isset($conf['redis_cache_socket'])) {
   $redis = new Redis();
