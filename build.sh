@@ -39,21 +39,27 @@ fi
 
 VERSIONFILE=$ROOT/VERSION
 CHANGELOG=$ROOT/CHANGELOG
+CHANGELOGURL="https://raw.githubusercontent.com/wunderkraut/WunderTools/$GITBRANCH/CHANGELOG"
+
 if [ -f $VERSIONFILE ]; then
   typeset -i CURRENT_VERSION=$(<$VERSIONFILE)
 else
-  echo $VERSION > $VERSIONFILE
   CURRENT_VERSION=0
 fi
 
 if [ "$CURRENT_VERSION" -ne "$VERSION" ]; then
   echo "Build.sh version has been updated. Make sure your project complies with the changes outlined in the CHANGELOG since version $CURRENT_VERSION"
   while read -p "I have updated everything ([y]es / [n]o / show [c]hangelog)? " -n 1 -r && [[ $REPLY =~ ^[Cc]$ ]]; do
+    echo $CHANGELOGURL
+    if [ ! -f $CHANGELOG ]; then
+      curl -s -o $CHANGELOG $CHANGELOGURL
+    fi
     sed -e '/^'$CURRENT_VERSION'$/,$d' $CHANGELOG
   done
+  echo
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo $VERSION > $VERSIONFILE
-    echo -e "\nCurrent version updated, make sure to commit all the changes before continuing."
+    echo "Current version updated, make sure to commit all the changes before continuing."
   fi
 fi
 
@@ -79,7 +85,6 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
   # First we check if there is update for this script
   SELF=$(basename $0)
   UPDATEURL="https://raw.githubusercontent.com/wunderkraut/WunderTools/$GITBRANCH/build.sh"
-  CHANGELOGURL="https://raw.githubusercontent.com/wunderkraut/WunderTools/$GITBRANCH/CHANGELOG"
   MD5SELF=$($MD5COMMAND $0 | awk '{print $1}')
   MD5LATEST=$(curl -s $UPDATEURL | $MD5COMMAND | awk '{print $1}')
   if [[ "$MD5SELF" != "$MD5LATEST" ]]; then
@@ -89,8 +94,8 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
       cd $ROOT
-      curl -o $SELF $UPDATEURL
-      curl -o $CHANGELOG $CHANGELOGURL
+      curl -s -o $SELF $UPDATEURL
+      curl -s -o $CHANGELOG $CHANGELOGURL
       echo "Update complete, please rerun any command you were running previously."
       echo "See CHANGELOG for more info."
       echo "Also remember to add updated script to git."
@@ -116,9 +121,9 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
   # If it is enabled in project.yml - get & update drupal/build.sh
   if $buildsh_enabled; then
     if [ -n "$buildsh_revision" ]; then
-      curl -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_revision/build.sh
+      curl -s -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_revision/build.sh
     else
-      curl -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_branch/build.sh
+      curl -s -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_branch/build.sh
     fi
   fi
 
