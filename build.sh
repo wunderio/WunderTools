@@ -31,7 +31,11 @@ ALIASFILE=${project_name}.aliases.drushrc.php
 ALIASPATH=$ROOT/drupal/conf/$ALIASFILE
 ALIASTARGET=$HOME/.drush/$ALIASFILE
 
-GITBRANCH=`git symbolic-ref --short -q HEAD`
+if [ -z "$wundertools_branch" ]; then
+  GITBRANCH="master"
+else
+  GITBRANCH=$wundertools_branch
+fi
 
 VERSIONFILE=$ROOT/VERSION
 CHANGELOG=$ROOT/CHANGELOG
