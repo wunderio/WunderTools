@@ -61,18 +61,30 @@ if (isset($conf['redis_client_host']) && isset($conf['redis_client_port'])) {
     $errors[] = 'Redis at ' . $conf['redis_client_host'] . ':' . $conf['redis_client_port'] . ' is not available.';
   }
 }
-# TODO: Fix files folder check after changing the logic of loading kernel
-#$files_path = \Drupal::service('file_system')->realpath(file_default_scheme() . "://");
+
+// Define file_uri_scheme if it does not exist, it's required by realpath().
+// The function file_uri_scheme is deprecated and will be removed in 9.0.0.
+if (!function_exists('file_uri_scheme')) {
+  function file_uri_scheme($uri) {
+    return \Drupal::service('file_system')->uriScheme($uri);
+  }
+}
+
+// Get current defined scheme.
+$scheme = \Drupal::config('system.file')->get('default_scheme');
+
+// Get the real path of the files uri.
+$files_path = \Drupal::service('file_system')->realpath($scheme . '://');
 
 // Check that the files directory is operating properly.
-#if ($test = tempnam($files_path, 'status_check_')) {
-#  if (!unlink($test)) {
-#    $errors[] = 'Could not delete newly create files in the files directory.';
-#  }
-#}
-#else {
-#  $errors[] = 'Could not create temporary file in the files directory.';
-#}
+if ($test = tempnam($files_path, 'status_check_')) {
+  if (!unlink($test)) {
+    $errors[] = 'Could not delete newly create files in the files directory.';
+  }
+}
+else {
+  $errors[] = 'Could not create temporary file in the files directory.';
+}
 
 // UNIX socket connection
 if (isset($conf['redis_cache_socket'])) {
