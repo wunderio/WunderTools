@@ -1,7 +1,8 @@
 ---
 
 - hosts: default
-  sudo: true
+  become: true
+  become_method: sudo
   user: vagrant
   roles:
    - { role: base, tags: [ 'base' ] }
@@ -83,6 +84,12 @@
     varnish:
       port: 80
       memory: 512M
+      acl_internal:
+        - ip: 127.0.0.1
+      acl_purge:
+        - ip: 127.0.0.1
+      acl_upstream_proxy:
+        - ip: 127.0.0.1
       directors:
         - name: test1
           host: www.test1.com
