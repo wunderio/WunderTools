@@ -63,8 +63,6 @@ if [ "$CURRENT_VERSION" -ne "$VERSION" ]; then
   fi
 fi
 
-exit
-
 if command -v md5sum >/dev/null 2>&1; then
   MD5COMMAND="md5sum"
 else
