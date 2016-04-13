@@ -13,7 +13,7 @@
    - { role: drush, tags: [ 'drush' ] }
    - { role: dbserver, tags: [ 'dbserver' ] }
    - { role: drupal-db, tags: [ 'drupal-db' ] }
-   - { role: letsencrypt, tags: [ 'letsencrypt' ] }
+   - { role: selfencrypt, tags: [ 'selfencrypt' ] }
    - { role: sslterminator, tags: [ 'sslterminator' ] }
 # Optional HHVM role.
 # Requires WunderMachina hhvm branch https://github.com/wunderkraut/WunderMachina/tree/hhvm
