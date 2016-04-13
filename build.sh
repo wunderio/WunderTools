@@ -19,7 +19,7 @@ function parse_yaml {
 
 # Remember to update this on each release
 # Also update the changelog!
-VERSION=1
+VERSION=2
 
 pushd `dirname $0` > /dev/null
 ROOT=`pwd -P`
@@ -129,6 +129,15 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
   if [ ! -h $ALIASTARGET ] || [ ! "$(readlink $ALIASTARGET)" -ef "$ALIASPATH" ]; then
     rm $ALIASTARGET
     ln -s $ALIASPATH $ALIASTARGET
+  fi
+
+  if [ ! -z $externaldrupal_remote ]; then
+    if [ ! -d "drupal/current" ]; then
+      if [ -z $externaldrupal_branch ]; then
+        $externaldrupal_branch = 'master'
+      fi
+      git clone -b $externaldrupal_branch $externaldrupal_remote $ROOT/drupal/current
+    fi
   fi
 fi
 

@@ -1,2 +1,9 @@
+2
+Possibility to use external repository for drupal. In that case you need to define following variables in conf/project.yml
+externaldrupal:
+  remote: [external drupal repository url]
+  branch: [branch to use from the external repository]
+Repository should have drupal installation directly under the repository root.
+  
 1
 Added support for managed version updates for build.sh

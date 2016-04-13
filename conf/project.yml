@@ -10,3 +10,7 @@ buildsh:
   revision:
 wundertools:
   branch: master
+externaldrupal:
+  remote:
+  branch:
+
