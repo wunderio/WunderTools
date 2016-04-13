@@ -1,24 +1,17 @@
 ---
 
-- hosts: default
-  become: true
-  become_method: sudo
-  user: vagrant
+- hosts: ansibleref-prod
+  sudo: true
+  user: root
   roles:
    - { role: base, tags: [ 'base' ] }
-   - { role: php-fpm, tags: [ 'php-fpm' ] }
-   - { role: nginx, tags: [ 'nginx' ] }
+   - { role: logentries, tags: [ 'logentries' ] }
+   - { role: appserver, tags: [ 'appserver' ] }
    - { role: varnish, tags: [ 'varnish' ] }
-   - { role: memcached, tags: [ 'memcached' ] }
-   - { role: drush, tags: [ 'drush' ] }
    - { role: dbserver, tags: [ 'dbserver' ] }
-   - { role: drupal-db, tags: [ 'drupal-db' ] }
-   - { role: letsencrypt, tags: [ 'letsencrypt' ] }
    - { role: sslterminator, tags: [ 'sslterminator' ] }
-# Optional HHVM role.
-# Requires WunderMachina hhvm branch https://github.com/wunderkraut/WunderMachina/tree/hhvm
-# More in-depth instructions at https://github.com/wunderkraut/WunderTools/wiki/HHVM
-#   - { role: hhvm, tags: [ 'hhvm' ] }
+   - { role: monit, tags: [ 'monit' ] }
+   - { role: datadog, tags: [ 'datadog' ] }
 
   tasks:
 
@@ -40,13 +33,14 @@
     php_memory_limit: 256 # In MB
     nginx_workers: 2 # This should be equal to core count
 
+    innodb_buffer_pool_size: "{{ memory_db }}"
+    php_fpm_pm_max_children: "{{ memory_app // 2 // php_memory_limit }}"
+    php_fpm_pm_start_servers: "{{ php_fpm_pm_max_children|int // 2 }}"
+    php_fpm_pm_min_spare_servers: "{{ php_fpm_pm_max_children|int // 2 }}"
+    php_fpm_pm_max_spare_servers: "{{ php_fpm_pm_max_children|int // 2 }}"
 
     # </EXAMPLE>
 
-    letsencrypt_email: support@example.com
-    letsencrypt_domains:
-      - ansibleref.com
-      - www.ansibleref.com
 
     newrelic_enabled: False
     newrelic_license_key: "this-is-a-fake-key-replace-with-a-real-1"
@@ -84,12 +78,6 @@
     varnish:
       port: 80
       memory: 512M
-      acl_internal:
-        - ip: 127.0.0.1
-      acl_purge:
-        - ip: 127.0.0.1
-      acl_upstream_proxy:
-        - ip: 127.0.0.1
       directors:
         - name: test1
           host: www.test1.com
@@ -104,27 +92,19 @@
               address: 127.0.0.1
               port: 8080
 
-    # BUT, we only use https for this host
-    sslterminators:
-      - server_name: www.test1.com
-        server_forwards: test1.com
-        ssl_certificate: certificate.crt
-        ssl_certificate_key: certificate.key
-        backends:
-          - 127.0.0.1:80
-      - server_name: www.test2.com
-        server_forwards: test2.com
-        ssl_certificate: certificate.crt
-        ssl_certificate_key: certificate.key
-        backends:
-          - 127.0.0.1:80
+      # BUT, we only use https for this host
+      sslterminators:
+        - server_name: www.test1.com
+          server_forwards: test1.com
+          ssl_certificate: certificate.crt
+          ssl_certificate_key: certificate.key
+          backends:
+            - 127.0.0.1:80
+        - server_name: www.test2.com
+          server_forwards: test2.com
+          ssl_certificate: certificate.crt
+          ssl_certificate_key: certificate.key
+          backends:
+            - 127.0.0.1:80
 
-    # Databases
-    databases:
-      - name: drupal
-        user: drupal
-        pass: password
-        hosts:
-          - "127.0.0.1"
-          - "::1"
-          - "localhost"
+

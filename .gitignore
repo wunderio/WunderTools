@@ -10,3 +10,4 @@ local.*
 test/composer.lock
 test/vendor
 test/bin
+VERSION

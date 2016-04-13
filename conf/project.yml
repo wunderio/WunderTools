@@ -8,3 +8,9 @@ buildsh:
   enabled: true
   branch: develop
   revision:
+wundertools:
+  branch: master
+externaldrupal:
+  remote:
+  branch:
+
