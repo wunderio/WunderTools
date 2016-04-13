@@ -1,3 +1,7 @@
+3
+Centos7 branch is now the default (master) branch. If your project is still using centos6 update the ansible branch variable to "centos6" in the conf/project.yml or consider upgrading your project to use centos7.
+For centos7 projects you should update the ansible branch to "master" as the centos7 branch will be deprecated and will not receive any updates in the future.
+
 2
 Possibility to use external repository for drupal. In that case you need to define following variables in conf/project.yml
 externaldrupal:
