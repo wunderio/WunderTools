@@ -131,7 +131,7 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
     ln -s $ALIASPATH $ALIASTARGET
   fi
 
-  if [ -z $externaldrupal_remote ]; then
+  if [ ! -z $externaldrupal_remote ]; then
     if [ ! -d "drupal/current" ]; then
       if [ -z $externaldrupal_branch ]; then
         $externaldrupal_branch = 'master'
