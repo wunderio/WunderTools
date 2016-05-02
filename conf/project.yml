@@ -2,8 +2,14 @@ project:
   name: ansibleref
 ansible:
   remote: git@github.com:wunderkraut/WunderMachina.git
-  branch: master 
-  revision: 
-buildsh:
-  branch: d8
+  branch: master
   revision:
+buildsh:
+  enabled: true
+  branch: develop
+  revision:
+wundertools:
+  branch: master
+externaldrupal:
+  remote:
+  branch:
