@@ -1,12 +1,7 @@
 <?php
+
 //FOR DRUPAL 8 ONLY!
 //FILE IS SUPPOSED TO BE IN DRUPAL ROOT DIRECTORY (NEXT TO INDEX.PHP)!!
-
-use Drupal\Core\Command\DbDumpApplication;
-use Drupal\Core\Database\Database;
-use Drupal\Core\DrupalKernel;
-use Drupal\Core\Site\Settings;
-use Symfony\Component\HttpFoundation\Request;
 
 // Register our shutdown function so that no other shutdown functions run before this one.
 // This shutdown function calls exit(), immediately short-circuiting any other shutdown functions,
@@ -25,20 +20,22 @@ if (extension_loaded('newrelic')) {
 
 header("HTTP/1.0 503 Service Unavailable");
 
-// Bootstrap.
-$autoloader = require __DIR__ . '/autoload.php';
-require_once __DIR__ . '/core/includes/bootstrap.inc';
-$request = Request::createFromGlobals();
-Settings::initialize(dirname(dirname(__DIR__)), DrupalKernel::findSitePath($request), $autoloader);
-$kernel = DrupalKernel::createFromRequest($request, $autoloader, 'prod')->boot();
+// Drupal bootstrap.
+use Drupal\Core\DrupalKernel;
+use Drupal\Core\Site\Settings;
+use Symfony\Component\HttpFoundation\Request;
 
-$config = \Drupal::config('core.site_information');
+$autoloader = require_once 'autoload.php';
+$request = Request::createFromGlobals();
+$kernel = DrupalKernel::createFromRequest($request, $autoloader, 'prod');
+$kernel->boot();
+
+define('DRUPAL_ROOT', getcwd());
 
 // Build up our list of errors.
 $errors = array();
 
 // Check that the main database is active.
-
 $result = \Drupal\Core\Database\Database::getConnection()
   ->query('SELECT * FROM {users} WHERE uid = 1')
   ->fetchAllKeyed();
@@ -65,25 +62,36 @@ if (isset($conf['redis_client_host']) && isset($conf['redis_client_port'])) {
   }
 }
 
-// UNIX socket connection
-if (isset($conf['redis_cache_socket'])) {
-  $redis = new Redis();
-  if (!$redis->connect($conf['redis_cache_socket'])) {
-    $errors[] = 'Redis at ' . $conf['redis_cache_socket'] . ' is not available.';
+// Define file_uri_scheme if it does not exist, it's required by realpath().
+// The function file_uri_scheme is deprecated and will be removed in 9.0.0.
+if (!function_exists('file_uri_scheme')) {
+  function file_uri_scheme($uri) {
+    return \Drupal::service('file_system')->uriScheme($uri);
   }
 }
+
+// Get current defined scheme.
+$scheme = \Drupal::config('system.file')->get('default_scheme');
+
+// Get the real path of the files uri.
+$files_path = \Drupal::service('file_system')->realpath($scheme . '://');
+
 // Check that the files directory is operating properly.
-if ($test = tempnam($config->get('file_directory_path', conf_path() .'/files'), 'status_check_')) {
-// Uncomment to check if files are saved in the correct server directory.
-//if (!strpos($test, '/mnt/nfs') === 0) {
-//  $errors[] = 'Files are not being saved in the NFS mount under /mnt/nfs.';
-//}
+if ($test = tempnam($files_path, 'status_check_')) {
   if (!unlink($test)) {
     $errors[] = 'Could not delete newly create files in the files directory.';
   }
 }
 else {
   $errors[] = 'Could not create temporary file in the files directory.';
+}
+
+// UNIX socket connection
+if (isset($conf['redis_cache_socket'])) {
+  $redis = new Redis();
+  if (!$redis->connect($conf['redis_cache_socket'])) {
+    $errors[] = 'Redis at ' . $conf['redis_cache_socket'] . ' is not available.';
+  }
 }
 
 // Print all errors.
