@@ -27,6 +27,9 @@ Build the drupal project:
 
 ```$ cd /vagrant/drupal/ && ./build.sh new```
 
+Install from standard profile (for fresh install):
+```$ cd /vagrant/drupal/current/web && drush si standard --config-dir=../staging```
+
 Sync database:
 
 ```$ ./sync.sh```
