@@ -1,14 +1,114 @@
 ---
 
-- hosts: vagrant
-  sudo: true
+- hosts: default
+  become: true
+  become_method: sudo
+  user: vagrant
   roles:
-   - role: common
-   - role: cache
-   - role: database
-   - role: solr
-   - role: varnish
-   - role: web-front
-   - role: drupal
-   - role: devtools
-   - role: solr_config
+   - { role: base, tags: [ 'base' ] }
+   - { role: php-fpm, tags: [ 'php-fpm' ] }
+   - { role: nginx, tags: [ 'nginx' ] }
+   - { role: varnish, tags: [ 'varnish' ] }
+   - { role: memcached, tags: [ 'memcached' ] }
+   - { role: drush, tags: [ 'drush' ] }
+   - { role: dbserver, tags: [ 'dbserver' ] }
+   - { role: drupal-db, tags: [ 'drupal-db' ] }
+   - { role: selfencrypt, tags: [ 'selfencrypt' ] }
+   - { role: sslterminator, tags: [ 'sslterminator' ] }
+# Optional HHVM role.
+# Requires WunderMachina hhvm branch https://github.com/wunderkraut/WunderMachina/tree/hhvm
+# More in-depth instructions at https://github.com/wunderkraut/WunderTools/wiki/HHVM
+#   - { role: hhvm, tags: [ 'hhvm' ] }
+
+  tasks:
+
+    - cron: name="check dirs" minute="0" hour="5,2" job="ls -alh > /dev/null"
+
+  vars:
+
+    letsencrypt_domains:
+      - local.ansibleref.com
+
+    partition_var_log: False
+
+    partition_var_lib_mysql: False
+
+    # Do not use this in production. For testing purposes only.
+    nginx_disable_content_security_policy: True
+
+    memory_db: 1024 # In MB
+    memory_app: 1024 # In MB
+    # NOTE: ALWAYS leave some spare memory for the server
+    php_memory_limit: 256 # In MB
+    nginx_workers: 2 # This should be equal to core count
+
+    php_ini:
+      - section: OPCACHE
+        options:
+          - key: opcache.enable
+            val: 0
+      - section: DATE
+        options:
+          - key: date.timezone
+            val: Europe/Helsinki
+
+    monit_enabled: False
+    monit_alert_email_service_name: "vagrant-reference"
+    monit_alert_email_from: "alert@ansibleref.com"
+    monit_alert_email_to: alert@ansibleref.com
+    monit_collector_address: https://user:password@mmonit.ansibleref.io:8443/collector
+    monit_allow:
+      - localhost
+      - user:password
+
+    logentries_enabled: False
+    logentries_account_key: 00000000-0000-0000-0000-000000000000
+    logentries_service_name: "vagrant-reference"
+    logentries_hostname: "localhost"
+    logentries_follow:
+      - /var/log/secure
+
+    # Apps I want to run on this server
+    apps:
+      - server_name: local.ansibleref.com
+        server_aliases: local.ansibleref.com
+        server_forwards: ansibleref.com
+        http_port: 8080
+        docroot: /vagrant/drupal/current/web
+
+    # This server also acts as a load balancer
+    varnish:
+      port: 8081
+      memory: 512M
+      acl_internal:
+        - ip: 127.0.0.1
+      acl_purge:
+        - ip: 127.0.0.1
+      acl_upstream_proxy:
+        - ip: 127.0.0.1
+      directors:
+        - name: ansibleref
+          host: local.ansibleref.com
+          backends:
+            - name: ansibleref_http
+              address: 127.0.0.1
+              port: 8080
+
+    # BUT, we only use https for this host
+    sslterminators:
+      - server_name: local.ansibleref.com
+        server_forwards: ansibleref.com
+        ssl_certificate: /etc/nginx/certificate.crt
+        ssl_certificate_key: /etc/nginx/ssl/certificate.key
+        backends:
+          - 127.0.0.1:8081
+
+    # Databases
+    databases:
+      - name: drupal
+        user: drupal
+        pass: password
+        hosts:
+          - "127.0.0.1"
+          - "::1"
+          - "localhost"

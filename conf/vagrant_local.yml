@@ -1,6 +1,6 @@
-name : ansibleref-d8
-hostname : local.ansibleref.com
+name : ansibleref
+hostname : local.ansibleref
 mem : 2000
 cpus : 2
-ip : 192.168.10.169
-box : https://www.dropbox.com/s/wa0vs54lgngfcrx/vb-centos-6.5-x86_64-v0.box?dl=1
+ip : 192.168.10.180
+box : "geerlingguy/centos7"

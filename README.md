@@ -1,133 +1,64 @@
-# Project reference setup with ansible & vagrant
+# Wundertools D8
 
-##Setup
-
-You can setup the IP address and the url of your vagrant machine on the
-Vagrantfile.
-
-Edit the variables.yml file to setup the URL and dir for the docs of your project.
-
-Remember to add also the entries in your hosts file for both the drupal install and
-the docs.
-
-
-###
-Requirements:
-- Vagrant 1.5.x
+### Requirements:
+- Vagrant 1.7.x
 - https://github.com/fgrehm/vagrant-cachier
 ( $ vagrant plugin install vagrant-cachier )
 - Ansible in your host machine. For OS X:
  brew install ansible
 
-##Introduction
+### Getting started
+
+##### 1. Setup the local vagrant environment
 
 Start by running:
 
-  $ vagrant up
+```$ vagrant up```
 
-This will do the following:
+If everything went well, proceed to step 2.
 
-- clone the latest WunderMachina ansible/vagrant setup (or the version specified in conf/project.yml)
-- Bring up & provision the virtual machine (if needed)
-- Build the drupal site under drupal/current (not yet actually)
+##### 2. Setup the drupal project for the first time
 
-After finishing provisioning (first time is always slow) and building the site
-you need to install the Drupal site in http://x.x.x.x:8080/install.php
-(Note: on rare occasion php-fpm/varnish/e.g. requires to be restarted before
-starting to work. You can do this by issuing the following command:
+SSH to your local vagrant environment:
 
-  $ vagrant  ssh -c "sudo service php-fpm restart"
-  $ vagrant  ssh -c "sudo service varnish restart"
+```$ vagrant ssh```
 
-All Drupal related configurations are under drupal/conf
+Build the drupal project:
 
-Drush is usable without ssh access with the drush.sh script e.g:
+```$ cd /vagrant/drupal/ && ./build.sh new```
 
-  $ ./drush.sh cc all
+Install from standard profile (for fresh install):
 
-To open up ssh access to the virtual machine:
+```$ cd /vagrant/drupal/current/web && drush si standard --config-dir=../staging```
 
-  $ vagrant ssh
+Sync database:
 
+```$ ./sync.sh```
 
--------------------------------------------------------------------------------
-Useful things
+### Install and building composer packages
 
-At the moment IP is configured in
-  Vagrantfile
-    variable INSTANCE_IP
+Composer commands could be done inside or outside the vagrant environment from /drupal/current directory.
 
-Varnish responds to
-  http://x.x.x.x/
+Installing or updating packages
 
-Nginx responds to
-  http://x.x.x.x:8080/
+```composer require <package>```
 
-Solr responds to
-  http://x.x.x.x:8983/solr
+Downloading packpages
 
-MailHOG responds to
-  http://x.x.x.x:8025
+```composer install```
 
-Docs are in
-        http://x.x.x.x:8080/index.html
-        You can setup the dir where the docs are taken from and their URL from the
-        variables.yml file.
+### Configuration management
 
-        #Docs
-        docs:
-          hostname : 'docs.local.ansibleref.com'
-          dir : '/vagrant/docs'
+Importing configuration (this will override your current configuration):
 
+```$ ./drush.sh cex staging```
 
-##Vagrant + Ansible configuration
+Exporting configuration:
 
-Vagrant is using Ansible provision stored under the ansible subdirectory.
-The inventory file (which stores the hosts and their IP's) is located under
-ansible/inventory. Host specific configurations for Vagrant are stored in
-ansible/vagrant.yml and the playbooks are under ansible/playbook directory.
-Variable overrides are defined in ansible/variables.yml.
+```$ ./drush.sh cim staging```
 
-You should only bother with the following:
+Note: Please take care when committing exported configuration code, making sure you are not overriding configuration that were not related to the changes that you have made.
 
-  Vagrant box setup
-    conf/vagrant.yml
+### Deploying in staging/production
 
-  What components do you want to install?
-    conf/vagrant.yml
-
-  And how are those set up?
-    conf/variables.yml
-
-You can also fix your vagrant/ansible base setup to certain branch/revision
-    conf/project.yml
-  There you can also do the same for build.sh
-
-
-
-## Debugging tools
-
-XDebug tools are installed via the devtools role. Everything should work out
-of the box for PHPStorm. PHP script e.g. drush debugging should also work.
-
-Example sublime text project configuration (via Project->Edit Project):
-
-    {
-       "folders":
-       [
-         {
-           "follow_symlinks": true,
-           "path": "/path/to/ansibleref"
-         }
-       ],
-
-       "settings":
-       {
-         "xdebug": {
-              "path_mapping": {
-                    "/vagrant" : "/path/to/ansibleref"
-                 }
-            }
-          }
-    }
-
+```./build.sh update```
