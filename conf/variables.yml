@@ -77,6 +77,10 @@ php:
 #       val: 1000
 #     - key: suhosin.request.max_vars
 #       val: 1000
+#     - key: suhosin.request.max_array_index_length
+#       val: 2048
+#     - key: suhosin.post.max_array_index_length
+#       val: 1024
  - section: OPCACHE
    options:
     - key: opcache.memory
