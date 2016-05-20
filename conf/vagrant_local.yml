@@ -2,5 +2,5 @@ name : ansibleref
 hostname : local.ansibleref.com
 mem : 2000 
 cpus : 2
-ip : 192.168.10.170
+ip : 192.168.10.171
 box : "geerlingguy/centos7"
