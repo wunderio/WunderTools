@@ -9,7 +9,7 @@ cat <<EOF
 Usage: ${0##*/} [-fm MYSQL_ROOT_PASS] [-v ANSIBLE_VAULT_FILE] [ENVIRONMENT] 
       -f                    First run, use when provisioning new servers.
       -m MYSQL_ROOT_PASS    For first run you need to provide new mysql root password.
-      -v ANSIBLE_VAULT_FILE Path to ansible vault password. This can also be provided with WT_ANSIGLE_VAULT_FILE environment variable.
+      -v ANSIBLE_VAULT_FILE Path to ansible vault password. This can also be provided with WT_ANSIBLE_VAULT_FILE environment variable.
          ENVIRONMENT        Environment to be provisioned.
 EOF
 
