@@ -23,13 +23,20 @@ SSH to your local vagrant environment:
 
 ```$ vagrant ssh```
 
+Create a files directory under drupal:
+
+```$ mkdir /vagrant/drupal/files```
+
 Build the drupal project:
 
 ```$ cd /vagrant/drupal/ && ./build.sh new```
 
 Install from standard profile (for fresh install):
 
-```$ cd /vagrant/drupal/current/web && drush si standard --config-dir=../staging```
+```$ cd /vagrant/drupal/current/web && drush si minimal --config-dir=../staging```
+
+If you get some errors during build you can try to rebuild cache with "drush cr" and just login at https://local.ansibleref.com
+
 
 Sync database:
 
