@@ -1,0 +1,10 @@
+default:
+  suites:
+    default:
+      contexts:
+        - FeatureContext:
+  extensions:
+    Behat\MinkExtension:
+      goutte: ~
+      selenium2: ~
+      base_url: http://local.ansibleref.com

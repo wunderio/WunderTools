@@ -13,12 +13,20 @@
    - { role: drush, tags: [ 'drush' ] }
    - { role: dbserver, tags: [ 'dbserver' ] }
    - { role: drupal-db, tags: [ 'drupal-db' ] }
+   # Local replacement for letsencrypt. Uses letsencrypt settings but creates self signed certificates for local use.
    - { role: selfencrypt, tags: [ 'selfencrypt' ] }
    - { role: sslterminator, tags: [ 'sslterminator' ] }
-# Optional HHVM role.
-# Requires WunderMachina hhvm branch https://github.com/wunderkraut/WunderMachina/tree/hhvm
-# More in-depth instructions at https://github.com/wunderkraut/WunderTools/wiki/HHVM
-#   - { role: hhvm, tags: [ 'hhvm' ] }
+   # Devtools, uncomment to enable xdebug and blackfire
+   # To use blackfire you need to define blackfire keys and tokens (see ansible/playbook/roles/devtools/defaults/main.yml for reference)
+   # You can get those keys and tokens from https://blackfire.io/docs/up-and-running/installation
+   # Otherwise you can disable blackfire by setting enable_blackfire: false
+   #- { role: devtools, tags: [ 'devtools' ] }
+   # Mailhog, uncomment to catch outgoing mail. You can access mailhog at your local site url on port 8025
+   #- { role: mailhog, tags: [ 'mailhog' ] }
+   # Optional HHVM role.
+   # Requires WunderMachina hhvm branch https://github.com/wunderkraut/WunderMachina/tree/hhvm
+   # More in-depth instructions at https://github.com/wunderkraut/WunderTools/wiki/HHVM
+   #- { role: hhvm, tags: [ 'hhvm' ] }
 
   tasks:
 
@@ -26,15 +34,13 @@
 
   vars:
 
-    letsencrypt_domains:
-      - local.ansibleref.com
-
     partition_var_log: False
 
     partition_var_lib_mysql: False
 
-    # Do not use this in production. For testing purposes only.
-    nginx_disable_content_security_policy: True
+    # <EXAMPLE>
+    # How to assign memory for each role and set the correct
+    # amount of worker processes / threads
 
     memory_db: 1024 # In MB
     memory_app: 1024 # In MB
@@ -42,43 +48,38 @@
     php_memory_limit: 256 # In MB
     nginx_workers: 2 # This should be equal to core count
 
-    php_ini:
-      - section: OPCACHE
-        options:
-          - key: opcache.enable
-            val: 0
-      - section: DATE
-        options:
-          - key: date.timezone
-            val: Europe/Helsinki
+
+    # </EXAMPLE>
+
+    letsencrypt_email: support@example.com
+    letsencrypt_domains:
+      - ansibleref.com
+      - www.ansibleref.com
+
+    newrelic_enabled: False
+    newrelic_license_key: "this-is-a-fake-key-replace-with-a-real-1"
 
     monit_enabled: False
-    monit_alert_email_service_name: "vagrant-reference"
-    monit_alert_email_from: "alert@ansibleref.com"
-    monit_alert_email_to: alert@ansibleref.com
-    monit_collector_address: https://user:password@mmonit.ansibleref.io:8443/collector
-    monit_allow:
-      - localhost
-      - user:password
-
     logentries_enabled: False
-    logentries_account_key: 00000000-0000-0000-0000-000000000000
-    logentries_service_name: "vagrant-reference"
-    logentries_hostname: "localhost"
-    logentries_follow:
-      - /var/log/secure
 
     # Apps I want to run on this server
     apps:
-      - server_name: local.ansibleref.com
-        server_aliases: local.ansibleref.com
-        server_forwards: ansibleref.com
+      # For drupal 7
+      - server_name: www.test1.com
+        server_aliases: bob1.com
+        server_forwards: test1.com
+        http_port: 8080
+        docroot: /vagrant/drupal/current
+      # For drupal 8
+      - server_name: www.test2.com
+        server_aliases: bob2.com
+        server_forwards: test2.com
         http_port: 8080
         docroot: /vagrant/drupal/current/web
 
     # This server also acts as a load balancer
     varnish:
-      port: 8081
+      port: 80
       memory: 512M
       acl_internal:
         - ip: 127.0.0.1
@@ -87,21 +88,33 @@
       acl_upstream_proxy:
         - ip: 127.0.0.1
       directors:
-        - name: ansibleref
-          host: local.ansibleref.com
+        - name: test1
+          host: www.test1.com
           backends:
-            - name: ansibleref_http
+            - name: test1_http
+              address: 127.0.0.1
+              port: 8080
+        - name: test2
+          host: www.test2.com
+          backends:
+            - name: test2_http
               address: 127.0.0.1
               port: 8080
 
     # BUT, we only use https for this host
     sslterminators:
-      - server_name: local.ansibleref.com
-        server_forwards: ansibleref.com
-        ssl_certificate: /etc/nginx/certificate.crt
-        ssl_certificate_key: /etc/nginx/ssl/certificate.key
+      - server_name: www.test1.com
+        server_forwards: test1.com
+        ssl_certificate: certificate.crt
+        ssl_certificate_key: ssl/certificate.key
         backends:
-          - 127.0.0.1:8081
+          - 127.0.0.1:80
+      - server_name: www.test2.com
+        server_forwards: test2.com
+        ssl_certificate: certificate.crt
+        ssl_certificate_key: ssl/certificate.key
+        backends:
+          - 127.0.0.1:80
 
     # Databases
     databases:
