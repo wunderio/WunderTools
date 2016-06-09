@@ -27,7 +27,7 @@ Create a files directory under drupal:
 
 ```$ mkdir /vagrant/drupal/files```
 
-Build the drupal project:
+Create the drupal project root directory (you only need to do this once):
 
 ```$ cd /vagrant/drupal/ && ./build.sh new```
 
