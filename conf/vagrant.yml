@@ -11,6 +11,7 @@
    - { role: varnish, tags: [ 'varnish' ] }
    - { role: memcached, tags: [ 'memcached' ] }
    - { role: drush, tags: [ 'drush' ] }
+   - { role: drupal-console, tags: ['drupal-console']}
    - { role: dbserver, tags: [ 'dbserver' ] }
    - { role: drupal-db, tags: [ 'drupal-db' ] }
    # Local replacement for letsencrypt. Uses letsencrypt settings but creates self signed certificates for local use.

@@ -30,8 +30,6 @@ $request = Request::createFromGlobals();
 $kernel = DrupalKernel::createFromRequest($request, $autoloader, 'prod');
 $kernel->boot();
 
-define('DRUPAL_ROOT', getcwd());
-
 // Build up our list of errors.
 $errors = array();
 
