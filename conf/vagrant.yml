@@ -13,12 +13,17 @@
    - { role: drush, tags: [ 'drush' ] }
    - { role: dbserver, tags: [ 'dbserver' ] }
    - { role: drupal-db, tags: [ 'drupal-db' ] }
+   # Local replacement for letsencrypt. Uses letsencrypt settings but creates self signed certificates for local use.
    - { role: selfencrypt, tags: [ 'selfencrypt' ] }
    - { role: sslterminator, tags: [ 'sslterminator' ] }
-# Optional HHVM role.
-# Requires WunderMachina hhvm branch https://github.com/wunderkraut/WunderMachina/tree/hhvm
-# More in-depth instructions at https://github.com/wunderkraut/WunderTools/wiki/HHVM
-#   - { role: hhvm, tags: [ 'hhvm' ] }
+   # Devtools, uncomment to enable xdebug and blackfire
+   #- { role: devtools, tags: [ 'devtools' ] }
+   # Mailhog, uncomment to catch outgoing mail. You can access mailhog at your local site url on port 8025
+   #- { role: mailhog, tags: [ 'mailhog' ] }
+   # Optional HHVM role.
+   # Requires WunderMachina hhvm branch https://github.com/wunderkraut/WunderMachina/tree/hhvm
+   # More in-depth instructions at https://github.com/wunderkraut/WunderTools/wiki/HHVM
+   #- { role: hhvm, tags: [ 'hhvm' ] }
 
   tasks:
 
@@ -52,33 +57,22 @@
     newrelic_license_key: "this-is-a-fake-key-replace-with-a-real-1"
 
     monit_enabled: False
-    monit_alert_email_service_name: "vagrant-reference"
-    monit_alert_email_from: "alert@ansibleref.com"
-    monit_alert_email_to: alert@ansibleref.com
-    monit_collector_address: https://user:password@mmonit.ansibleref.io:8443/collector
-    monit_allow:
-      - localhost
-      - user:password
-
     logentries_enabled: False
-    logentries_account_key: 00000000-0000-0000-0000-000000000000
-    logentries_service_name: "vagrant-reference"
-    logentries_hostname: "localhost"
-    logentries_follow:
-      - /var/log/secure
 
     # Apps I want to run on this server
     apps:
+      # For drupal 7
       - server_name: www.test1.com
         server_aliases: bob1.com
         server_forwards: test1.com
         http_port: 8080
-        docroot: /var/www/test1.com/drupal/current
+        docroot: /vagrant/drupal/current
+      # For drupal 8
       - server_name: www.test2.com
         server_aliases: bob2.com
         server_forwards: test2.com
         http_port: 8080
-        docroot: /var/www/test2.com/drupal/current
+        docroot: /vagrant/drupal/current/web
 
     # This server also acts as a load balancer
     varnish:
@@ -109,13 +103,13 @@
       - server_name: www.test1.com
         server_forwards: test1.com
         ssl_certificate: certificate.crt
-        ssl_certificate_key: certificate.key
+        ssl_certificate_key: ssl/certificate.key
         backends:
           - 127.0.0.1:80
       - server_name: www.test2.com
         server_forwards: test2.com
         ssl_certificate: certificate.crt
-        ssl_certificate_key: certificate.key
+        ssl_certificate_key: ssl/certificate.key
         backends:
           - 127.0.0.1:80
 
