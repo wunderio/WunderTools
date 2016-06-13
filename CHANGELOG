@@ -1,3 +1,7 @@
+4
+Removed local_ansible_roles linking from wundertools. Make sure you have anisble.cfg in your repo root that defines roles_path like this:
+roles_path=./local_ansible_roles:./ansible/playbook/roles
+
 3
 Centos7 branch is now the default (master) branch. If your project is still using centos6 update the ansible branch variable to "centos6" in the conf/project.yml or consider upgrading your project to use centos7.
 For centos7 projects you should update the ansible branch to "master" as the centos7 branch will be deprecated and will not receive any updates in the future.
