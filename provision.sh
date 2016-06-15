@@ -29,7 +29,7 @@ while getopts "hfvmt:" opt; do
         ;;
     m)  MYSQL_ROOT_PASS=$OPTARG
         ;;
-    t)  ANSIBLE_TAGS="--tags=\"$OPTARG\""
+    t)  ANSIBLE_TAGS=$OPTARG
         ;;
     esac
 done
@@ -65,5 +65,9 @@ if [ $FIRST_RUN ]; then
     ansible-playbook $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS"  -e "change_db_root_password=True mariadb_root_password=$MYSQL_ROOT_PASS" --ask-pass --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
   fi
 else
-  ansible-playbook $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
+  if [ -z $ANSIBLE_TAGS ]; then
+    ansible-playbook $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE
+  else
+    ansible-playbook $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE --tags "$ANSIBLE_TAGS"
+  fi
 fi
