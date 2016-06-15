@@ -1,15 +1,15 @@
 #!/bin/bash
 
 VAULT_FILE=$WT_ANSIBLE_VAULT_FILE
-FIRST_RUN=0
 MYSQL_ROOT_PASS=
 
 show_help() {
 cat <<EOF
-Usage: ${0##*/} [-fm MYSQL_ROOT_PASS] [-v ANSIBLE_VAULT_FILE] [ENVIRONMENT] 
+Usage: ${0##*/} [-fm MYSQL_ROOT_PASS] [-t ANSIBLE_TAGS] [-v ANSIBLE_VAULT_FILE] [ENVIRONMENT] 
       -f                    First run, use when provisioning new servers.
       -m MYSQL_ROOT_PASS    For first run you need to provide new mysql root password.
       -v ANSIBLE_VAULT_FILE Path to ansible vault password. This can also be provided with WT_ANSIBLE_VAULT_FILE environment variable.
+      -t ANSIBLE_TAGS       Ansible tags to be provisioned.
          ENVIRONMENT        Environment to be provisioned.
 EOF
 
