@@ -33,6 +33,7 @@
     - cron: name="check dirs" minute="0" hour="5,2" job="ls -alh > /dev/null"
 
   vars:
+    wkv_site_env: local
 
     partition_var_log: False
 
@@ -81,6 +82,7 @@
     varnish:
       port: 80
       memory: 512M
+      probe_resource_url: "_ping.php"
       acl_internal:
         - ip: 127.0.0.1
       acl_purge:
