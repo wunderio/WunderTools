@@ -1,3 +1,6 @@
+6
+wkv_site_env variable is now required.
+
 5
 Varnish role has added parametrized probe url (probe_resource_url) that needs to be added to varnish configs or provisioning will fail.
 This should usually point to _ping.php e.g. :  probe_resource_url: "_ping.php"
