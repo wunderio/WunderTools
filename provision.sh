@@ -1,15 +1,16 @@
 #!/bin/bash
 
 VAULT_FILE=$WT_ANSIBLE_VAULT_FILE
-FIRST_RUN=0
 MYSQL_ROOT_PASS=
 
 show_help() {
 cat <<EOF
-Usage: ${0##*/} [-fm MYSQL_ROOT_PASS] [-v ANSIBLE_VAULT_FILE] [ENVIRONMENT] 
+Usage: ${0##*/} [-fm MYSQL_ROOT_PASS] [-t|s ANSIBLE_TAGS] [-v ANSIBLE_VAULT_FILE] [ENVIRONMENT] 
       -f                    First run, use when provisioning new servers.
       -m MYSQL_ROOT_PASS    For first run you need to provide new mysql root password.
       -v ANSIBLE_VAULT_FILE Path to ansible vault password. This can also be provided with WT_ANSIBLE_VAULT_FILE environment variable.
+      -t ANSIBLE_TAGS       Ansible tags to be provisioned.
+      -s ANSIBLE_TAGS       Ansible tags to be skipped when provisioning.
          ENVIRONMENT        Environment to be provisioned.
 EOF
 
@@ -17,7 +18,7 @@ EOF
 OPTIND=1
 ANSIBLE_TAGS=""
 
-while getopts "hfvmt:" opt; do
+while getopts "hfvmts:" opt; do
     case "$opt" in
     h)
         show_help
@@ -29,7 +30,9 @@ while getopts "hfvmt:" opt; do
         ;;
     m)  MYSQL_ROOT_PASS=$OPTARG
         ;;
-    t)  ANSIBLE_TAGS="--tags=\"$OPTARG\""
+    t)  ANSIBLE_TAGS=$OPTARG
+        ;;
+    s)  ANSIBLE_SKIP_TAGS=$OPTARG
         ;;
     esac
 done
@@ -62,8 +65,14 @@ if [ $FIRST_RUN ]; then
     echo "Mysql root password missing. You need to provide password using -m flag."
     exit 1
   else
-    ansible-playbook -C $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS"  -e "change_db_root_password=True mariadb_root_password=$MYSQL_ROOT_PASS" --ask-pass --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
+    ansible-playbook $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS"  -e "change_db_root_password=True mariadb_root_password=$MYSQL_ROOT_PASS" --ask-pass --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
   fi
 else
-  ansible-playbook -C $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
+  if [ $ANSIBLE_TAGS ]; then
+    ansible-playbook $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE --tags "$ANSIBLE_TAGS"
+  elif [ $ANSIBLE_SKIP_TAGS ] then
+    ansible-playbook $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE --skip-tags "$ANSIBLE_SKIP_TAGS"
+  else
+    ansible-playbook $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE
+  fi
 fi
