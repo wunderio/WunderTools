@@ -3,6 +3,24 @@
 VAULT_FILE=$WT_ANSIBLE_VAULT_FILE
 MYSQL_ROOT_PASS=
 
+function parse_yaml {
+   local prefix=$2
+   local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
+   sed -ne "s|^\($s\):|\1|" \
+        -e "s|^\($s\)\($w\)$s:$s[\"']\(.*\)[\"']$s\$|\1$fs\2$fs\3|p" \
+        -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
+   awk -F$fs '{
+      indent = length($1)/2;
+      vname[indent] = $2;
+      for (i in vname) {if (i > indent) {delete vname[i]}}
+      if (length($3) > 0) {
+         vn=""; for (i=0; i<indent; i++) {vn=(vn)(vname[i])("_")}
+         printf("%s%s%s=\"%s\"\n", "'$prefix'",vn, $2, $3);
+      }
+   }'
+}
+
+
 show_help() {
 cat <<EOF
 Usage: ${0##*/} [-fm MYSQL_ROOT_PASS] [-t|s ANSIBLE_TAGS] [-v ANSIBLE_VAULT_FILE] [ENVIRONMENT] 
@@ -15,6 +33,46 @@ Usage: ${0##*/} [-fm MYSQL_ROOT_PASS] [-t|s ANSIBLE_TAGS] [-v ANSIBLE_VAULT_FILE
 EOF
 
 }
+self_update() {
+  if command -v md5sum >/dev/null 2>&1; then
+    MD5COMMAND="md5sum"
+  else
+    MD5COMMAND="md5 -r"
+  fi
+
+  SELF=$(basename $0)
+  UPDATEURL="https://raw.githubusercontent.com/wunderkraut/WunderTools/$GITBRANCH/provision.sh"
+  MD5SELF=$($MD5COMMAND $0 | awk '{print $1}')
+  MD5LATEST=$(curl -s $UPDATEURL | $MD5COMMAND | awk '{print $1}')
+  if [[ "$MD5SELF" != "$MD5LATEST" ]]; then
+    read -p "There is update for this script available. Update now ([y]es / [n]o)?" -n 1 -r;
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      cd $ROOT
+      curl -s -o $SELF $UPDATEURL
+      echo "Update complete, please rerun any command you were running previously."
+      echo "See CHANGELOG for more info."
+      echo "Also remember to add updated script to git."
+      exit
+    fi
+  fi
+}
+pushd `dirname $0` > /dev/null
+ROOT=`pwd -P`
+popd > /dev/null
+# Parse project config
+PROJECTCONF=$ROOT/conf/project.yml
+echo $PROJECTCONF
+eval $(parse_yaml $PROJECTCONF)
+
+if [ -z "$wundertools_branch" ]; then
+  GITBRANCH="master"
+else
+  GITBRANCH=$wundertools_branch
+fi
+
+
+self_update
+
 OPTIND=1
 ANSIBLE_TAGS=""
 
