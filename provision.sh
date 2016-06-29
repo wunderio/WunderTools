@@ -18,7 +18,7 @@ EOF
 OPTIND=1
 ANSIBLE_TAGS=""
 
-while getopts "hfvmts:" opt; do
+while getopts "hfv:m:t:s:" opt; do
     case "$opt" in
     h)
         show_help
@@ -70,7 +70,7 @@ if [ $FIRST_RUN ]; then
 else
   if [ $ANSIBLE_TAGS ]; then
     ansible-playbook $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE --tags "$ANSIBLE_TAGS"
-  elif [ $ANSIBLE_SKIP_TAGS ] then
+  elif [ $ANSIBLE_SKIP_TAGS ]; then
     ansible-playbook $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE --skip-tags "$ANSIBLE_SKIP_TAGS"
   else
     ansible-playbook $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE
