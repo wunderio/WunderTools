@@ -60,6 +60,9 @@ if [ "$CURRENT_VERSION" -ne "$VERSION" ]; then
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo $VERSION > $VERSIONFILE
     echo "Current version updated, make sure to commit all the changes before continuing."
+  else
+    echo "Please update everything to comply with the latest version before continuing!"
+    exit 0
   fi
 fi
 
