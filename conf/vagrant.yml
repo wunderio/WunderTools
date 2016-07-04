@@ -40,6 +40,9 @@
 
     partition_var_lib_mysql: False
 
+    # Do not use this in production. For local only.
+    nginx_disable_content_security_policy: True
+
     memory_db: 1024 # In MB
     memory_app: 1024 # In MB
     # NOTE: ALWAYS leave some spare memory for the server
@@ -60,7 +63,6 @@
     # Apps I want to run on this server
     apps:
       - server_name: local.wundertools.site
-        server_aliases: local.wundertools.site
         server_forwards: wundertools.site
         http_port: 8080
         docroot: /vagrant/drupal/current/web
