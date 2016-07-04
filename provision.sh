@@ -115,8 +115,14 @@ ROOT=`pwd -P`
 popd > /dev/null
 
 PLAYBOOKPATH=$ROOT/conf/$ENVIRONMENT.yml
-INVENTORY=$ROOT/conf/server.inventory
+if [ "$ENVIRONMENT" == "vagrant" ]; then
+  INVENTORY=$ROOT/.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
+  VAGRANT_CREDENTIALS="--private-key=.vagrant/machines/default/virtualbox/private_key -u vagrant"
+else
+  INVENTORY=$ROOT/conf/server.inventory
+fi
 EXTRA_VARS=$ROOT/conf/variables.yml
+
 
 if [ $FIRST_RUN ]; then
   if [ -z $MYSQL_ROOT_PASS ]; then
@@ -127,10 +133,10 @@ if [ $FIRST_RUN ]; then
   fi
 else
   if [ $ANSIBLE_TAGS ]; then
-    ansible-playbook $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE --tags "$ANSIBLE_TAGS"
+    ansible-playbook $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE --tags "$ANSIBLE_TAGS"
   elif [ $ANSIBLE_SKIP_TAGS ]; then
-    ansible-playbook $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE --skip-tags "$ANSIBLE_SKIP_TAGS"
+    ansible-playbook $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE --skip-tags "$ANSIBLE_SKIP_TAGS"
   else
-    ansible-playbook $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE
+    ansible-playbook $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE
   fi
 fi
