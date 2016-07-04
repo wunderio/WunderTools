@@ -56,11 +56,11 @@ Downloading packpages
 
 Importing configuration (this will override your current configuration):
 
-```$ ./drush.sh cim staging```
+```$ ./drush.sh cim```
 
 Exporting configuration:
 
-```$ ./drush.sh cex staging```
+```$ ./drush.sh cex```
 
 Note: Please take care when committing exported configuration code, making sure you are not overriding configuration that were not related to the changes that you have made.
 
