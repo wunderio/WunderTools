@@ -115,6 +115,7 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
     if [ -z "$ansible_revision" ]; then
       cd $ROOT/ansible
       git pull
+      git checkout $ansible_branch
       cd $ROOT
     fi
   fi
@@ -143,4 +144,3 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
     fi
   fi
 fi
-
