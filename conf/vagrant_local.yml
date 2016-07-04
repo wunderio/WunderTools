@@ -1,6 +1,6 @@
-name : ansibleref
-hostname : local.ansibleref.com
+name : wundertools
+hostname : local.wundertools.site
 mem : 2000
 cpus : 2
-ip : 192.168.10.172
+ip : 192.168.20.15
 box : "geerlingguy/centos7"
