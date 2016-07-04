@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4bf1f75d92b8fb9d53c3419212a2021f",
-    "content-hash": "2cdcb2bec5f973a85c2a578749096d27",
+    "hash": "7d7aaf5f043507d86559f62ebc5af202",
+    "content-hash": "d18ec0455f977dbbdaed09da0f1c6234",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -818,7 +818,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/config_installer-8.x-1.3.zip",
-                "reference": null,
+                "reference": "071213c9a7507bddcd6f6018d3f24217c13bb9d7",
                 "shasum": null
             },
             "require": {
@@ -925,16 +925,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.1.1",
+            "version": "8.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "e405a10c85a874a70932fe53670993f790df746f"
+                "reference": "ac94c29c14d85c8e77f5cb1d0ab38036f5f25c9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/e405a10c85a874a70932fe53670993f790df746f",
-                "reference": "e405a10c85a874a70932fe53670993f790df746f",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/ac94c29c14d85c8e77f5cb1d0ab38036f5f25c9c",
+                "reference": "ac94c29c14d85c8e77f5cb1d0ab38036f5f25c9c",
                 "shasum": ""
             },
             "require": {
@@ -995,6 +995,7 @@
                 "drupal/core-discovery": "self.version",
                 "drupal/core-event-dispatcher": "self.version",
                 "drupal/core-file-cache": "self.version",
+                "drupal/core-filesystem": "self.version",
                 "drupal/core-gettext": "self.version",
                 "drupal/core-graph": "self.version",
                 "drupal/core-php-storage": "self.version",
@@ -1058,7 +1059,7 @@
                 "drupal/views_ui": "self.version"
             },
             "require-dev": {
-                "behat/mink": "~1.6",
+                "behat/mink": "~1.7",
                 "behat/mink-goutte-driver": "~1.2",
                 "jcalderonzumba/gastonjs": "~1.0.2",
                 "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
@@ -1088,7 +1089,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-05-04 11:20:24"
+            "time": "2016-06-15 20:08:27"
         },
         {
             "name": "drush/drush",
