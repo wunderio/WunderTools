@@ -13,10 +13,6 @@ $databases['default']['default'] = array (
 
 $settings['hash_salt'] = 'some-hash-salt-please-change-this';
 
-$settings['trusted_host_patterns'] = array(
-  '^local\.wundertools\.site',
-);
-
 if ( (isset($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) == "on")
   || (isset($_SERVER["HTTP_X_FORWARDED_PROTO"]) && $_SERVER["HTTP_X_FORWARDED_PROTO"] == "https")
   || (isset($_SERVER["HTTP_HTTPS"]) && $_SERVER["HTTP_HTTPS"] == "on")
