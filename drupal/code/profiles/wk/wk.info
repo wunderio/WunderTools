@@ -33,6 +33,7 @@ dependencies[] = memcache
 dependencies[] = pathologic
 dependencies[] = rules
 dependencies[] = rules_admin
+dependencies[] = simplei
 dependencies[] = varnish
 dependencies[] = views
 dependencies[] = views_ui
