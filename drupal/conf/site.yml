@@ -35,6 +35,7 @@ default:
   # Site name given at installation phase
   site: Wundersite
 
+local:
   # In development environments we usually want to use symlinks, note the settings.php linking
   link:
     - conf/composer/composer.json: composer.json

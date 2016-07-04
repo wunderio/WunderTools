@@ -3,14 +3,23 @@
 
 # The commands available to the command line are defined here.
 
-# Basic new site functionality
-new:
+# Install project from config_install profile
+install:
   - verify: "Type yes to verify you want to build a new installation: "
   - backup
   - purge
   - make
   - finalize
   - install
+  - cleanup
+
+# Basic new site functionality
+new:
+  - verify: "Type yes to verify you want to create a new build: "
+  - backup
+  - purge
+  - make
+  - finalize
   - cleanup
 
 
@@ -44,4 +53,3 @@ backup:
       skip-database: yes
       ignore:
         - sites/default/files
-

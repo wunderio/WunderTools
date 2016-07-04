@@ -14,7 +14,7 @@ $databases['default']['default'] = array (
 $settings['hash_salt'] = 'some-hash-salt-please-change-this';
 
 $settings['trusted_host_patterns'] = array(
-  '^local\.ansibleref\.com',
+  '^local\.wundertools\.site',
 );
 
 if ( (isset($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) == "on")
@@ -49,4 +49,4 @@ $config['system.performance']['js']['preprocess'] = FALSE;
 /*
  * Set configuration directy
  */
-$config_directories['staging'] = '../staging';
+$config_directories['sync'] = '../staging';
