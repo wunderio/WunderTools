@@ -64,12 +64,6 @@
         server_forwards: wundertools.site
         http_port: 8080
         docroot: /vagrant/drupal/current/web
-      - server_name: 10.10.4.108
-        http_port: 8080
-        docroot: /vagrant/drupal/current/web
-      - server_name: 192.168.1.100
-        http_port: 8080
-        docroot: /vagrant/drupal/current/web
 
     # This server also acts as a load balancer
     varnish:
