@@ -35,6 +35,8 @@
   vars:
     wkv_site_env: local
 
+    nginx_disable_content_security_policy: True
+
     partition_var_log: False
 
     partition_var_lib_mysql: False
@@ -55,7 +57,7 @@
     letsencrypt_email: support@example.com
     letsencrypt_domains:
       - ansibleref.com
-      - www.ansibleref.com
+      - local.ansibleref.com
 
     newrelic_enabled: False
     newrelic_license_key: "this-is-a-fake-key-replace-with-a-real-1"
@@ -66,9 +68,9 @@
     # Apps I want to run on this server
     apps:
       # For drupal 7
-      - server_name: www.test1.com
-        server_aliases: bob1.com
-        server_forwards: test1.com
+      - server_name: local.ansibleref.com
+        server_aliases: ansibleref.com
+        server_forwards: ansibleref.com
         http_port: 8080
         docroot: /vagrant/drupal/current
       # For drupal 8
@@ -80,7 +82,7 @@
 
     # This server also acts as a load balancer
     varnish:
-      port: 80
+      port: 8081
       memory: 512M
       probe_resource_url: "_ping.php"
       acl_internal:
@@ -91,9 +93,9 @@
         - ip: 127.0.0.1
       directors:
         - name: test1
-          host: www.test1.com
+          host: local.ansibleref.com
           backends:
-            - name: test1_http
+            - name: local_ansibleref_http
               address: 127.0.0.1
               port: 8080
         - name: test2
@@ -105,18 +107,18 @@
 
     # BUT, we only use https for this host
     sslterminators:
-      - server_name: www.test1.com
-        server_forwards: test1.com
+      - server_name: local.ansibleref.com
+        server_forwards: ansibleref.com
         ssl_certificate: certificate.crt
         ssl_certificate_key: ssl/certificate.key
         backends:
-          - 127.0.0.1:80
+          - 127.0.0.1:8081
       - server_name: www.test2.com
         server_forwards: test2.com
         ssl_certificate: certificate.crt
         ssl_certificate_key: ssl/certificate.key
         backends:
-          - 127.0.0.1:80
+          - 127.0.0.1:8081
 
     # Databases
     databases:
