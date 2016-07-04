@@ -85,6 +85,7 @@
             - name: wundertools_http
               address: 127.0.0.1
               port: 8080
+      probe_resource_url: "_ping.php"
 
     # BUT, we only use https for this host
     sslterminators:
