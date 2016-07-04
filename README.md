@@ -31,6 +31,8 @@ Install the drupal project from configuration and create root directory (you onl
 
 ```$ cd /vagrant/drupal/ && ./build.sh install```
 
+This will/should generate the packages and project directory, and also install drupal using config_installer profile.
+
 If you get some errors during build you can try to rebuild cache with "drush cr" and just login at https://local.wundertools.site
 
 
