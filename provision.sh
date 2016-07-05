@@ -55,6 +55,24 @@ self_update() {
       exit
     fi
   fi
+  # Clone and update virtual environment configurations
+  if [ ! -d "$ROOT/ansible" ]; then
+    git clone  -b $ansible_branch $ansible_remote $ROOT/ansible
+    if [ -n "$ansible_revision" ]; then
+      cd $ROOT/ansible
+      git reset --hard $ansible_revision
+      cd $ROOT
+    fi
+  else
+    if [ -z "$ansible_revision" ]; then
+      cd $ROOT/ansible
+      git pull
+      git checkout $ansible_branch
+      cd $ROOT
+    fi
+  fi
+
+
 }
 pushd `dirname $0` > /dev/null
 ROOT=`pwd -P`
