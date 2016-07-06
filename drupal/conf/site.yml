@@ -10,7 +10,9 @@ default:
   # aliases:
   #   - vagrant
   #   - mylocalbox
-  aliases: local
+  aliases:
+    - vagrant
+    - local
 
   # The drush make file to use
   makefile: conf/site.make
