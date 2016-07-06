@@ -1,8 +1,0 @@
-[ansibleref-dev]
-10.10.10.1
-
-[ansibleref-stage]
-10.10.10.2
-
-[ansibleref-prod]
-10.10.10.3

@@ -93,9 +93,12 @@
         ssl_certificate: /etc/nginx/certificate.crt
         ssl_certificate_key: /etc/nginx/ssl/certificate.key
         backends:
-          - 127.0.0.1:80
+          - 127.0.0.1:8081
 
-    httpforwards: {}
+    httpforwards:
+      - server_name: local.wundertools.site
+        forwarded_domains: 'local.wundertools.site'
+
 
     # Databases
     databases:

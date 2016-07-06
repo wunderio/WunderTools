@@ -9,3 +9,4 @@ drupal/drupal.sqlite
 .idea
 ansible
 local.*
+VERSION
