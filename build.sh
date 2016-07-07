@@ -104,7 +104,7 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
     fi
   fi
   # Clone and update virtual environment configurations
-  if [ ! -d "ansible" ]; then
+  if [ ! -d "$ROOT/ansible" ]; then
     git clone  -b $ansible_branch $ansible_remote $ROOT/ansible
     if [ -n "$ansible_revision" ]; then
       cd $ROOT/ansible
