@@ -57,6 +57,8 @@
         options:
           - key: opcache.validate_timestamps
             val: 1 
+          - key: opcache.opcache.revalidate_freq
+            val: 0
 
     # </EXAMPLE>
 
