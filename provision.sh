@@ -151,10 +151,10 @@ if [ $FIRST_RUN ]; then
   fi
 else
   if [ $ANSIBLE_TAGS ]; then
-    ansible-playbook $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE --tags "$ANSIBLE_TAGS"
+    ansible-playbook $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --tags "$ANSIBLE_TAGS"
   elif [ $ANSIBLE_SKIP_TAGS ]; then
-    ansible-playbook $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE --skip-tags "$ANSIBLE_SKIP_TAGS"
+    ansible-playbook $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --skip-tags "$ANSIBLE_SKIP_TAGS"
   else
-    ansible-playbook $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e $EXTRA_VARS --vault-password-file=$VAULT_FILE
+    ansible-playbook $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE
   fi
 fi
