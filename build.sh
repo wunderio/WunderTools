@@ -117,6 +117,10 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
       git pull
       git checkout $ansible_branch
       cd $ROOT
+    else
+      cd $ROOT/ansible
+      git reset --hard $ansible_revision
+      cd $ROOT
     fi
   fi
 
