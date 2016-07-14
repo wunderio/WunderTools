@@ -3,11 +3,9 @@
 # WunderTools
 [About](index.md)
 [Quick start](start.md)
-[Docs]()
-
-  * [Structure](structure.md)
-  * [Configuration](config.md)
-  * [Tips](tips.md)
+[Structure](structure.md)
+[Configuration](config.md)
+[Tips](tips.md)
 
 
 
