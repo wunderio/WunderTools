@@ -7,7 +7,6 @@
 
   * [Structure](structure.md)
   * [Configuration](config.md)
-  * [Commands](commands.md)
   * [Tips](tips.md)
 
 
