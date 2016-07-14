@@ -1,5 +1,7 @@
 Useful things
 
+Attention: This might be out of date. Updated version coming soon!
+
 At the moment IP is configured in
   Vagrantfile
     variable INSTANCE_IP

@@ -1,5 +1,6 @@
 # Configuration
 
+Attention: More detail coming soon!
 
 
 ##Vagrant + Ansible configuration
