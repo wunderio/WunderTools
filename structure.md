@@ -4,7 +4,7 @@
 ![](img/wundertools_structure.png "WunderTools structure")
 
 ## WunderMachina
-WunderMachina is separate repository that is cloned under project root (under ansible folder). Invoking build.sh (either directly or through vagrant commands) or provision.sh will download / update shit repository to the latest version unless otherwise defined. You can define which version (branch, tag or commit) will be used in the conf/project.yml file. Additionally it is also possible to use entirely different provisioning configuration as long as it's compatible by defining the repository in ansible: remote in the same place.
+WunderMachina is separate repository that is cloned under project root (under ansible folder). Invoking build.sh (either directly or through vagrant commands) or provision.sh will download / update this repository to the latest version unless otherwise defined. You can define which version (branch, tag or commit) will be used in the conf/project.yml file. Additionally it is also possible to use entirely different provisioning configuration as long as it's compatible by defining the repository in ansible: remote in the same place.
 
 ## Local environment
 By default Vagrant is used for local development environment. WunderTool Vagrant configuration supports either Virtualbox or VMWare Fusion backends for virtualization. Local vagrant configurations can be defined in conf/vagrant_local.yml. Support for docker based local environments is currently under work.
