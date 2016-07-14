@@ -20,5 +20,4 @@ Attention: Coming soon!
 - WunderTools supports vagrant-hostmanager for easier hosts configuration
 ```vagrant plugin install vagrant-hostmanager```
 
-  Note: If you don't use hostmanager you need to take care setting up your local environment hostname manually in /etc/hosts
-
+  Note: If you don't use hostmanager you need to take care of setting up your local environment hostname manually in /etc/hosts
