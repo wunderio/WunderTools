@@ -20,12 +20,10 @@ MailHOG responds to
 
 Docs are in
         http://x.x.x.x:8080/index.html
-        You can setup the dir where the docs are taken from and their URL from the
+        You can setup the dir where the docs are taken from and their URL in the
         variables.yml file.
 
         #Docs
         docs:
           hostname : 'docs.local.ansibleref.com'
           dir : '/vagrant/docs'
-
-
