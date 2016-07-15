@@ -23,7 +23,7 @@ You can further divide environment specific config files by role. For example in
 conf/server.inventory file is used for defining remote server addresses. Vagrant has it's own inventory file that is used automatically so no need to worry about that.
 
 ## Provisioning
-Provisioning different environments is easy with the provided ```provision.sh``` script. To provision an environment you can simply run ```./provision.sh [environment]``` where environment must mach the main evironment configuration file name. For eample to provision production environment defined in conf/production.yml you can run ```./provision.sh production```.
+Provisioning different environments is easy with the provided ```provision.sh``` script. To provision an environment you can simply run ```./provision.sh [environment]``` where environment must mach the main environment configuration file name. For example to provision production environment defined in conf/production.yml you can run ```./provision.sh production```.
 
 Provision.sh supports multiple options and have a special case for when provisioning a new server for the first time.
 Doing the initial provisioning on a server requires the use of root password and also setting up mysql root password. For this you need to use -f option for the "first run" and -m option to provide the mysql root password:
