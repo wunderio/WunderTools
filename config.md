@@ -1,30 +1,82 @@
 # Configuration
 
-Attention: More detail coming soon!
+## Vagrant
+We have a shared vagrantfile under WunderMachina and the project root Vagrantfile is just a wrapper that includes it, runs the build.sh. To configure project specific vagrant settings you can use conf/vagrant.local.yml. Currently supported variables are:
+```
+name : The name of the box
+hostname : local hostname to be used. If you have vagrant-hostmanager installed this will be automatically added to your /etc/hosts
+mem : Amount of memory in virtual machine
+cpus : Number of cpus
+ip : Box ip
+box : Image to be used as base box
+```
 
 
-##Vagrant + Ansible configuration
+## Ansible
+Ansible configurations are divided in three separate layers:
+1. variables.yml for common configurations among environments
+2. [environment].yml for environment specific configurations and overrides (e.g. vagrant.yml, production.yml)
+3. [environment]-vars.yml for ansible-vault encoded environment specific variables
 
-Vagrant is using Ansible provision stored under the ansible subdirectory.
-The inventory file (which stores the hosts and their IP's) is located under
-ansible/inventory. Host specific configurations for Vagrant are stored in
-ansible/vagrant.yml and the playbooks are under ansible/playbook directory.
-Variable overrides are defined in ansible/variables.yml.
+You can further divide environment specific config files by role. For example in multiserver environments you might want to have production.yml divided into prod-db.yml for database server, prod-lb.yml for loadbalancer and prod-front.yml for webfronts.
 
-You should only bother with the following:
+conf/server.inventory file is used for defining remote server addresses. Vagrant has it's own inventory file that is used automatically so no need to worry about that.
 
-  Vagrant box setup
-    conf/vagrant.yml
+## Provisioning
+Provisioning different environments is easy with the provided ```provision.sh``` script. To provision an environment you can simply run ```./provision.sh [environment]``` where environment must mach the main evironment configuration file name. For eample to provision production environment defined in conf/production.yml you can run ```./provision.sh production```.
 
-  What components do you want to install?
-    conf/vagrant.yml
+Provision.sh supports multiple options and have a special case for when provisioning a new server for the first time.
+Doing the initial provisioning on a server requires the use of root password and also setting up mysql root password. For this you need to use -f option for the "first run" and -m option to provide the mysql root password:
+```./provision.sh -f -m you_mysql_root_pass production``` 
 
-  And how are those set up?
-    conf/variables.yml
+If you only have changes to some of the configurations you don't have to run the full provisioning every time. Instead you can use tags to only run the specified roles. For example to provision just the php-fpm role on production you can run:
+```./provision.sh -t php-fpm production```
+There is also the -s option for excluding certain tags from being ran:
+```./provision.sh -s nginx,varnish production```
 
-You can also fix your vagrant/ansible base setup to certain branch/revision
-    conf/project.yml
-  There you can also do the same for build.sh
+Provision.sh assumes you have ansible-vault encrypted variables and therefore requires you to provide the path to your vault-password-file. There are two options for providing this: 
+1. you can define WT_ANSIBLE_VAULT_FILE environment variable running: 
+```export WT_ANSIBLE_VAULT_FILE=/path/to/your/ansible-pass-file.txt``` 
+or adding it to your ~/.bashrc or equivalent
+2. rovide it to provision.sh with the -v option: 
+```./provision.sh -v /path/to/your/ansible-pass-file.txt production```
+
+## Defaults and overrides
+You can find all the default settings from under the ansible/playbook/roles/[rolename]/defaults/main.yml. Our default ansible.cfg defines hash_behaviour=merge so it is possible to only override part of the dictionary variables without the need to define it completely in your custom configurations.
+For example varnish role defines the following dictionary for a default setup:
+```
+varnish:
+  port: 8081
+  memory: 1G
+  probe_resource_url: "_ping.php"
+  acl_internal:
+    - ip: 127.0.0.1
+  acl_purge:
+    - ip: 127.0.0.1
+  acl_upstream_proxy:
+    - ip: 127.0.0.1
+  directors:
+    # One app
+    - name: test_com_director
+      host: test.com
+      backends:
+        - name: test1_web
+          address: 127.0.0.1
+          port: 8080
+```
+In your variables you can simply define:
+```
+varnish:
+  directors:
+    - name: yoursite_com_director
+      host: yoursite.com
+      backends:
+        - name: yoursite_web
+          address: 127.0.0.1
+          port: 8080
+```
+and the rest will be merged from the defaults.
+
 
 
 
