@@ -52,6 +52,10 @@ Downloading packpages
 
 ```composer install```
 
+### Updating Drupal core
+
+```composer update drupal/core --with-dependencies```
+
 ### Configuration management
 
 Importing configuration (this will override your current configuration):
