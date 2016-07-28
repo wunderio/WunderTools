@@ -48,5 +48,10 @@
         },
         "patches": {
         }
+    },
+    "scripts": {
+      "post-install-cmd": [
+        "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+      ]
     }
 }

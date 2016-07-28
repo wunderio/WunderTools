@@ -1,12 +1,17 @@
 <?php
 
 /**
- * Database settings:
+ * General settings.php for all environments.
+ * You could use this to add general settings to be used for all environments.
+ */
+
+/**
+ * Database settings (overridden per environment)
  */
 $databases = array();
 
 /**
- * Location of the site configuration files.
+ * Location of the site configuration files (overridden per environment).
  */
 $config_directories = array();
 
@@ -28,7 +33,7 @@ $settings['update_free_access'] = FALSE;
 $settings['container_yamls'][] = __DIR__ . '/services.yml';
 
 /**
- * Load local override configuration, if available.
+ * Environment specific override configuration, if available.
  */
 if (file_exists(__DIR__ . '/settings.local.php')) {
    include __DIR__ . '/settings.local.php';

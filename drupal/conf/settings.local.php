@@ -1,4 +1,8 @@
 <?php
+/**
+ * Local settings for Vagrant/Local environment only.
+ * This should be overridden in staging and production environments.
+ */
 
 $databases['default']['default'] = array (
   'database' => 'drupal',
@@ -11,6 +15,7 @@ $databases['default']['default'] = array (
   'driver' => 'mysql',
 );
 
+// CHANGE THIS.
 $settings['hash_salt'] = 'some-hash-salt-please-change-this';
 
 if ( (isset($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) == "on")

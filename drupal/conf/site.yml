@@ -46,11 +46,9 @@ local:
     - staging: staging
 
   copy:
-    - conf/development.services.yml: web/sites/default/services.yml
-    - conf/default.settings.php: web/sites/default/settings.php
-    - conf/default.settings.php: web/sites/default/default.settings.php
+    - conf/services.yml: web/sites/default/services.yml
+    - conf/settings.php: web/sites/default/settings.php
     - conf/settings.local.php: web/sites/default/settings.local.php
-    - conf/composer/index.php: web/index.php
     - conf/composer/autoload.php: web/autoload.php
     - conf/_ping.php: web/_ping.php
 
@@ -62,13 +60,12 @@ stage:
   copy:
     - code/modules: web/modules
     - code/themes: web/themes
-    - conf/composer/index.php: web/index.php
     - conf/composer/autoload.php: web/autoload.php
     - conf/composer/composer.json: composer.json
     - conf/composer/composer.lock: composer.lock
     - staging: staging
+    - conf/settings.php: web/sites/default/settings.php
     - conf/stage.settings.php: web/sites/default/settings.local.php
-    - conf/default.settings.php: web/sites/default/settings.php
     - conf/services.yml: web/sites/default/services.yml
     - conf/_ping.php: web/_ping.php
 
@@ -80,13 +77,11 @@ production:
   copy:
     - code/modules: web/modules
     - code/themes: web/themes
-    - conf/composer/index.php: web/index.php
     - conf/composer/autoload.php: web/autoload.php
     - conf/composer/composer.json: composer.json
     - conf/composer/composer.lock: composer.lock
-    - files: web/sites/default/files
     - staging: staging
+    - conf/settings.php: web/sites/default/settings.php
     - conf/prod.settings.php: web/sites/default/settings.local.php
-    - conf/default.settings.php: web/sites/default/settings.php
     - conf/services.yml: web/sites/default/services.yml
     - conf/_ping.php: web/_ping.php
