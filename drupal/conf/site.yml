@@ -49,7 +49,6 @@ local:
     - conf/services.yml: web/sites/default/services.yml
     - conf/settings.php: web/sites/default/settings.php
     - conf/settings.local.php: web/sites/default/settings.local.php
-    - conf/composer/autoload.php: web/autoload.php
     - conf/_ping.php: web/_ping.php
 
 stage:
@@ -60,7 +59,6 @@ stage:
   copy:
     - code/modules: web/modules
     - code/themes: web/themes
-    - conf/composer/autoload.php: web/autoload.php
     - conf/composer/composer.json: composer.json
     - conf/composer/composer.lock: composer.lock
     - staging: staging
@@ -77,7 +75,6 @@ production:
   copy:
     - code/modules: web/modules
     - code/themes: web/themes
-    - conf/composer/autoload.php: web/autoload.php
     - conf/composer/composer.json: composer.json
     - conf/composer/composer.lock: composer.lock
     - staging: staging
