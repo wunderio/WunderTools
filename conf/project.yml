@@ -1,8 +1,8 @@
 project:
   name: ansibleref
 ansible:
-  remote: git@github.com:wunderkraut/WunderMachina.git
-  branch: master
+  remote: https://github.com/wunderkraut/WunderMachina.git
+  branch: centos6
   revision:
 buildsh:
   enabled: true
