@@ -1,7 +1,8 @@
 ---
-
 - hosts: vagrant
-  sudo: true
+  become: true
+  become_method: sudo
+  user: vagrant
   roles:
    - role: common
    - role: cache

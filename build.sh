@@ -19,7 +19,7 @@ function parse_yaml {
 
 # Remember to update this on each release
 # Also update the changelog!
-VERSION=3
+VERSION=7
 
 pushd `dirname $0` > /dev/null
 ROOT=`pwd -P`
@@ -48,7 +48,7 @@ else
 fi
 
 if [ "$CURRENT_VERSION" -ne "$VERSION" ]; then
-  echo "Build.sh version has been updated. Make sure your project complies with the changes outlined in the CHANGELOG since version $CURRENT_VERSION"
+  echo -e "\033[0;31mBuild.sh version has been updated.\033[0m Make sure your project complies with the changes outlined in the CHANGELOG since version $CURRENT_VERSION"
   while read -p "I have updated everything ([y]es / [n]o / show [c]hangelog)? " -n 1 -r && [[ $REPLY =~ ^[Cc]$ ]]; do
     echo $CHANGELOGURL
     if [ ! -f $CHANGELOG ]; then
@@ -60,6 +60,9 @@ if [ "$CURRENT_VERSION" -ne "$VERSION" ]; then
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo $VERSION > $VERSIONFILE
     echo "Current version updated, make sure to commit all the changes before continuing."
+  else
+    echo "Please update everything to comply with the latest version before continuing!"
+    exit 0
   fi
 fi
 
@@ -101,7 +104,7 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
     fi
   fi
   # Clone and update virtual environment configurations
-  if [ ! -d "ansible" ]; then
+  if [ ! -d "$ROOT/ansible" ]; then
     git clone  -b $ansible_branch $ansible_remote $ROOT/ansible
     if [ -n "$ansible_revision" ]; then
       cd $ROOT/ansible
@@ -112,6 +115,7 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
     if [ -z "$ansible_revision" ]; then
       cd $ROOT/ansible
       git pull
+      git checkout $ansible_branch
       cd $ROOT
     fi
   fi
@@ -140,4 +144,3 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
     fi
   fi
 fi
-
