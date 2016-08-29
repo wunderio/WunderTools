@@ -29,7 +29,7 @@ Create a files directory under drupal:
 
 Install the drupal project from configuration and create root directory (you only need to do this once):
 
-```$ cd /vagrant/drupal/ && ./build.sh install```
+```$ cd /vagrant/drupal/ && ./build.sh new```
 
 This will/should generate the packages and project directory, and also install drupal using config_installer profile.
 
