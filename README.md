@@ -1,4 +1,4 @@
-# Project reference setup with ansible & vagrant
+# Project reference setup with Ansible & Vagrant
 
 [![Build Status](https://travis-ci.org/wunderkraut/WunderMachina.svg?branch=centos7)](https://travis-ci.org/wunderkraut/WunderMachina)
 
@@ -92,6 +92,9 @@ from your local machine:
 
 ### Requirements:
 - Vagrant 1.5.x (Warning: There is an issue with Vagrant 1.8.5, use an older version for now!)
+
+### Requirements
+- Vagrant 1.5.x (Warning: There is an issue with Vagrant 1.8.5, use an older version for now!)
 - https://github.com/fgrehm/vagrant-cachier
 ( $ vagrant plugin install vagrant-cachier )
 - Ansible in your host machine. For OS X:
@@ -101,7 +104,9 @@ from your local machine:
 
 Start by running:
 
-  $ vagrant up
+```bash
+$ vagrant up
+```
 
 This will do the following:
 
@@ -114,19 +119,25 @@ you need to install the Drupal site in http://x.x.x.x:8080/install.php
 (Note: on rare occasion php-fpm/varnish/e.g. requires to be restarted before
 starting to work. You can do this by issuing the following command:
 
-  $ vagrant  ssh -c "sudo service php-fpm restart"
-  $ vagrant  ssh -c "sudo service varnish restart"
+```bash
+$ vagrant  ssh -c "sudo service php-fpm restart"
+$ vagrant  ssh -c "sudo service varnish restart"
+```
 
-All Drupal related configurations are under drupal/conf
+
+All Drupal-related configurations are under drupal/conf
 
 Drush is usable without ssh access with the drush.sh script e.g:
 
-  $ ./drush.sh cc all
+```bash
+$ ./drush.sh cc all
+```
 
 To open up ssh access to the virtual machine:
 
-  $ vagrant ssh
-
+```bash
+$ vagrant ssh
+```
 
 -------------------------------------------------------------------------------
 Useful things
@@ -188,7 +199,7 @@ You can also fix your vagrant/ansible base setup to certain branch/revision
 XDebug tools are installed via the devtools role. Everything should work out
 of the box for PHPStorm. PHP script e.g. drush debugging should also work.
 
-Example sublime text project configuration (via Project->Edit Project):
+Example Sublime Text project configuration (via Project->Edit Project):
 
     {
        "folders":
@@ -208,4 +219,3 @@ Example sublime text project configuration (via Project->Edit Project):
             }
           }
     }
-
