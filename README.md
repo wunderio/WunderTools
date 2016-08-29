@@ -2,20 +2,96 @@
 
 [![Build Status](https://travis-ci.org/wunderkraut/WunderMachina.svg?branch=centos7)](https://travis-ci.org/wunderkraut/WunderMachina)
 
-##Setup
+# Starting a new Drupal 7 Project with WunderTools
 
-You can setup the IP address and the url of your vagrant machine on the
-Vagrantfile.
+## Preparation
+Start by downloading a zipball of the WunderTools master branch as a base for your new project from
+https://github.com/wunderkraut/WunderTools/archive/master.zip
 
-Edit the variables.yml file to setup the URL and dir for the docs of your project.
+If you already have an empty git repository, you can move the contents of WunderTools-master into
+your git repo directory (Excercise to reader: Find a way to move content + dotfiles in one command that works in all shells). 
 
-Remember to add also the entries in your hosts file for both the drupal install and
-the docs.
+  `mv WunderTools-master/* ~/Projects/my-new-project`
+  `mv WunderTools-master/.* ~/Projects/my-new-project`
 
+If not, rename WunderTools-master to whatever project folder you have and run git init inside it:
 
-###
-Requirements:
-- Vagrant 1.5.x
+  ```
+  mv WunderTools-master ~/Projects/my-new-project
+  cd ~/Projects/my-new-project
+  git init
+  ```
+  
+
+## Configure WunderTools
+
+Edit `conf/vagrant_local.yml` and change: 
+ - name to the name of your project
+ - hostname to a good hostname for your local environment
+ - ip to something that no other project in your company uses
+
+Edit `conf/project.yml` and change the variables to something that makes sense for your project.
+ 
+```
+project:
+  name: ansibleref
+ansible:
+  remote: https://github.com/wunderkraut/WunderMachina.git
+  branch: master # Master branch is for CentOS 7. If you want CentOS 6, use centos6 branch.
+  revision:
+buildsh:
+  enabled: true
+  branch: develop # Supports both Drupal 8 and Drupal 7.
+  revision: # As with composer.lock, could be a good idea to use a specific git revision. 
+wundertools:
+  branch: master
+externaldrupal:
+  remote:
+  branch:
+```
+
+## Configure Drupal build
+
+Edit `drupal/conf/site.make`, remove things you don't need and add stuff you want in your project.
+
+Edit `drupal/conf/site.yml`, remove things you don't need and add stuff you want in your project.
+
+Rename `drupal/conf/ansibleref.aliases.drushrc.php` to `project_name` and configure it to fit your setup. This will be
+ automatically symlinked from ~/.drush when running vagrant up.
+
+## Finishing up
+Delete this section of Readme.md because it does not affect developers joining an already configured project. And move
+on to the next section! 
+
+# Getting your new local development environment up and running
+
+Find the IP-address and hostname that this local environment is configured to use from `conf/vagrant_local.yml` and add
+it to your own `/etc/hosts` file:
+
+`10.0.13.37 local.ansibleref.com`
+
+Let Vagrant create your new machine:
+
+`vagrant up`
+
+This will create a new Virtual machine on your computer, configure it with all the nice bells & whistles that you can
+think of (like MariaDB, nginx, Varnish, memcached and whatnot) and start it up for you. 
+
+SSH into your box and build and install Drupal: 
+
+```
+vagrant ssh
+cd /vagrant/drupal
+./build.sh new
+```
+
+If this is a project with an existing production/staging server, you should probably sync the production database now,
+from your local machine: 
+
+`sync.sh`
+
+### Requirements:
+- Vagrant 1.5.x (Warning: There is an issue with Vagrant 1.8.5, use an older version for now!)
 - https://github.com/fgrehm/vagrant-cachier
 ( $ vagrant plugin install vagrant-cachier )
 - Ansible in your host machine. For OS X:
