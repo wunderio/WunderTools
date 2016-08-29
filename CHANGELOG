@@ -1,3 +1,9 @@
+8
+varnish.control_key variable added (optional). This will set up a Varnish control key in
+/etc/varnish/secret and makes it a php environment variable for use in
+vagrant.settings.php. Check vagrant.settings.php for Varnish 4 compatible
+settings.
+
 7
 hash_behaviour changed to merge so that you don't need to copy the whole dict object from defaults when you just want to override some of the values in it.
 To comply with this add "hash_behaviour=merge" to projects ansible.cfg file.
