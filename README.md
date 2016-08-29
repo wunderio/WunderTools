@@ -1,20 +1,20 @@
-# Project reference setup with ansible & vagrant
+# Project reference setup with Ansible & Vagrant
 
 [![Build Status](https://travis-ci.org/wunderkraut/WunderMachina.svg?branch=centos7)](https://travis-ci.org/wunderkraut/WunderMachina)
 
 ##Setup
 
-You can setup the IP address and the url of your vagrant machine on the
+You can setup the IP address and the URL of your vagrant machine on the
 Vagrantfile.
 
 Edit the variables.yml file to setup the URL and dir for the docs of your project.
 
-Remember to add also the entries in your hosts file for both the drupal install and
+Remember to add also the entries in your hosts file for both the Drupal install and
 the docs.
 
 
-###
-Requirements:
+### Requirements
+
 - Vagrant 1.5.x
 - https://github.com/fgrehm/vagrant-cachier
 ( $ vagrant plugin install vagrant-cachier )
@@ -25,7 +25,9 @@ Requirements:
 
 Start by running:
 
-  $ vagrant up
+```bash
+$ vagrant up
+```
 
 This will do the following:
 
@@ -38,19 +40,25 @@ you need to install the Drupal site in http://x.x.x.x:8080/install.php
 (Note: on rare occasion php-fpm/varnish/e.g. requires to be restarted before
 starting to work. You can do this by issuing the following command:
 
-  $ vagrant  ssh -c "sudo service php-fpm restart"
-  $ vagrant  ssh -c "sudo service varnish restart"
+```bash
+$ vagrant  ssh -c "sudo service php-fpm restart"
+$ vagrant  ssh -c "sudo service varnish restart"
+```
 
-All Drupal related configurations are under drupal/conf
+
+All Drupal-related configurations are under drupal/conf
 
 Drush is usable without ssh access with the drush.sh script e.g:
 
-  $ ./drush.sh cc all
+```bash
+$ ./drush.sh cc all
+```
 
 To open up ssh access to the virtual machine:
 
-  $ vagrant ssh
-
+```bash
+$ vagrant ssh
+```
 
 -------------------------------------------------------------------------------
 Useful things
@@ -112,7 +120,7 @@ You can also fix your vagrant/ansible base setup to certain branch/revision
 XDebug tools are installed via the devtools role. Everything should work out
 of the box for PHPStorm. PHP script e.g. drush debugging should also work.
 
-Example sublime text project configuration (via Project->Edit Project):
+Example Sublime Text project configuration (via Project->Edit Project):
 
     {
        "folders":
@@ -132,4 +140,3 @@ Example sublime text project configuration (via Project->Edit Project):
             }
           }
     }
-
