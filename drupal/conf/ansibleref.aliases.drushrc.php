@@ -20,4 +20,9 @@ $aliases['local'] = array(
   'remote-host' => 'local.ansibleref.com',
   'remote-user' => 'vagrant',
   'ssh-options' => '-i ' . $key,
+  'path-aliases' => array(
+    '%files' => '/vagrant/drupal/files',
+    '%dump-dir' => '/home/vagrant',
+  ),
+);
 );
