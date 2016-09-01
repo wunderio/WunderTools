@@ -25,4 +25,48 @@ $aliases['local'] = array(
     '%dump-dir' => '/home/vagrant',
   ),
 );
+
+$aliases['dev'] = array(
+  'uri' => 'https://dev.ansibleref.com',
+  'remote-user' => 'www-admin',
+  'remote-host' => 'dev.ansibleref.com',
+  'root' => '/var/www/dev.ansibleref.com/current/web',
+  'path-aliases' => array(
+    '%dump-dir' => '/home/www-admin',
+  ),
+  'command-specific' => array(
+    'sql-sync' => array(
+      'no-cache' => TRUE,
+    ),
+  ),
+);
+
+$aliases['stage'] = array(
+  'uri' => 'https://stage.ansibleref.com',
+  'remote-user' => 'www-admin',
+  'remote-host' => 'stage.ansibleref.com',
+  'root' => '/var/www/stage.ansibleref.com/current/web',
+  'path-aliases' => array(
+    '%dump-dir' => '/home/www-admin',
+  ),
+  'command-specific' => array(
+    'sql-sync' => array(
+      'no-cache' => TRUE,
+    ),
+  ),
+);
+
+$aliases['prod'] = array(
+  'uri' => 'https://ansibleref.com',
+  'remote-user' => 'www-admin',
+  'remote-host' => 'ansibleref.com',
+  'root' => '/var/www/ansibleref.com/current/web',
+  'path-aliases' => array(
+    '%dump-dir' => '/home/www-admin',
+  ),
+  'command-specific' => array(
+    'sql-sync' => array(
+      'no-cache' => TRUE,
+    ),
+  ),
 );
