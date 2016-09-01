@@ -12,6 +12,7 @@ if (!$key) {
 $key = rtrim($key);
 
 $aliases['local'] = array(
+  'uri' => 'https://local.ansibleref.com',
   'parent' => '@parent',
   'site' => 'ansibleref',
   'env' => 'vagrant',
