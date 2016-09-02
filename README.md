@@ -55,7 +55,7 @@ Rename `drupal/conf/ansibleref.aliases.drushrc.php` to `project_name` and config
  
 ## Install Drupal 8 for the first time
 1. SSH to vagrant and go to `/vagrant/drupal`.
-2. Run `./build.sh install` to generate the project directory and install drupal from configuration.
+2. Run `./build.sh new` to generate the project directory and install drupal from configuration.
 3. Profit! You should now be able to access your site through https://yoursite-hostname or http://yoursite-hostname:8080
 
 ## Finishing up
