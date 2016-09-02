@@ -1,5 +1,4 @@
 ---
-
 - hosts: vagrant
   become: true
   become_method: sudo
