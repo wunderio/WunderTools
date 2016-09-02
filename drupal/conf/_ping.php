@@ -3,6 +3,8 @@
 //FOR DRUPAL 8 ONLY!
 //FILE IS SUPPOSED TO BE IN DRUPAL ROOT DIRECTORY (NEXT TO INDEX.PHP)!!
 
+defined('DRUPAL_ROOT') or define('DRUPAL_ROOT', getcwd());
+
 // Register our shutdown function so that no other shutdown functions run before this one.
 // This shutdown function calls exit(), immediately short-circuiting any other shutdown functions,
 // such as those registered by the devel.module for statistics.
