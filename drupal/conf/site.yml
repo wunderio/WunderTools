@@ -40,7 +40,7 @@ default:
     - code/modules: sites/all/modules/custom
     - code/themes: sites/all/themes/custom
     - code/profiles/wk: profiles/wk
-    - conf/local.settings.php: sites/default/settings.php
+    - conf/vagrant.settings.php: sites/default/settings.php
     - conf/_ping.php: _ping.php
 
 # Test environment:
