@@ -48,6 +48,6 @@ $config['system.performance']['css']['preprocess'] = FALSE;
 $config['system.performance']['js']['preprocess'] = FALSE;
 
 /*
- * Set configuration directy
+ * Set configuration directory
  */
-$config_directories['sync'] = '../staging';
+$config_directories['sync'] = '../sync';

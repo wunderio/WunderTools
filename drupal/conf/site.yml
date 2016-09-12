@@ -44,7 +44,7 @@ local:
     - files: web/sites/default/files
     - code/modules: web/modules/custom
     - code/themes: web/themes/custom
-    - staging: staging
+    - sync: sync
 
   copy:
     - conf/services.yml: web/sites/default/services.yml
@@ -62,7 +62,7 @@ stage:
     - code/themes: web/themes
     - conf/composer.json: composer.json
     - conf/composer.lock: composer.lock
-    - staging: staging
+    - sync: sync
     - conf/settings.php: web/sites/default/settings.php
     - conf/stage.settings.php: web/sites/default/settings.local.php
     - conf/services.yml: web/sites/default/services.yml
@@ -78,7 +78,7 @@ production:
     - code/themes: web/themes
     - conf/composer.json: composer.json
     - conf/composer.lock: composer.lock
-    - staging: staging
+    - sync: sync
     - conf/settings.php: web/sites/default/settings.php
     - conf/prod.settings.php: web/sites/default/settings.local.php
     - conf/services.yml: web/sites/default/services.yml
