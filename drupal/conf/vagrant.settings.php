@@ -28,6 +28,7 @@ $conf['cache_backends'][] = 'sites/all/modules/contrib/varnish/varnish.cache.inc
 $conf['cache_class_cache_page']  = 'VarnishCache';
 
 // Varnish
-$conf['varnish_version'] = "3";
+$conf['varnish_version'] = "4";
+$conf['varnish_control_key'] = getenv('VARNISH_CONTROL_KEY');
 $conf['simple_environment_indicator'] = '#88b700 Local';
 

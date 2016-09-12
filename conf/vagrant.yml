@@ -34,14 +34,17 @@
     - cron: name="check dirs" minute="0" hour="5,2" job="ls -alh > /dev/null"
 
   vars:
-    partition_var_log: False
-
     wkv_site_env: local
+
+    nginx_disable_content_security_policy: True
+
+    partition_var_log: False
 
     partition_var_lib_mysql: False
 
-    # Do not use this in production. For local only.
-    nginx_disable_content_security_policy: True
+    # <EXAMPLE>
+    # How to assign memory for each role and set the correct
+    # amount of worker processes / threads
 
     memory_db: 1024 # In MB
     memory_app: 1024 # In MB
@@ -49,10 +52,21 @@
     php_memory_limit: 256 # In MB
     nginx_workers: 2 # This should be equal to core count
 
+    # Make sure changes to PHP files are not ignored
+    php_ini:
+      - section: OPCACHE
+        options:
+          - key: opcache.validate_timestamps
+            val: 1
+          - key: opcache.opcache.revalidate_freq
+            val: 0
+
+    # </EXAMPLE>
+
     letsencrypt_email: support@example.com
     letsencrypt_domains:
-      - wundertools.site
-      - local.wundertools.site
+      - ansibleref.com
+      - local.ansibleref.com
 
     newrelic_enabled: False
     newrelic_license_key: "this-is-a-fake-key-replace-with-a-real-1"
@@ -69,9 +83,10 @@
 
     # This server also acts as a load balancer
     varnish:
-      probe_resource_url: "_ping.php"
       port: 8081
       memory: 512M
+      probe_resource_url: "_ping.php"
+      control_key: "{{ 'vagrant' | to_uuid }}"
       acl_internal:
         - ip: 127.0.0.1
       acl_purge:

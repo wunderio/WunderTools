@@ -9,4 +9,7 @@ drupal/drupal.sqlite
 .idea
 ansible
 local.*
+test/composer.lock
+test/vendor
+test/bin
 VERSION

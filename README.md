@@ -4,7 +4,7 @@
 
 ### Preparation
 
-Start by downloading a zipball of the WunderTools d8 branch as a base for your new project from 
+Start by downloading a zipball of the WunderTools d8 branch as a base for your new project from
 https://github.com/wunderkraut/WunderTools/archive/d8.zip
 
 If you already have an empty git repository, you can move the contents of WunderTools-d8 into your git repo
@@ -21,13 +21,13 @@ If not, rename WunderTools-d8 to whatever project folder you have and run git in
 
 ## Configure WunderTools
 
-Edit `conf/vagrant_local.yml` and change: 
+Edit `conf/vagrant_local.yml` and change:
  - name to the name of your project
  - hostname to a good hostname for your local environment
  - ip to something that no other project in your company uses
 
 Edit `conf/project.yml` and change the variables to something that makes sense for your project.
- 
+
 ```
 project:
   name: ansibleref
@@ -38,7 +38,7 @@ ansible:
 buildsh:
   enabled: true
   branch: develop # Supports both Drupal 8 and Drupal 7.
-  revision: # As with composer.lock, could be a good idea to use a specific git revision. 
+  revision: # As with composer.lock, could be a good idea to use a specific git revision.
 wundertools:
   branch: master
 externaldrupal:
@@ -52,7 +52,7 @@ Edit `drupal/conf/site.yml`, remove things you don't need and add stuff you want
 
 Rename `drupal/conf/ansibleref.aliases.drushrc.php` to `project_name` and configure it to fit your setup. This will be
  automatically symlinked from ~/.drush when running vagrant up.
- 
+
 ## Install Drupal 8 for the first time
 1. SSH to vagrant and go to `/vagrant/drupal`.
 2. Run `./build.sh new` to generate the project directory and install drupal from configuration.
@@ -60,7 +60,7 @@ Rename `drupal/conf/ansibleref.aliases.drushrc.php` to `project_name` and config
 
 ## Finishing up
 Delete this section of Readme.md because it does not affect developers joining an already configured project. And move
-on to the next section! 
+on to the next section!
 
 ### Requirements:
 - Vagrant 1.7.x
