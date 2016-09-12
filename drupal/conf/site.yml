@@ -39,8 +39,8 @@ default:
 local:
   # In development environments we usually want to use symlinks, note the settings.php linking
   link:
-    - conf/composer/composer.json: composer.json
-    - conf/composer/composer.lock: composer.lock
+    - conf/composer.json: composer.json
+    - conf/composer.lock: composer.lock
     - files: web/sites/default/files
     - code/modules: web/modules/custom
     - code/themes: web/themes/custom
@@ -60,8 +60,8 @@ stage:
   copy:
     - code/modules: web/modules
     - code/themes: web/themes
-    - conf/composer/composer.json: composer.json
-    - conf/composer/composer.lock: composer.lock
+    - conf/composer.json: composer.json
+    - conf/composer.lock: composer.lock
     - staging: staging
     - conf/settings.php: web/sites/default/settings.php
     - conf/stage.settings.php: web/sites/default/settings.local.php
@@ -76,8 +76,8 @@ production:
   copy:
     - code/modules: web/modules
     - code/themes: web/themes
-    - conf/composer/composer.json: composer.json
-    - conf/composer/composer.lock: composer.lock
+    - conf/composer.json: composer.json
+    - conf/composer.lock: composer.lock
     - staging: staging
     - conf/settings.php: web/sites/default/settings.php
     - conf/prod.settings.php: web/sites/default/settings.local.php
