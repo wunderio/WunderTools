@@ -123,9 +123,10 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
   # If it is enabled in project.yml - get & update drupal/build.sh
   if $buildsh_enabled; then
     if [ -n "$buildsh_revision" ]; then
-      curl -s -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_revision/build.sh
+      curl -s -o $ROOT/drupal/build.sh $buildsh_remote/$buildsh_revision/build.sh
     else
-      curl -s -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_branch/build.sh
+      echo $buildsh_remote/$buildsh_branch/build.sh
+      curl -s -o $ROOT/drupal/build.sh $buildsh_remote/$buildsh_branch/build.sh
     fi
   fi
 
