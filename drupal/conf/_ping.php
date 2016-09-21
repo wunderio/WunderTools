@@ -32,6 +32,9 @@ $request = Request::createFromGlobals();
 $kernel = DrupalKernel::createFromRequest($request, $autoloader, 'prod');
 $kernel->boot();
 
+// Get current settings.
+$settings = Settings::getAll();
+
 // Build up our list of errors.
 $errors = array();
 
@@ -45,14 +48,15 @@ if (!count($result)) {
 }
 
 // Check that all memcache instances are running on this server.
-if (isset($conf['memcache_servers'])) {
-  foreach ($conf['memcache_servers'] as $address => $bin) {
+if (isset($settings['memcache']['servers'])) {
+  foreach ($settings['memcache']['servers'] as $address => $bin) {
     list($ip, $port) = explode(':', $address);
     if (!memcache_connect($ip, $port)) {
       $errors[] = 'Memcache bin <em>' . $bin . '</em> at address ' . $address . ' is not available.';
     }
   }
 }
+
 // Check that Redis instace is running correctly using PhpRedis
 // TCP/IP connection
 if (isset($conf['redis_client_host']) && isset($conf['redis_client_port'])) {
