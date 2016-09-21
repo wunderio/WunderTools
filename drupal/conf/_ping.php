@@ -91,10 +91,17 @@ else {
 }
 
 // UNIX socket connection
-if (isset($conf['redis_cache_socket'])) {
-  $redis = new Redis();
-  if (!$redis->connect($conf['redis_cache_socket'])) {
-    $errors[] = 'Redis at ' . $conf['redis_cache_socket'] . ' is not available.';
+if (isset($settings['redis.connection']['host'])) {
+  // @Todo, use Redis client interface.
+  $redis = new \Redis();
+  if (isset($settings['redis.connection']['port'])) {
+    if (!$redis->connect($settings['redis.connection']['host'], $settings['redis.connection']['port'])) {
+      $errors[] = 'Redis at ' . $settings['redis.connection']['host'] . ':' . $settings['redis.connection']['port'] . ' is not available.';
+    }
+  } else {
+    if (!$redis->connect($settings['redis.connection']['host'])) {
+      $errors[] = 'Redis at ' . $settings['redis.connection']['host'] . ' is not available.';
+    }
   }
 }
 
