@@ -1,5 +1,5 @@
 project:
-  name: ansibleref
+  name: wundertools
 ansible:
   remote: https://github.com/wunderkraut/WunderMachina.git
   branch: master

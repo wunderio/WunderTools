@@ -64,8 +64,8 @@
 
     letsencrypt_email: support@example.com
     letsencrypt_domains:
-      - ansibleref.com
-      - local.ansibleref.com
+      - wundertools.com
+      - local.wundertools.com
 
     newrelic_enabled: False
     newrelic_license_key: "this-is-a-fake-key-replace-with-a-real-1"
@@ -76,9 +76,9 @@
     # Apps I want to run on this server
     apps:
       # For drupal 7
-      - server_name: local.ansibleref.com
-        server_aliases: ansibleref.com
-        server_forwards: ansibleref.com
+      - server_name: local.wundertools.com
+        server_aliases: wundertools.com
+        server_forwards: wundertools.com
         http_port: 8080
         docroot: /vagrant/drupal/current
       # For drupal 8
@@ -102,9 +102,9 @@
         - ip: 127.0.0.1
       directors:
         - name: test1
-          host: local.ansibleref.com
+          host: local.wundertools.com
           backends:
-            - name: local_ansibleref_http
+            - name: local_wundertools_http
               address: 127.0.0.1
               port: 8080
         - name: test2
@@ -116,8 +116,8 @@
 
     # BUT, we only use https for this host
     sslterminators:
-      - server_name: local.ansibleref.com
-        server_forwards: ansibleref.com
+      - server_name: local.wundertools.com
+        server_forwards: wundertools.com
         ssl_certificate: certificate.crt
         ssl_certificate_key: ssl/certificate.key
         backends:
@@ -131,8 +131,8 @@
 
 
     httpforwards:
-      - server_name: local.ansibleref.com
-        forwarded_domains: 'local.ansibleref.com'
+      - server_name: local.wundertools.com
+        forwarded_domains: 'local.wundertools.com'
 
     # Databases
     databases:

@@ -14,10 +14,10 @@ $key = rtrim($key);
 
 $aliases['local'] = array(
   'parent' => '@parent',
-  'site' => 'ansibleref',
+  'site' => 'wundertools',
   'env' => 'vagrant',
   'root' => '/vagrant/drupal/current',
-  'remote-host' => 'local.ansibleref.com',
+  'remote-host' => 'local.wundertools.com',
   'remote-user' => 'vagrant',
   'ssh-options' => '-i ' . $key,
 );

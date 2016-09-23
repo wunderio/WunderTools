@@ -7,4 +7,4 @@ default:
     Behat\MinkExtension:
       goutte: ~
       selenium2: ~
-      base_url: http://local.ansibleref.com
+      base_url: http://local.wundertools.com
