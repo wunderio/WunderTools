@@ -36,7 +36,7 @@ Edit `conf/project.yml` and change the variables to something that makes sense f
  
 ```
 project:
-  name: ansibleref
+  name: wundertools
 ansible:
   remote: https://github.com/wunderkraut/WunderMachina.git
   branch: master # Master branch is for CentOS 7. If you want CentOS 6, use centos6 branch.
@@ -58,7 +58,7 @@ Edit `drupal/conf/site.make`, remove things you don't need and add stuff you wan
 
 Edit `drupal/conf/site.yml`, remove things you don't need and add stuff you want in your project.
 
-Rename `drupal/conf/ansibleref.aliases.drushrc.php` to `project_name` and configure it to fit your setup. This will be
+Rename `drupal/conf/wundertools.aliases.drushrc.php` to `project_name` and configure it to fit your setup. This will be
  automatically symlinked from ~/.drush when running vagrant up.
 
 ## Finishing up
@@ -70,7 +70,7 @@ on to the next section!
 Find the IP-address and hostname that this local environment is configured to use from `conf/vagrant_local.yml` and add
 it to your own `/etc/hosts` file:
 
-`10.0.13.37 local.ansibleref.com`
+`10.0.13.37 local.wundertools.com`
 
 Let Vagrant create your new machine:
 
@@ -167,7 +167,7 @@ Docs are in
 
         #Docs
         docs:
-          hostname : 'docs.local.ansibleref.com'
+          hostname : 'docs.local.wundertools.com'
           dir : '/vagrant/docs'
 
 
@@ -208,7 +208,7 @@ Example Sublime Text project configuration (via Project->Edit Project):
        [
          {
            "follow_symlinks": true,
-           "path": "/path/to/ansibleref"
+           "path": "/path/to/wundertools"
          }
        ],
 
@@ -216,7 +216,7 @@ Example Sublime Text project configuration (via Project->Edit Project):
        {
          "xdebug": {
               "path_mapping": {
-                    "/vagrant" : "/path/to/ansibleref"
+                    "/vagrant" : "/path/to/wundertools"
                  }
             }
           }

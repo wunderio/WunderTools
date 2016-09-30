@@ -1,6 +1,6 @@
 ---
 
-- hosts: ansibleref-stage
+- hosts: wundertools-stage
   sudo: true
   user: root
   roles:
@@ -47,9 +47,9 @@
 
     monit_enabled: False
     monit_alert_email_service_name: "vagrant-reference"
-    monit_alert_email_from: "alert@ansibleref.com"
-    monit_alert_email_to: alert@ansibleref.com
-    monit_collector_address: https://user:password@mmonit.ansibleref.io:8443/collector
+    monit_alert_email_from: "alert@wundertools.com"
+    monit_alert_email_to: alert@wundertools.com
+    monit_collector_address: https://user:password@mmonit.wundertools.io:8443/collector
     monit_allow:
       - localhost
       - user:password
