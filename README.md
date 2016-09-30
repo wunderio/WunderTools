@@ -30,6 +30,8 @@ Edit `conf/vagrant_local.yml` and change:
  - hostname to a good hostname for your local environment
  - ip to something that no other project in your company uses
 
+Edit `conf/vagrant.yml`, find&replace "wundertools" with you project name.
+
 Edit `conf/project.yml` and change the variables to something that makes sense for your project.
  
 ```
