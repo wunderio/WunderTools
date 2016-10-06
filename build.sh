@@ -46,7 +46,7 @@ fi
 
 VERSIONFILE=$ROOT/VERSION
 CHANGELOG=$ROOT/CHANGELOG
-CHANGELOGURL="https://raw.githubusercontent.com/$WUNDERTOOLSREPOSITORY/$GITBRANCH/CHANGELOG"
+CHANGELOGURL="https://raw.githubusercontent.com/$WUNDERTOOLSREPOSITORY/CHANGELOG"
 
 if [ -f $VERSIONFILE ]; then
   typeset -i CURRENT_VERSION=$(<$VERSIONFILE)
@@ -92,7 +92,7 @@ if [[ $1 == "reset" ]]; then
 elif [[ $1 == "up" || $1 == "provision" ]]; then
   # First we check if there is update for this script
   SELF=$(basename $0)
-  UPDATEURL="https://raw.githubusercontent.com/badrange/WunderTools/$GITBRANCH/build.sh"
+  UPDATEURL="https://raw.githubusercontent.com/$WUNDERTOOLSREPOSITORY/$GITBRANCH/build.sh"
   MD5SELF=$($MD5COMMAND $0 | awk '{print $1}')
   MD5LATEST=$(curl -s $UPDATEURL | $MD5COMMAND | awk '{print $1}')
   if [[ "$MD5SELF" != "$MD5LATEST" ]]; then
