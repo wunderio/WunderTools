@@ -93,8 +93,9 @@ self_update
 
 OPTIND=1
 ANSIBLE_TAGS=""
+EXTRA_OPTS=""
 
-while getopts "hfv:m:t:s:" opt; do
+while getopts ":hfv:m:t:s:" opt; do
     case "$opt" in
     h)
         show_help
@@ -110,6 +111,7 @@ while getopts "hfv:m:t:s:" opt; do
         ;;
     s)  ANSIBLE_SKIP_TAGS=$OPTARG
         ;;
+    *)  EXTRA_OPTS="$EXTRA_OPTS -$OPTARG"
     esac
 done
 
@@ -147,14 +149,14 @@ if [ $FIRST_RUN ]; then
     echo "Mysql root password missing. You need to provide password using -m flag."
     exit 1
   else
-    ansible-playbook $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS"  -e "change_db_root_password=True mariadb_root_password=$MYSQL_ROOT_PASS" --ask-pass --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
+    ansible-playbook $EXTRA_OPTS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS"  -e "change_db_root_password=True mariadb_root_password=$MYSQL_ROOT_PASS" --ask-pass --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
   fi
 else
   if [ $ANSIBLE_TAGS ]; then
-    ansible-playbook $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --tags "$ANSIBLE_TAGS"
+    ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --tags "$ANSIBLE_TAGS"
   elif [ $ANSIBLE_SKIP_TAGS ]; then
-    ansible-playbook $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --skip-tags "$ANSIBLE_SKIP_TAGS"
+    ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --skip-tags "$ANSIBLE_SKIP_TAGS"
   else
-    ansible-playbook $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE
+   echo ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE
   fi
 fi
