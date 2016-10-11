@@ -5,5 +5,5 @@ cpus : 2
 ip : 192.168.10.172
 box : "geerlingguy/centos7"
 # optional host aliases
-alias: local.alias.wundertools.com local.alias2.wundertools.com
+aliases: local.alias.wundertools.com local.alias2.wundertools.com
   
