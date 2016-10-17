@@ -135,14 +135,14 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
   # If it is enabled in project.yml - get & update drupal/build.sh
   if $buildsh_enabled; then
     if [ -z "$buildsh_repository" ]; then
-      WUNDERTOOLSREPOSITORY="wunderkraut/build.sh"
+      BUILDSHREPOSITORY="wunderkraut/build.sh"
     else
-      WUNDERTOOLSREPOSITORY=$buildsh_repository
+      BUILDSHREPOSITORY=$buildsh_repository
     fi
     if [ -n "$buildsh_revision" ]; then
-      curl -s -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/$buildsh_repository/$buildsh_revision/build.sh
+      curl -s -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/$BUILDSHREPOSITORY/$buildsh_revision/build.sh
     else
-      curl -s -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/$buildsh_repository/$buildsh_branch/build.sh
+      curl -s -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/$BUILDSHREPOSITORY/$buildsh_branch/build.sh
     fi
   fi
 
