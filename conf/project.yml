@@ -9,8 +9,7 @@ buildsh:
   branch: develop
   revision:
 wundertools:
-  branch: feature/custom-wundertools-repository
-  repository: badrange/WunderTools
+  branch: master
 externaldrupal:
   remote:
   branch:
