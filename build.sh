@@ -46,7 +46,7 @@ fi
 
 VERSIONFILE=$ROOT/VERSION
 CHANGELOG=$ROOT/CHANGELOG
-CHANGELOGURL="https://raw.githubusercontent.com/$WUNDERTOOLSREPOSITORY/CHANGELOG"
+CHANGELOGURL="https://raw.githubusercontent.com/$WUNDERTOOLSREPOSITORY/$GITBRANCH/CHANGELOG"
 
 if [ -f $VERSIONFILE ]; then
   typeset -i CURRENT_VERSION=$(<$VERSIONFILE)
@@ -134,10 +134,15 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
 
   # If it is enabled in project.yml - get & update drupal/build.sh
   if $buildsh_enabled; then
-    if [ -n "$buildsh_revision" ]; then
-      curl -s -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/badrange/build.sh/$buildsh_revision/build.sh
+    if [ -z "$buildsh_repository" ]; then
+      WUNDERTOOLSREPOSITORY="wunderkraut/build.sh"
     else
-      curl -s -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/badrange/build.sh/$buildsh_branch/build.sh
+      WUNDERTOOLSREPOSITORY=$buildsh_repository
+    fi
+    if [ -n "$buildsh_revision" ]; then
+      curl -s -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/$buildsh_repository/$buildsh_revision/build.sh
+    else
+      curl -s -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/$buildsh_repository/$buildsh_branch/build.sh
     fi
   fi
 
