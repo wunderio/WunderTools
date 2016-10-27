@@ -38,8 +38,10 @@ Provision.sh assumes you have ansible-vault encrypted variables and therefore re
 1. you can define WT_ANSIBLE_VAULT_FILE environment variable running: 
 ```export WT_ANSIBLE_VAULT_FILE=/path/to/your/ansible-pass-file.txt``` 
 or adding it to your ~/.bashrc or equivalent
-2. rovide it to provision.sh with the -v option: 
-```./provision.sh -v /path/to/your/ansible-pass-file.txt production```
+2. Provide it to provision.sh with the -p option: 
+```./provision.sh -p /path/to/your/ansible-pass-file.txt production```
+
+All additional flags are passed to the ansible-playbook command. So you can use for example -C for check or -v for verbose output.
 
 ## Defaults and overrides
 You can find all the default settings from under the ansible/playbook/roles/[rolename]/defaults/main.yml. Our default ansible.cfg defines hash_behaviour=merge so it is possible to only override part of the dictionary variables without the need to define it completely in your custom configurations.

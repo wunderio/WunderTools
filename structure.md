@@ -31,7 +31,7 @@ Ansible playbooks and roles are defined in WunderMachina, but additional project
 Provisioning a different environment can be done using provided provision.sh command. For example to provision a production environment you could simply run:
 ```./provision.sh production```
 
-Note: if ansible-vault is used you need to either have the WT_ANSIBLE_VAULT_FILE environment variable defined or provide the path to your ansible vault-password-file with the -v option when running provision.sh.
+Note: if ansible-vault is used you need to either have the WT_ANSIBLE_VAULT_FILE environment variable defined or provide the path to your ansible vault-password-file with the -p option when running provision.sh.
 
 For more information run ```./provision.sh -h```
 
