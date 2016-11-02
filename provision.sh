@@ -125,7 +125,7 @@ fi
 
 if [ -z $VAULT_FILE ]; then
   echo "Vault password file missing."
-  echo "You can provide the path to the file with -v option."
+  echo "You can provide the path to the file with -p option."
   echo "Alternatively you can set WT_ANSIBLE_VAULT_FILE environment variable."
   exit 1
 fi
