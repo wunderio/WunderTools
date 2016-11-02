@@ -95,7 +95,7 @@ OPTIND=1
 ANSIBLE_TAGS=""
 EXTRA_OPTS=""
 
-while getopts "hfp:m:t:s:" opt; do
+while getopts ":hfp:m:t:s:" opt; do
     case "$opt" in
     h)
         show_help
@@ -157,6 +157,6 @@ else
   elif [ $ANSIBLE_SKIP_TAGS ]; then
     ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --skip-tags "$ANSIBLE_SKIP_TAGS"
   else
-   echo ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE
+   ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE
   fi
 fi
