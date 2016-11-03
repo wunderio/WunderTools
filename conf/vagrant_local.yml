@@ -4,3 +4,5 @@ mem : 2000
 cpus : 2
 ip : 192.168.10.170
 box : geerlingguy/centos6
+#Check for newer box versions here: https://atlas.hashicorp.com/geerlingguy/boxes/centos6 
+box_version: 1.1.2
