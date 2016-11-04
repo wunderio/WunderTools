@@ -42,10 +42,11 @@ echo 'Truncated emails and passwords from the database.';
 # drush @site.local vset imagemagick_convert "/opt/local/bin/convert"
 
 #Enable stage file proxy
-#drush @site.local pm-download stage_file_proxy;
-#drush @site.local pm-enable --yes stage_file_proxy;
-#drush @site.local variable-set stage_file_proxy_origin "https://www.siteknits.com";
-#echo "Enabled stage file proxy so you won't need the files locally, jeee!"
+drush @site.local pm-download stage_file_proxy;
+drush @site.local pm-enable --yes stage_file_proxy;
+drush @site.local cset --yes stage_file_proxy.settings origin "https://wundertools.site"
+echo "Enabled stage file proxy so you won't need the files locally, jeee!"
+
 
 # Clear caches
 drush @site.local cr all;
