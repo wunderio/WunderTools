@@ -10,9 +10,9 @@ echo 'RSync ready.';
 
 # Set UID1 password to 'root'
 #drush @site.local sqlq "UPDATE users SET name = 'root' WHERE name = 'admin'"
-drush @site.local sqlq "UPDATE users SET mail = 'user@example.com' WHERE name != 'admin'"
-drush @site.local sqlq "UPDATE users SET init = '' WHERE name != 'admin'"
-drush @site.local sqlq "UPDATE users SET pass = '' WHERE name != 'admin'"
+drush @site.local sqlq "UPDATE users_field_data SET mail = 'user@example.com' WHERE name != 'admin'"
+drush @site.local sqlq "UPDATE users_field_data SET init = '' WHERE name != 'admin'"
+drush @site.local sqlq "UPDATE users_field_data SET pass = '' WHERE name != 'admin'"
 drush @site.local upwd admin --password=admin
 echo 'Truncated emails and passwords from the database.';
 
