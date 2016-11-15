@@ -1,110 +1,88 @@
 ---
 
+# Example of standard single server setup without production services (monitoring, logging etc.)
+
 - hosts: wundertools-stage
-  sudo: true
-  user: root
+  become: true
+  become_method: sudo
   roles:
    - { role: base, tags: [ 'base' ] }
-   - { role: logentries, tags: [ 'logentries' ] }
-   - { role: appserver, tags: [ 'appserver' ] }
    - { role: varnish, tags: [ 'varnish' ] }
    - { role: dbserver, tags: [ 'dbserver' ] }
+   - { role: drupal-db, tags: [ 'drupal-db' ] }
+   - { role: letsencrypt, tags: [ 'letsencrypt' ] }
    - { role: sslterminator, tags: [ 'sslterminator' ] }
-   - { role: monit, tags: [ 'monit' ] }
-   - { role: datadog, tags: [ 'datadog' ] }
+   - { role: nginx, tags: [ 'nginx' ] }
+   - { role: php-fpm, tags: [ 'php-fpm' ] }
+   - { role: drush, tags: [ 'drush' ] }
+   - { role: memcached, tags: [ 'memcached' ] }
+   - { role: drupal-log, tags: [ 'drupal-log' ] }
 
   tasks:
-
-    - cron: name="check dirs" minute="0" hour="5,2" job="ls -alh > /dev/null"
+  # Drupal cron job
+  - cron: name="Example Drupal cron job" minute="*/2" job="su nginx --shell=/bin/sh -c '/usr/lib/composer/vendor/bin/drush --root=/var/www/example.com/current elysia-cron > /dev/null 2>&1'" state="present"
 
   vars:
 
     partition_var_log: False
-
     partition_var_lib_mysql: False
 
-    # <EXAMPLE>
     # How to assign memory for each role and set the correct
-    # amount of worker processes / threads
-
+    # memory_app and memory_db define how much total system memory is allocated to each.
+    # On dedicated DB server memory_db should max be around 80% of total memory and would ideally fit the whole db + some more.
     memory_db: 1024 # In MB
     memory_app: 1024 # In MB
+    
     # NOTE: ALWAYS leave some spare memory for the server
-    php_memory_limit: 256 # In MB
-    nginx_workers: 2 # This should be equal to core count
+    # php memory limits etc are in variables.yml
 
-    innodb_buffer_pool_size: "{{ memory_db }}"
-    php_fpm_pm_max_children: "{{ memory_app // 2 // php_memory_limit }}"
-    php_fpm_pm_start_servers: "{{ php_fpm_pm_max_children|int // 2 }}"
-    php_fpm_pm_min_spare_servers: "{{ php_fpm_pm_max_children|int // 2 }}"
-    php_fpm_pm_max_spare_servers: "{{ php_fpm_pm_max_children|int // 2 }}"
-
-    # </EXAMPLE>
-
-
-    newrelic_enabled: False
-    newrelic_license_key: "this-is-a-fake-key-replace-with-a-real-1"
-
-    monit_enabled: False
-    monit_alert_email_service_name: "vagrant-reference"
-    monit_alert_email_from: "alert@wundertools.com"
-    monit_alert_email_to: alert@wundertools.com
-    monit_collector_address: https://user:password@mmonit.wundertools.io:8443/collector
-    monit_allow:
-      - localhost
-      - user:password
-
-    logentries_enabled: False
-    logentries_account_key: 00000000-0000-0000-0000-000000000000
-    logentries_service_name: "vagrant-reference"
-    logentries_hostname: "localhost"
-    logentries_follow:
-      - /var/log/secure
+    # Let's encrypt. Always use SSL if possible!
+    letsencrypt_email: support@wundertools.comm
+    letsencrypt_domains:
+      - stage.example.com
+    letsencrypt_renewal_docroot: /var/www/letsencrypt-auto
+    
+    # On dev and stage it's good idea to protect the site with htauth
+    basicauth_enabled: True
+    basicauth_username: wunder
+    basicauth_password: tools
+    # Basic auth can also be disabled for certain ip's
+    basicauth_ip:
+      - address: 84.20.132.177
+      - address: 87.94.15.10
+      - address: 94.237.27.124
+      - address: 94.237.33.88
+      - address: 83.136.248.231
 
     # Apps I want to run on this server
     apps:
-      - server_name: www.test1.com
-        server_aliases: bob1.com
-        server_forwards: test1.com
+      - server_name: stage.example.com
         http_port: 8080
-        docroot: /var/www/test1.com/drupal/current
-      - server_name: www.test2.com
-        server_aliases: bob2.com
-        server_forwards: test2.com
-        http_port: 8080
-        docroot: /var/www/test2.com/drupal/current
+        docroot: /var/www/example.com/drupal/current
 
     # This server also acts as a load balancer
     varnish:
       port: 80
       memory: 512M
       directors:
-        - name: test1
-          host: www.test1.com
+        - name: example
+          host: stage.example.com
           backends:
-            - name: test1_http
-              address: 127.0.0.1
-              port: 8080
-        - name: test2
-          host: www.test2.com
-          backends:
-            - name: test2_http
+            - name: example_http
               address: 127.0.0.1
               port: 8080
 
-      # BUT, we only use https for this host
-      sslterminators:
-        - server_name: www.test1.com
-          server_forwards: test1.com
-          ssl_certificate: certificate.crt
-          ssl_certificate_key: certificate.key
-          backends:
-            - 127.0.0.1:80
-        - server_name: www.test2.com
-          server_forwards: test2.com
-          ssl_certificate: certificate.crt
-          ssl_certificate_key: certificate.key
-          backends:
-            - 127.0.0.1:80
+    # Use https for this host
+    sslterminators:
+      - server_name: stage.example.com
+        ssl_certificate: /etc/letsencrypt/live/stage.example.com/fullchain.pem
+        ssl_certificate_key: /etc/letsencrypt/live/stage.example.com/privkey.pem
+        backends:
+          - 127.0.0.1:80 # Pass it to local varnish
 
+    # Make sure all traffic is redirected to https
+    httpforwards:
+      - server_name: stage.example.com
+        forwarded_domains: stage.example.com
+        http_port: 80
 
