@@ -20,4 +20,5 @@ $aliases['local'] = array(
   'remote-host' => 'local.wundertools.com',
   'remote-user' => 'vagrant',
   'ssh-options' => '-i ' . $key,
+  'uri' => 'https://local.wundertools.com'
 );
