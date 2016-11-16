@@ -19,6 +19,7 @@
   - cron: name="Example Drupal cron job" minute="*/2" job="su nginx --shell=/bin/sh -c '/usr/lib/composer/vendor/bin/drush --root=/var/www/example.com/current elysia-cron > /dev/null 2>&1'" state="present"
 
   vars:
+    wkv_site_env: dev
 
     partition_var_log: False
     partition_var_lib_mysql: False
