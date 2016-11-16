@@ -25,6 +25,10 @@
   vars:
     wkv_site_env: stage
 
+    # You can set custom variables if the same value is used in multiple places so it can be easily changed here
+    # You can use it anywhere after this using " {{ variable_name }}"
+    domain_name: stage.example.com
+
     partition_var_log: False
     partition_var_lib_mysql: False
 
@@ -40,7 +44,7 @@
     # Let's encrypt. Always use SSL if possible!
     letsencrypt_email: support@wundertools.comm
     letsencrypt_domains:
-      - stage.example.com
+      - "{{ domain_name }}"
     letsencrypt_renewal_docroot: /var/www/letsencrypt-auto
     
     # On dev and stage it's good idea to protect the site with htauth
@@ -57,7 +61,7 @@
 
     # Apps I want to run on this server
     apps:
-      - server_name: stage.example.com
+      - server_name: "{{ domain_name }}"
         http_port: 8080
         docroot: /var/www/example.com/drupal/current
 
@@ -67,7 +71,7 @@
       memory: 512M
       directors:
         - name: example
-          host: stage.example.com
+          host: "{{ domain_name }}"
           backends:
             - name: example_http
               address: 127.0.0.1
@@ -75,15 +79,15 @@
 
     # Use https for this host
     sslterminators:
-      - server_name: stage.example.com
-        ssl_certificate: /etc/letsencrypt/live/stage.example.com/fullchain.pem
-        ssl_certificate_key: /etc/letsencrypt/live/stage.example.com/privkey.pem
+      - server_name: "{{ domain_name }}"
+        ssl_certificate: /etc/letsencrypt/live/"{{ domain_name }}"/fullchain.pem
+        ssl_certificate_key: /etc/letsencrypt/live/"{{ domain_name }}"/privkey.pem
         backends:
           - 127.0.0.1:80 # Pass it to local varnish
 
     # Make sure all traffic is redirected to https
     httpforwards:
-      - server_name: stage.example.com
-        forwarded_domains: stage.example.com
+      - server_name: "{{ domain_name }}"
+        forwarded_domains: "{{ domain_name }}"
         http_port: 80
 
