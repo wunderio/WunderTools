@@ -1,0 +1,17 @@
+---
+
+# Note this file must be encrypted with ansible-vault!
+
+base_pubkeys_auth: username:password
+base_pubkeys_url: https://key.server.tld/auth?hostname={{ ansible_nodename }}
+base_addhost_url: https://key.server.tld/auth/add_server?hostname={{ ansible_nodename }}
+
+papertrail_host: "logs.host.tld"
+papertrail_port: 12345
+
+newrelic_license_key: "your-own-newrelic-account-licence-key"
+
+drupal_db_password: "password_to_access_drupal_db"
+
+external_smtp_sasl_password_maps: 'whateversecretstheexternalsmtpservicerequires'
+
