@@ -6,6 +6,7 @@
 [Structure](structure.md)
 [Configuration](config.md)
 [Tips](tips.md)
+[Troubleshooting](troubleshooting.md)
 
 
 
