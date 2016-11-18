@@ -24,3 +24,6 @@ Note2: When starting project always update ansibleref repos default conf to next
 6. If you get error about not able to load vagrantfile.rb:
 Ensure you have correct repo url in conf/project.yml (see above)
 Ensure you have your key added to your github account.
+
+7. NFS shares should not be one inside the other:
+If you have multiple projects and NFS shares in your host machine, check that no share is inside another one, because NFS definitely does not like that. 
