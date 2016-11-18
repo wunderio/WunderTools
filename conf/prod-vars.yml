@@ -11,7 +11,8 @@ papertrail_port: 12345
 
 newrelic_license_key: "your-own-newrelic-account-licence-key"
 
-drupal_db_password: "password_to_access_drupal_db"
+drupal_db1_password: "password_to_access_drupal_db1"
+drupal_db2_password: "password_to_access_drupal_db2"
 
 external_smtp_sasl_password_maps: 'whateversecretstheexternalsmtpservicerequires'
 

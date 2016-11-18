@@ -1,8 +1,6 @@
 ---
 
 - hosts: wundertools-prod-lb
-  sudo: true
-  user: root
   roles:
    - { role: base, tags: [ 'base' ] }
    - { role: letsencrypt, tags: [ 'letsencrypt' ] }
@@ -17,20 +15,8 @@
 
   vars:
 
-    ## Internal / helper vars ##
-
-    # Use internal network ip's of front1 and front2 machines
-    front1_ip: "10.10.10.5"
-    front2_ip: "10.10.10.6"
-
-    # This server hosts multiple domains
-    domain1_name: example1.com
-    domain2_name: example2.com
-
-
     ## Base ##
 
-    wkv_site_env: prod
     # /var/log on it's own partition
     partition_var_log: True
     # On Upcloud we usually get /dev/vdb for logs, but this may vary so you can define the disk here
