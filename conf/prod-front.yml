@@ -29,7 +29,7 @@
 
     partition_var_log: True
 
-    memory_app: 1024 # In MB
+    memory_app: 1024 # In MB should be atleast 4x php_memory_limit
 
 
     ## Nginx ##

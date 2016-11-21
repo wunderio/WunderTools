@@ -8,6 +8,9 @@
   become_method: sudo
   user: www-admin
 
+  vars_files:
+  - prod-vars.yml
+
   vars:
     ## Internal / helper vars ##
     # Production specific

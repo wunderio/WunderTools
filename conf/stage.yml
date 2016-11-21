@@ -18,6 +18,9 @@
    - { role: memcached, tags: [ 'memcached' ] }
    - { role: drupal-log, tags: [ 'drupal-log' ] }
 
+  vars_files:
+  - stage-vars.yml
+
   tasks:
   # Drupal cron job
   - cron: name="Example Drupal cron job" minute="*/2" job="su nginx --shell=/bin/sh -c '/usr/lib/composer/vendor/bin/drush --root=/var/www/example.com/current elysia-cron > /dev/null 2>&1'" state="present"
