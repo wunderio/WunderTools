@@ -40,12 +40,12 @@
         server_aliases: "{{ domain1_name }}"
         server_forwards: "{{ domain1_name }}"  # we redirect to www subdomain
         http_port: 8080
-        docroot: /var/www/prod1/drupal/current
+        docroot: /var/www/prod1/current
       - server_name: "www.{{ domain2_name }}"
         server_aliases: "{{ domain2_name }}"
         server_forwards: "{{ domain2_name }}"  # we redirect to www subdomain
         http_port: 8080
-        docroot: /var/www/prod2/drupal/current/web # This is D8 site!
+        docroot: /var/www/prod2/current/web # This is D8 site!
 
     # You can also define aliases with app_dir_aliases, see ansible/playbook/roles/nginx/templates/all_apps.conf.j2
 

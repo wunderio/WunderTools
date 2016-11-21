@@ -40,7 +40,7 @@
     apps:
       - server_name: dev.example.com
         http_port: 8080
-        docroot: /var/www/example.com/drupal/current
+        docroot: /var/www/example.com/current
 
     # This server also acts as a load balancer
     varnish:
