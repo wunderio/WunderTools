@@ -45,8 +45,8 @@ local:
     - conf/composer.json: composer.json
     - conf/composer.lock: composer.lock
     - files: web/sites/default/files
-    - code/modules: web/modules/custom
-    - code/themes: web/themes/custom
+    - code/modules/custom: web/modules/custom
+    - code/themes/custom: web/themes/custom
     - sync: sync
 
   copy:
