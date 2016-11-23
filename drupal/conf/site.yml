@@ -37,8 +37,8 @@ default:
   # In development environments we usually want to use symlinks, note the settings.php linking
   link:
     - files: sites/default/files
-    - code/modules: sites/all/modules/custom
-    - code/themes: sites/all/themes/custom
+    - code/modules/custom: sites/all/modules/custom
+    - code/themes/custom: sites/all/themes/custom
     - code/profiles/wk: profiles/wk
     - conf/vagrant.settings.php: sites/default/settings.php
     - conf/_ping.php: _ping.php
@@ -57,8 +57,8 @@ test:
     - files: sites/default/files
 
   copy:
-    - code/modules: sites/all/modules/custom
-    - code/themes: sites/all/themes/custom
+    - code/modules/custom: sites/all/modules/custom
+    - code/themes/custom: sites/all/themes/custom
     - code/profiles/wk: profiles/wk
     - conf/test.settings.php: sites/default/settings.php
     - conf/_ping.php: _ping.php
@@ -81,8 +81,8 @@ production:
 
   # Other files are copied, note settings.php
   copy:
-    - code/modules: sites/all/modules/custom
-    - code/themes: sites/all/themes/custom
+    - code/modules/custom: sites/all/modules/custom
+    - code/themes/custom: sites/all/themes/custom
     - code/profiles/wk: profiles/wk
     - conf/prod.settings.php: sites/default/settings.php
     - conf/_ping.php: _ping.php
