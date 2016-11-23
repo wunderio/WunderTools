@@ -3,8 +3,9 @@
 # Example of absolute minimum server setup.
 
 - hosts: wundertools-dev
-  become: true
+  become: false
   become_method: sudo
+  user: root
   roles:
    - { role: base, tags: [ 'base' ] }
    - { role: varnish, tags: [ 'varnish' ] }

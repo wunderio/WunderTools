@@ -4,9 +4,9 @@
 - include: prod-db.yml
 - include: prod-front.yml
 
-  become: true
+  become: false
   become_method: sudo
-  user: www-admin
+  user: root
 
   vars_files:
   - prod-vars.yml
