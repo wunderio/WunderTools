@@ -4,5 +4,6 @@ mem : 2000
 cpus : 2
 ip : 192.168.10.170
 box : geerlingguy/centos6
-#Check for newer box versions here: https://atlas.hashicorp.com/geerlingguy/boxes/centos6 
+#Check for newer box versions here: https://atlas.hashicorp.com/geerlingguy/boxes/centos6
+#Box version is used for Virtualboxes only. WMWare does not have problems with the latest versions at this time
 box_version: 1.1.2
