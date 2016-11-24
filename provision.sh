@@ -124,10 +124,11 @@ if [ -z $ENVIRONMENT ]; then
 fi
 
 if [ -z $VAULT_FILE ]; then
-  echo "Vault password file missing."
-  echo "You can provide the path to the file with -p option."
-  echo "Alternatively you can set WT_ANSIBLE_VAULT_FILE environment variable."
-  exit 1
+  echo -e "\e[31mVault password file missing.\e[0m"
+  echo -e "You can provide the path to the file with -p option."
+  echo -e "Alternatively you can set WT_ANSIBLE_VAULT_FILE environment variable."
+  echo -e "If you don't have any ansible-vault encrypted config file this is just fine,"
+  echo -e "Otherwise your provisioning will fail horribly.\e[31mYou have been warned!\e[0m"
 fi
 
 pushd `dirname $0` > /dev/null
