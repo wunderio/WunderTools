@@ -1,0 +1,213 @@
+---
+
+- hosts: wundertools-prod-lb
+  roles:
+   - { role: base, tags: [ 'base' ] }
+   - { role: letsencrypt, tags: [ 'letsencrypt' ] }
+   - { role: varnish, tags: [ 'varnish' ] }
+   - { role: nginx, tags: [ 'nginx' ] }
+   - { role: sslterminator, tags: [ 'sslterminator' ] }
+   - { role: monit, tags: [ 'monit' ] }
+   - { role: papertrail, tags: [ 'papertrail' ] }
+   - { role: newrelic-sysmon, tags: [ 'newrelic-sysmon' ] }
+
+  tasks:
+
+  vars:
+
+    ## Base ##
+
+    # /var/log on it's own partition
+    partition_var_log: True
+    # On Upcloud we usually get /dev/vdb for logs, but this may vary so you can define the disk here
+    #var_log_disk: /dev/vdb
+
+    # We want to manage our server access with public key authentication server
+    #base_pubkeys_enable: True
+    # key server is configured in prod-vars.yml
+
+    # On default we disable iptables but we want option to keep it on for customer-servers without external firewall
+    #disable_iptables: True
+
+
+    ## Letsencrypt ##
+
+    letsencrypt_email: support@wunderools.com
+    letsencrypt_domains:
+      - "{{ domain1_name }}"
+      - "www.{{ domain1_name }}"
+      - "{{ domain2_name }}"
+      - "www.{{ domain2_name }}"
+    letsencrypt_renewal_docroot: /var/www/letsencrypt-auto
+    #letsencrypt_commands: allows yo uto customize the command to run, see ansible/playbook/roles/letsencrypt/defaults/main.yml
+
+
+    ## Varnish ##
+
+    # This server also acts as a load balancer
+    varnish:
+      port: 8081
+      memory: 1G
+      # Basic configuration for error pages
+      #error_header_cache_control: "no-cache, max-age: 0, must-revalidate"
+      error_header_x_site_name: "insert_sitename"
+      error_header_x_sitetitle: "insert_site_title"
+      error_header_x_ua: "insert_GA_code"
+      # It's possible to define custom error page template with
+      #custom_error_template:
+      # you can also set the control_key
+      #control_key: your-secret-control-key
+      probe_resource_url: "_ping.php"
+      acl_internal:
+        - ip: 84.20.132.177
+        - ip: 87.94.15.10
+        - ip: 94.237.27.124
+        - ip: 94.237.33.88
+        - ip: 83.136.248.231
+      acl_purge:
+        - ip: 127.0.0.1
+        - ip: "{{ front1_ip }}"
+        - ip: "{{ front2_ip }}"
+      acl_upstream_proxy:
+        - ip: 127.0.0.1
+      directors:
+        - name: prod1
+          host: "www.{{ domain1_name }}"
+          backends:
+            - name: prod1_http1
+              address: "{{ front1_ip }}"
+              port: 8080
+            - name: prod1_http2
+              address: "{{ front2_ip }}"
+              port: 8080
+        - name: prod2
+          host: "www.{{ domain2_name }}"
+          backends:
+            - name: prod2_http1
+              address: "{{ front1_ip }}"
+              port: 8080
+            - name: prod2_http2
+              address: "{{ front2_ip }}"
+              port: 8080
+
+    # There is more customization options for hashes, cookies etc. see ansible/playbook/roles/varnish/templates/default.vcl.j2 for reference
+
+    ## Nginx ##
+
+    # Apps I want to run on this server
+    apps:
+      - server_name: "www.{{ domain1_name }}"
+        server_aliases: "{{ domain1_name }}"
+        server_forwards: "{{ domain1_name }}"  # we redirect to www subdomain
+        http_port: 8080
+        docroot: /var/www/prod1/drupal/current
+      - server_name: "www.{{ domain2_name }}"
+        server_aliases: "{{ domain2_name }}"
+        server_forwards: "{{ domain2_name }}"  # we redirect to www subdomain
+        http_port: 8080
+        docroot: /var/www/prod2/drupal/current/web # This is D8 site!
+
+    # You can also define aliases with app_dir_aliases, see ansible/playbook/roles/nginx/templates/all_apps.conf.j2
+
+    nginx_real_ip: 127.0.0.1
+    # If using 3rd party CDN / proxy you can define those ip's here so that the real original request ip will be passed through
+    # For example Cloudflare:
+    #nginx_real_ip:
+    #  - 103.21.244.0/22
+    #  - 103.22.200.0/22
+    #  - 103.31.4.0/22
+    #  - 104.16.0.0/12
+    #  - 108.162.192.0/18
+    #  - 131.0.72.0/22
+    #  - 141.101.64.0/18
+    #  - 162.158.0.0/15
+    #  - 172.64.0.0/13
+    #  - 173.245.48.0/20
+    #  - 188.114.96.0/20
+    #  - 190.93.240.0/20
+    #  - 197.234.240.0/22
+    #  - 198.41.128.0/17
+    #  - 199.27.128.0/21
+
+    # Extra nginx configs
+    nginx_conf:
+      - client_header_timeout: 10
+      - client_body_timeout: 120
+      - send_timeout: 120
+      - keepalive_timeout: "15 10"
+      - client_max_body_size: 100M
+      - client_body_buffer_size: 128k
+      - proxy_read_timeout: 60
+
+    # Define additional Content-Security-Policy headers
+    nginx_content_security: "; connect-src wss: https:"
+    # or disable them completely
+    #nginx_disable_content_security_policy: True
+    # Also affects sslterminator
+
+
+    ## Sslterminator ##
+    # we only use https for this host
+    sslterminators:
+      - server_name: "www.{{ domain1_name }}"
+        server_forwards: "{{ domain1_name }}"  # we redirect to www subdomain
+        ssl_certificate: "/etc/letsencrypt/live/{{ domain1_name }}/fullchain.pem"
+        ssl_certificate_key: "/etc/letsencrypt/live/{{ domain1_name}}/privkey.pem"
+        use_dhparam: True
+        backends:
+          - 127.0.0.1:8081
+      - server_name: "www.{{ domain2_name }}"
+        server_forwards: "{{ domain2_name }}"  # we redirect to www subdomain
+        ssl_certificate: "/etc/letsencrypt/live/{{ domain2_name }}/fullchain.pem"
+        ssl_certificate_key: "/etc/letsencrypt/live/{{ domain2_name}}/privkey.pem"
+        use_dhparam: True
+        backends:
+          - 127.0.0.1:8081
+
+    # Forward to www and https.
+    httpforwards:
+      - server_name: "www.{{ domain1_name }}"
+        forwarded_domains: "{{ domain1_name}} www.{{ domain1_name }}"
+      - server_name: "www.{{ domain2_name }}"
+        forwarded_domains: "{{ domain2_name}} www.{{ domain2_name }}"
+    # You can also use extra_forwards and httpextraforwards to define additional domains to listen & forward
+    # See ansible/playbook/roles/sslterminator/templates/ssl_terminators.conf.j2 for reference.
+
+    ## Monit ##
+    monit_enabled: True
+    monit_alert_email_service_name: "wundertools lb {{ ansible_nodename }}"
+    monit_alert_email_from: "alert@wundertools.com"
+    monit_alert_email_to: alert@wundertools.com
+    monit_allow:
+      - localhost
+      - user:password
+    monit_check_sshd: True
+    monit_check_varnish: True
+    monit_check_nginx: True
+    monit_check_remote_syslog: True
+    monit_check_cron: True
+
+
+    ## Papertrail ##
+    papertrail_enabled: True
+    papertrail_remote_syslog2_version: "0.16"
+    papertrail_conf: "/etc/log_files.yml"
+    papertrail_logs:
+      - /var/log/secure
+
+    # papertrail host and port defined in prod-vars.yml
+
+    # Define additional papertrail logs from nginx (from nginx role)
+    nginx_papertrail_follow:
+      - /var/log/nginx/http-*error.log
+
+    # Define additional papertrail logs from sslterminator (from sslterminator role)
+    sslterminator_papertrail_follow:
+      - /var/log/nginx/ssl-*error.log
+
+
+    ## Newrelic ##
+    newrelic_enabled: True
+    # newrelic_license_key defined in prod_vars.yml
+
+

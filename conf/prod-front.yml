@@ -1,0 +1,138 @@
+---
+
+- hosts: wundertools-prod-front
+  roles:
+   - { role: base, tags: [ 'base' ] }
+   - { role: nginx, tags: [ 'nginx' ] }
+   - { role: php-fpm, tags: [ 'php-fpm' ] }
+   - { role: memcached, tags: [ 'memcached' ] }
+   - { role: drush, tags: [ 'drush' ] }
+   - { role: drupal-log, tags: [ 'drupal-log' ] }
+   - { role: external-smtp, tags: [ 'external-smtp' ] }
+   - { role: nfs_client, tags: [ 'nfs_client' ] }
+   - { role: monit, tags: [ 'monit' ] }
+   - { role: papertrail, tags: [ 'papertrail' ] }
+   - { role: newrelic, tags: [ 'newrelic' ] }
+   - { role: newrelic-sysmon, tags: [ 'newrelic-sysmon' ] }
+
+
+  tasks:
+
+    # Set drupal cron to be run every minute alternately on both servers
+    - cron: name="Example Drupal cron job" minute="*/2" job="su nginx --shell=/bin/sh -c '/usr/lib/composer/vendor/bin/drush --root=/var/www/example.com/current elysia-cron > /dev/null 2>&1'" state="present"
+      when: ansible_eth0.ipv4.address == groups['wundertools-prod-front'][0]
+
+    - cron: name="Example Drupal cron job" minute="1-59/2" job="su nginx --shell=/bin/sh -c '/usr/lib/composer/vendor/bin/drush --root=/var/www/example.com/current elysia-cron > /dev/null 2>&1'" state="present"
+      when: ansible_eth0.ipv4.address == groups['wundertools-prod-front'][1]
+
+  vars:
+
+    partition_var_log: True
+
+    memory_app: 1024 # In MB should be atleast 4x php_memory_limit
+
+
+    ## Nginx ##
+
+    # Apps I want to run on this server
+    apps:
+      - server_name: "www.{{ domain1_name }}"
+        server_aliases: "{{ domain1_name }}"
+        server_forwards: "{{ domain1_name }}"  # we redirect to www subdomain
+        http_port: 8080
+        docroot: /var/www/prod1/current
+      - server_name: "www.{{ domain2_name }}"
+        server_aliases: "{{ domain2_name }}"
+        server_forwards: "{{ domain2_name }}"  # we redirect to www subdomain
+        http_port: 8080
+        docroot: /var/www/prod2/current/web # This is D8 site!
+
+    # You can also define aliases with app_dir_aliases, see ansible/playbook/roles/nginx/templates/all_apps.conf.j2
+
+    # Allow extra php scripts
+    nginx_extra_php:
+      - example.php
+
+
+    ## Php-fpm ##
+
+    php_ini_file: /etc/php.d/zz_wundertools.ini
+
+    # You can set any php.ini variable like this:
+    #php_ini:
+    #  - section: [section]
+    #    options:
+    #      - key: [php variable]
+    #        val: "[value]"
+
+    # See ansible_playbook/roles/php-fpm/defaults/main.yml for examples
+
+    ## Memcached ##
+
+    memcached_port: 11211
+    memcached_maxconn: 1024
+    memcached_cachesize: 256
+    memcached_options: "-I 4M"
+
+
+    ## Drush ##
+
+    drush: {
+      version: "8.*",
+    }
+
+
+    ## Drupal-log ##
+
+    drupal_log_path: /var/log/drupal.log
+
+
+    ## External-smtp ##
+
+    external_smtp_tls_security_level: 'encrypt'
+    external_smtp_relayhost: '[smtp.sparkpostmail.com]:587'
+    # external_smtp_sasl_password_maps value defined in prod-vars.yml
+
+    ## Nfs-client ##
+
+    nfsserver: "{{ db_ip }}"
+
+
+    ## Monit ##
+    monit_enabled: True
+    monit_alert_email_service_name: "wundertools front {{ ansible_nodename }}"
+    monit_alert_email_from: "alert@wundertools.com"
+    monit_alert_email_to: alert@wundertools.com
+    monit_allow:
+      - localhost
+      - user:password
+    monit_check_sshd: True
+    monit_check_nginx: True
+    monit_check_memcached: True
+    monit_check_php_fpm: True
+    monit_check_remote_syslog: True
+    monit_check_cron: True
+
+
+    ## Papertrail ##
+    papertrail_enabled: True
+    papertrail_remote_syslog2_version: "0.16"
+    papertrail_conf: "/etc/log_files.yml"
+    papertrail_logs:
+      - /var/log/secure
+
+    # papertrail host and port defined in prod-vars.yml
+
+    # Define additional papertrail logs from nginx (from nginx role)
+    nginx_papertrail_follow:
+      - /var/log/nginx/http-*error.log
+
+
+    php_fpm_papertrail_follow:
+      - /var/log/php-fpm/www-error.log
+
+    ## Newrelic ##
+    newrelic_enabled: True
+    # newrelic_license_key defined in prod_vars.yml
+    newrelic_appname: "Exampleapp"
+

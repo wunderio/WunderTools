@@ -8,21 +8,32 @@
    - { role: base, tags: [ 'base' ] }
    - { role: php-fpm, tags: [ 'php-fpm' ] }
    - { role: nginx, tags: [ 'nginx' ] }
+   # Instead of php-fpm + nginx you can also use apache + php
+   # - { role: httpd-php, tags: [ 'httpd-php' ] }
    - { role: varnish, tags: [ 'varnish' ] }
    - { role: memcached, tags: [ 'memcached' ] }
+   # Drush also includes composer and prestissimo for speedier composer runs
    - { role: drush, tags: [ 'drush' ] }
+   # Drupal console is also available:
+   # - { role: drupal-console, tags: [ 'drupal-console' ] }
    - { role: dbserver, tags: [ 'dbserver' ] }
+   # By default this will create database called drupal with user: drupal and password: password
    - { role: drupal-db, tags: [ 'drupal-db' ] }
    # Local replacement for letsencrypt. Uses letsencrypt settings but creates self signed certificates for local use.
    - { role: selfencrypt, tags: [ 'selfencrypt' ] }
    - { role: sslterminator, tags: [ 'sslterminator' ] }
+   # For search. If you need project specific custom settings you need to copy this role from 
+   # ansible/playbook/roles/solr to local_ansible_roles/{project]_solr and do the modifications there (under files/) 
+   # - { role: solr, tags: [ 'solr' ] }
+   # Of course Elasticsearch as search backend is more modern
+   # - { role: elasticsearch, tags: [ 'elasticsearch' ] }
    # Devtools, uncomment to enable xdebug and blackfire
    # To use blackfire you need to define blackfire keys and tokens (see ansible/playbook/roles/devtools/defaults/main.yml for reference)
    # You can get those keys and tokens from https://blackfire.io/docs/up-and-running/installation
    # Otherwise you can disable blackfire by setting enable_blackfire: false
    #- { role: devtools, tags: [ 'devtools' ] }
    # Mailhog, uncomment to catch outgoing mail. You can access mailhog at your local site url on port 8025
-   #- { role: mailhog, tags: [ 'mailhog' ] }
+   - { role: mailhog, tags: [ 'mailhog' ] }
    # Optional HHVM role.
    # Requires WunderMachina hhvm branch https://github.com/wunderkraut/WunderMachina/tree/hhvm
    # More in-depth instructions at https://github.com/wunderkraut/WunderTools/wiki/HHVM
@@ -35,21 +46,14 @@
   vars:
     wkv_site_env: local
 
-    nginx_disable_content_security_policy: True
-
     partition_var_log: False
-
     partition_var_lib_mysql: False
 
-    # <EXAMPLE>
     # How to assign memory for each role and set the correct
     # amount of worker processes / threads
-
     memory_db: 1024 # In MB
     memory_app: 1024 # In MB
     # NOTE: ALWAYS leave some spare memory for the server
-    php_memory_limit: 256 # In MB
-    nginx_workers: 2 # This should be equal to core count
 
     # Make sure changes to PHP files are not ignored
     php_ini:
@@ -60,37 +64,23 @@
           - key: opcache.opcache.revalidate_freq
             val: 0
 
-    # </EXAMPLE>
-
+    # letsencrypt variables are also used by selfencrypt
     letsencrypt_email: support@example.com
     letsencrypt_domains:
-      - wundertools.com
-      - local.wundertools.com
-
-    newrelic_enabled: False
-    newrelic_license_key: "this-is-a-fake-key-replace-with-a-real-1"
-
-    monit_enabled: False
-    logentries_enabled: False
+      - local.example.com
 
     # Apps I want to run on this server
     apps:
       # For drupal 7
-      - server_name: local.wundertools.com
-        server_aliases: wundertools.com
-        server_forwards: wundertools.com
+      - server_name: local.example.com
         http_port: 8080
         docroot: /vagrant/drupal/current
-      # For drupal 8
-      - server_name: www.test2.com
-        server_aliases: bob2.com
-        server_forwards: test2.com
-        http_port: 8080
-        docroot: /vagrant/drupal/current/web
+      # For drupal 8 use
+      # docroot: /vagrant/drupal/current/web
 
     # This server also acts as a load balancer
     varnish:
-      port: 8081
+      port: 80
       memory: 512M
       probe_resource_url: "_ping.php"
       control_key: "{{ 'vagrant' | to_uuid }}"
@@ -101,45 +91,23 @@
       acl_upstream_proxy:
         - ip: 127.0.0.1
       directors:
-        - name: test1
-          host: local.wundertools.com
+        - name: example
+          host: local.example.com
           backends:
-            - name: local_wundertools_http
-              address: 127.0.0.1
-              port: 8080
-        - name: test2
-          host: www.test2.com
-          backends:
-            - name: test2_http
+            - name: local_example_http
               address: 127.0.0.1
               port: 8080
 
     # BUT, we only use https for this host
     sslterminators:
-      - server_name: local.wundertools.com
-        server_forwards: wundertools.com
+      - server_name: local.example.com
+        server_forwards: example.com
         ssl_certificate: certificate.crt
         ssl_certificate_key: ssl/certificate.key
         backends:
           - 127.0.0.1:8081
-      - server_name: www.test2.com
-        server_forwards: test2.com
-        ssl_certificate: certificate.crt
-        ssl_certificate_key: ssl/certificate.key
-        backends:
-          - 127.0.0.1:8081
-
 
     httpforwards:
-      - server_name: local.wundertools.com
-        forwarded_domains: 'local.wundertools.com'
+      - server_name: local.example.com
+        forwarded_domains: 'local.example.com'
 
-    # Databases
-    databases:
-      - name: drupal
-        user: drupal
-        pass: password
-        hosts:
-          - "127.0.0.1"
-          - "::1"
-          - "localhost"
