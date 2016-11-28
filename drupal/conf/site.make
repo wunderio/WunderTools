@@ -5,7 +5,7 @@ core = 7.0
 api = 2
 
 projects[drupal][type] = core
-projects[drupal][version] = 7.44
+projects[drupal][version] = 7.52
 
 defaults[projects][subdir] = "contrib"
 
@@ -14,34 +14,34 @@ defaults[projects][subdir] = "contrib"
 
 ; Basics
 ; --------------------
-projects[ctools][version] = 1.9
-projects[elysia_cron][version] = 2.1
-projects[entity][version] = 1.6
-projects[entity_translation][version] = 1.0-beta4
-projects[features][version] = 2.0
+projects[ctools][version] = 1.12
+projects[elysia_cron][version] = 2.3
+projects[entity][version] = 1.8
+projects[entity_translation][version] = 1.0-beta5
+projects[features][version] = 2.10
 projects[imagemagick][version] = 1.0
-projects[libraries][version] = 2.2
+projects[libraries][version] = 2.3
 projects[views_litepager][version] = 3.0
 projects[memcache][version] = 1.5
-projects[metatag][version] = 1.5
-projects[pathauto][version] = 1.2
+projects[metatag][version] = 1.17
+projects[pathauto][version] = 1.3
 projects[rules][version] = 2.9
-projects[search_api][version] = 1.14
-projects[search_api_solr][version] = 1.6
+projects[search_api][version] = 1.20
+projects[search_api_solr][version] = 1.11
 projects[strongarm][version] = 2.0
 projects[token][version] = 1.6
-projects[varnish][version] = 1.0-beta3
-projects[views][version] = 3.11
+projects[varnish][version] = 1.1
+projects[views][version] = 3.14
 
 ; Admin
 ; --------------------
 
-projects[admin_language][version] = 1.0-beta1
-projects[admin_views][version] = 1.5
-projects[fpa][version] = 2.5
+projects[admin_language][version] = 1.0-beta4
+projects[admin_views][version] = 1.6
+projects[fpa][version] = 2.6
 projects[module_filter][version] = 2.0
 
-projects[navbar][version] = 1.6
+projects[navbar][version] = 1.7
 ; Fix scrolling issues
 projects[navbar][patch][] = "https://drupal.org/files/issues/navbar-2183753-10-ie-navbar-issue.patch"
 
@@ -50,15 +50,16 @@ projects[simplei][patch][] = http://www.drupal.org/files/issues/2420513-support-
 
 projects[views_bulk_operations][version] = 3.3
 
+projects[wunderstatus][version] = 2.0
+
 ; Misc improvements & tweaks
 ; --------------------
 
-projects[chosen][version] = 2.0-beta4
-projects[chosen][patch][] = 'https://www.drupal.org/files/issues/chosen-toggle-admin-pages-option-2534756-5.patch'
+projects[chosen][version] = 2.0
 
-projects[media][version] = 2.0-alpha3
+projects[media][version] = 2.0-beta10
 
-projects[pathologic][version] = 2.12
+projects[pathologic][version] = 3.1
 
 projects[wysiwyg][type] = "module"
 projects[wysiwyg][download][type] = "git"
