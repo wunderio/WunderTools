@@ -3,7 +3,7 @@
 - hosts: wundertools-prod-lb
   roles:
    - { role: base, tags: [ 'base' ] }
-   - { role: letsencrypt, tags: [ 'letsencrypt' ] }
+   - { role: certbot, tags: [ 'certbot' ] }
    - { role: varnish, tags: [ 'varnish' ] }
    - { role: nginx, tags: [ 'nginx' ] }
    - { role: sslterminator, tags: [ 'sslterminator' ] }
@@ -32,14 +32,14 @@
 
     ## Letsencrypt ##
 
-    letsencrypt_email: support@wunderools.com
-    letsencrypt_domains:
+    certbot_email: support@wunderools.com
+    certbot_domains:
       - "{{ domain1_name }}"
       - "www.{{ domain1_name }}"
       - "{{ domain2_name }}"
       - "www.{{ domain2_name }}"
-    letsencrypt_renewal_docroot: /var/www/letsencrypt-auto
-    #letsencrypt_commands: allows yo uto customize the command to run, see ansible/playbook/roles/letsencrypt/defaults/main.yml
+    certbot_renewal_docroot: /var/www/certbot-auto
+    #certbot_commands: allows yo uto customize the command to run, see ansible/playbook/roles/certbot/defaults/main.yml
 
 
     ## Varnish ##

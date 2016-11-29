@@ -11,7 +11,7 @@
    - { role: varnish, tags: [ 'varnish' ] }
    - { role: dbserver, tags: [ 'dbserver' ] }
    - { role: drupal-db, tags: [ 'drupal-db' ] }
-   - { role: letsencrypt, tags: [ 'letsencrypt' ] }
+   - { role: certbot, tags: [ 'certbot' ] }
    - { role: sslterminator, tags: [ 'sslterminator' ] }
    - { role: nginx, tags: [ 'nginx' ] }
    - { role: php-fpm, tags: [ 'php-fpm' ] }
@@ -46,10 +46,10 @@
     # php memory limits etc are in variables.yml
 
     # Let's encrypt. Always use SSL if possible!
-    letsencrypt_email: support@wundertools.comm
-    letsencrypt_domains:
+    certbot_email: support@wundertools.com
+    certbot_domains:
       - "{{ domain_name }}"
-    letsencrypt_renewal_docroot: /var/www/letsencrypt-auto
+    certbot_renewal_docroot: /var/www/certbot-auto
     
     # On dev and stage it's good idea to protect the site with htauth
     basicauth_enabled: True
@@ -84,8 +84,8 @@
     # Use https for this host
     sslterminators:
       - server_name: "{{ domain_name }}"
-        ssl_certificate: /etc/letsencrypt/live/"{{ domain_name }}"/fullchain.pem
-        ssl_certificate_key: /etc/letsencrypt/live/"{{ domain_name }}"/privkey.pem
+        ssl_certificate: "/etc/letsencrypt/live/{{ domain_name }}/fullchain.pem"
+        ssl_certificate_key: "/etc/letsencrypt/live/{{ domain_name }}/privkey.pem"
         backends:
           - 127.0.0.1:8081 # Pass it to local varnish
 
