@@ -49,6 +49,9 @@
 
     # You can also define aliases with app_dir_aliases, see ansible/playbook/roles/nginx/templates/all_apps.conf.j2
 
+    # Automatically create docroot folders
+    create_docroot: True
+
     # Allow extra php scripts
     nginx_extra_php:
       - example.php

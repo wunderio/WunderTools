@@ -69,6 +69,8 @@
         http_port: 8080
         docroot: /var/www/example.com/current
 
+    create_docroot: True
+
     # This server also acts as a load balancer
     varnish:
       port: 8081
