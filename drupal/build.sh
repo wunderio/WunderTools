@@ -367,10 +367,10 @@ class Maker:
             self.link()
         elif step == 'test':
             self.test()
-                elif step == 'passwd':
-                        self.passwd()
-                elif step == 'drush':
-                        self.drush_command(command)
+        elif step == 'passwd':
+                self.passwd()
+        elif step == 'drush':
+                self.drush_command(command)
         else:
             print "Unknown step " + step
 
@@ -439,8 +439,8 @@ class Maker:
         if quiet:
             FNULL = open(os.devnull, 'w')
             return subprocess.call([self.drush] + args, stdout=FNULL, stderr=FNULL) == 0
-                if output:
-                        return subprocess.check_output([self.drush] + args)
+        if output:
+            return subprocess.check_output([self.drush] + args)
         return subprocess.call([self.drush] + args) == 0
 
     # Ensure directories exist
