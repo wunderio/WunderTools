@@ -33,7 +33,7 @@
     # On dedicated DB server memory_db should max be around 80% of total memory and would ideally fit the whole db + some more.
     memory_db: 1024 # In MB
     memory_app: 1024 # In MB
-    
+
     # NOTE: ALWAYS leave some spare memory for the server
     # php memory limits etc are in variables.yml
 

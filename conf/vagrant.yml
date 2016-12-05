@@ -22,8 +22,8 @@
    # Local replacement for letsencrypt. Uses letsencrypt settings but creates self signed certificates for local use.
    - { role: selfencrypt, tags: [ 'selfencrypt' ] }
    - { role: sslterminator, tags: [ 'sslterminator' ] }
-   # For search. If you need project specific custom settings you need to copy this role from 
-   # ansible/playbook/roles/solr to local_ansible_roles/{project]_solr and do the modifications there (under files/) 
+   # For search. If you need project specific custom settings you need to copy this role from
+   # ansible/playbook/roles/solr to local_ansible_roles/{project]_solr and do the modifications there (under files/)
    # - { role: solr, tags: [ 'solr' ] }
    # Of course Elasticsearch as search backend is more modern
    # - { role: elasticsearch, tags: [ 'elasticsearch' ] }
@@ -60,7 +60,7 @@
       - section: OPCACHE
         options:
           - key: opcache.validate_timestamps
-            val: 1 
+            val: 1
           - key: opcache.revalidate_freq
             val: 0
 
