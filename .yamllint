@@ -1,0 +1,14 @@
+# Extends the default config by adjusting some options
+extends: default
+
+rules:
+  braces: disable
+  brackets: disable
+  comments: disable
+  comments-indentation: disable
+  document-start: disable
+  empty-lines: disable
+  key-duplicates: disable
+  indentation: disable
+  line-length: disable
+  truthy: disable
