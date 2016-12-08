@@ -1,6 +1,7 @@
 # Project reference setup with Ansible & Vagrant
 
-[![Build Status](https://travis-ci.org/wunderkraut/WunderMachina.svg?branch=centos7)](https://travis-ci.org/wunderkraut/WunderMachina)
+[![Build Status](https://travis-ci.org/wunderkraut/WunderMachina.svg)](https://travis-ci.org/wunderkraut/WunderMachina)
+[![Build Status](https://travis-ci.org/wunderkraut/WunderTools.svg)](https://travis-ci.org/wunderkraut/WunderTools)
 
 # Starting a new Drupal 7 Project with WunderTools
 
