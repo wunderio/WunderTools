@@ -108,9 +108,9 @@ We depend of different software that gets constantly and independently updated, 
 At the time of writing (dec 9 2016) these are combinations that are known to work (there might be others):
 
 - virtualbox 5.1, vagrant 1.9.0, ansible 2.2, geerlinguy box 1.1.4 (vagrant 1.9.1 should be avoided because of a bug that interferes with nfs mounting)
-- virtualbox 5.0, vagrant 1.8.4, ansible 2.0.0.2, geerlingguy box 1.1.3
+- virtualbox 5.0, vagrant 1.8.4, ansible 2.0.0.2, geerlingguy box 1.1.3 (vagrant > 1.8.4 has issues with nfs and keys)
 
-
+If you are using different versions, you are on your own :)
 
 ##Introduction
 
