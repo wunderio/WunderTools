@@ -6,7 +6,7 @@ ansible:
   revision:
 buildsh:
   enabled: true
-  branch: develop
+  branch: master
   revision:
 wundertools:
   branch: master
