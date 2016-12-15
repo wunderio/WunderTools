@@ -6,8 +6,8 @@
   user: vagrant
   roles:
    - { role: base, tags: [ 'base' ] }
-   - { role: php-fpm, tags: [ 'php-fpm' ] }
    - { role: nginx, tags: [ 'nginx' ] }
+   - { role: php-fpm, tags: [ 'php-fpm' ] }
    # Instead of php-fpm + nginx you can also use apache + php
    # - { role: httpd-php, tags: [ 'httpd-php' ] }
    - { role: varnish, tags: [ 'varnish' ] }
