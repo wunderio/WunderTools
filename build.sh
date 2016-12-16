@@ -37,9 +37,16 @@ else
   GITBRANCH=$wundertools_branch
 fi
 
+if [ -z "$wundertools_repository" ]; then
+  WUNDERTOOLSREPOSITORY="wunderkraut/WunderTools"
+else
+  WUNDERTOOLSREPOSITORY=$wundertools_repository
+fi
+
+
 VERSIONFILE=$ROOT/VERSION
 CHANGELOG=$ROOT/CHANGELOG
-CHANGELOGURL="https://raw.githubusercontent.com/wunderkraut/WunderTools/$GITBRANCH/CHANGELOG"
+CHANGELOGURL="https://raw.githubusercontent.com/$WUNDERTOOLSREPOSITORY/$GITBRANCH/CHANGELOG"
 
 if [ -f $VERSIONFILE ]; then
   typeset -i CURRENT_VERSION=$(<$VERSIONFILE)
@@ -85,7 +92,7 @@ if [[ $1 == "reset" ]]; then
 elif [[ $1 == "up" || $1 == "provision" ]]; then
   # First we check if there is update for this script
   SELF=$(basename $0)
-  UPDATEURL="https://raw.githubusercontent.com/wunderkraut/WunderTools/$GITBRANCH/build.sh"
+  UPDATEURL="https://raw.githubusercontent.com/$WUNDERTOOLSREPOSITORY/$GITBRANCH/build.sh"
   MD5SELF=$($MD5COMMAND $0 | awk '{print $1}')
   MD5LATEST=$(curl -s $UPDATEURL | $MD5COMMAND | awk '{print $1}')
   if [[ "$MD5SELF" != "$MD5LATEST" ]]; then
@@ -117,15 +124,25 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
       git pull
       git checkout $ansible_branch
       cd $ROOT
+    else
+      cd $ROOT/ansible
+      git pull
+      git reset --hard $ansible_revision
+      cd $ROOT
     fi
   fi
 
   # If it is enabled in project.yml - get & update drupal/build.sh
   if $buildsh_enabled; then
-    if [ -n "$buildsh_revision" ]; then
-      curl -s -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_revision/build.sh
+    if [ -z "$buildsh_repository" ]; then
+      BUILDSHREPOSITORY="wunderkraut/build.sh"
     else
-      curl -s -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_branch/build.sh
+      BUILDSHREPOSITORY=$buildsh_repository
+    fi
+    if [ -n "$buildsh_revision" ]; then
+      curl -s -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/$BUILDSHREPOSITORY/$buildsh_revision/build.sh
+    else
+      curl -s -o $ROOT/drupal/build.sh https://raw.githubusercontent.com/$BUILDSHREPOSITORY/$buildsh_branch/build.sh
     fi
   fi
 

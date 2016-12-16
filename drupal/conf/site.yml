@@ -39,7 +39,6 @@ default:
   # Site name given at installation phase
   site: Wundersite
 
-local:
   # In development environments we usually want to use symlinks, note the settings.php linking
   link:
     - conf/composer.json: composer.json
@@ -54,11 +53,18 @@ local:
     - conf/settings.php: web/sites/default/settings.php
     - conf/settings.local.php: web/sites/default/settings.local.php
     - conf/_ping.php: web/_ping.php
+# Test environment:
+test:
 
-stage:
+  aliases: stage
 
+  # Test environment only symlinks files
   link:
     - files: web/sites/default/files
+
+  # Other files are copied, again note the settings.php, in our test enviroment we want to use another settings file.
+  link:
+    - files: sites/default/files
 
   copy:
     - code/modules: web/modules
@@ -70,12 +76,23 @@ stage:
     - conf/stage.settings.php: web/sites/default/settings.local.php
     - conf/services.yml: web/sites/default/services.yml
     - conf/_ping.php: web/_ping.php
+  # We can provide local commands or override global ones.
+  local_commands:
 
+    # Running command ./build.sh hello test will print Hello world!
+    hello:
+      - shell: echo "Hello world!"
+
+# Production environment:
 production:
 
+  aliases: prod
+
+  # Prod environment only symlinks files
   link:
     - files: web/sites/default/files
 
+  # Other files are copied, note settings.php
   copy:
     - code/modules: web/modules
     - code/themes: web/themes

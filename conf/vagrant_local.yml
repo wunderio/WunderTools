@@ -1,6 +1,12 @@
 name: wundertools
-hostname: local.wundertools.site
+hostname: local.wundertools.com
 mem: 2000
 cpus: 2
-ip: 192.168.10.172
+ip: 192.168.10.175
 box: "geerlingguy/centos7"
+#Check for newer box versions here: https://atlas.hashicorp.com/geerlingguy/boxes/centos7
+#Box version is used for Virtualboxes only. VMWare does not have problems with the latest versions at this time
+#Version 1.1.4 is broken for virtualbox
+box_version: 1.1.3
+# optional host aliases
+aliases: local.alias.wundertools.com local.alias2.wundertools.com

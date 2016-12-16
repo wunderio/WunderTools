@@ -1,3 +1,18 @@
+9
+(optional) WunderTools now supports having a custom repository for WunderTools
+and build.sh (only on GitHub for now). To use it, create a fork of WunderTools
+and/or build.sh, add your repo url and branches to conf/project.yml, here is an
+example:
+
+buildsh:
+  enabled: true
+  branch: develop
+  repository: badrange/build.sh
+  revision:
+wundertools:
+  repository: badrange/WunderTools
+  branch: feature/custom-wundertools-repository
+
 8
 varnish.control_key variable added (optional). This will set up a Varnish control key in
 /etc/varnish/secret and makes it a php environment variable for use in
@@ -30,6 +45,6 @@ externaldrupal:
   remote: [external drupal repository url]
   branch: [branch to use from the external repository]
 Repository should have drupal installation directly under the repository root.
-  
+
 1
 Added support for managed version updates for build.sh

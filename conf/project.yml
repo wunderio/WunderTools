@@ -1,12 +1,12 @@
 project:
-  name: ansibleref
+  name: wundertools
 ansible:
   remote: git@github.com:wunderkraut/WunderMachina.git
   branch: master
   revision:
 buildsh:
   enabled: true
-  branch: develop
+  branch: master
   revision:
 wundertools:
   branch: master

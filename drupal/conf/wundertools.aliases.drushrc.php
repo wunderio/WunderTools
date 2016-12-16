@@ -3,7 +3,8 @@ $home = drush_server_home();
 // Solve the key file to use
 $path = explode('/', dirname(__FILE__));
 array_pop($path);
-$path[] = '/../.vagrant';
+array_pop($path);
+$path[] = '.vagrant';
 $path = implode('/', $path);
 $key = shell_exec('find ' . $path . ' -iname private_key');
 if (!$key) {
@@ -12,12 +13,11 @@ if (!$key) {
 $key = rtrim($key);
 
 $aliases['local'] = array(
-  'uri' => 'https://local.ansibleref.com',
   'parent' => '@parent',
-  'site' => 'ansibleref',
+  'site' => 'wundertools',
   'env' => 'vagrant',
   'root' => '/vagrant/drupal/current/web',
-  'remote-host' => 'local.ansibleref.com',
+  'remote-host' => 'local.wundertools.com',
   'remote-user' => 'vagrant',
   'ssh-options' => '-i ' . $key,
   'path-aliases' => array(
@@ -27,10 +27,10 @@ $aliases['local'] = array(
 );
 
 $aliases['dev'] = array(
-  'uri' => 'https://dev.ansibleref.com',
+  'uri' => 'https://dev.wundertools.com',
   'remote-user' => 'www-admin',
-  'remote-host' => 'dev.ansibleref.com',
-  'root' => '/var/www/dev.ansibleref.com/current/web',
+  'remote-host' => 'dev.wundertools.com',
+  'root' => '/var/www/dev.wundertools.com/current/web',
   'path-aliases' => array(
     '%dump-dir' => '/home/www-admin',
   ),
@@ -42,10 +42,10 @@ $aliases['dev'] = array(
 );
 
 $aliases['stage'] = array(
-  'uri' => 'https://stage.ansibleref.com',
+  'uri' => 'https://stage.wundertools.com',
   'remote-user' => 'www-admin',
-  'remote-host' => 'stage.ansibleref.com',
-  'root' => '/var/www/stage.ansibleref.com/current/web',
+  'remote-host' => 'stage.wundertools.com',
+  'root' => '/var/www/stage.wundertools.com/current/web',
   'path-aliases' => array(
     '%dump-dir' => '/home/www-admin',
   ),
@@ -57,10 +57,10 @@ $aliases['stage'] = array(
 );
 
 $aliases['prod'] = array(
-  'uri' => 'https://ansibleref.com',
+  'uri' => 'https://wundertools.com',
   'remote-user' => 'www-admin',
-  'remote-host' => 'ansibleref.com',
-  'root' => '/var/www/ansibleref.com/current/web',
+  'remote-host' => 'wundertools.com',
+  'root' => '/var/www/wundertools.com/current/web',
   'path-aliases' => array(
     '%dump-dir' => '/home/www-admin',
   ),
