@@ -1,110 +1,30 @@
 ---
 
-- hosts: ansibleref-prod
-  sudo: true
+- include: prod-lb.yml
+- include: prod-db.yml
+- include: prod-front.yml
+
+  become: false
+  become_method: sudo
   user: root
-  roles:
-   - { role: base, tags: [ 'base' ] }
-   - { role: logentries, tags: [ 'logentries' ] }
-   - { role: appserver, tags: [ 'appserver' ] }
-   - { role: varnish, tags: [ 'varnish' ] }
-   - { role: dbserver, tags: [ 'dbserver' ] }
-   - { role: sslterminator, tags: [ 'sslterminator' ] }
-   - { role: monit, tags: [ 'monit' ] }
-   - { role: datadog, tags: [ 'datadog' ] }
 
-  tasks:
-
-    - cron: name="check dirs" minute="0" hour="5,2" job="ls -alh > /dev/null"
+  vars_files:
+  - prod-vars.yml
 
   vars:
+    ## Internal / helper vars ##
+    # Production specific
 
-    partition_var_log: False
+    # Use internal network ip's of machines
+    db_ip: "10.10.10.3"
+    lb_ip: "10.10.10.4"
+    front1_ip: "10.10.10.5"
+    front2_ip: "10.10.10.6"
 
-    partition_var_lib_mysql: False
+    # This server hosts multiple domains
+    domain1_name: example1.com
+    domain2_name: example2.com
 
-    # <EXAMPLE>
-    # How to assign memory for each role and set the correct
-    # amount of worker processes / threads
+    ## Base ##
 
-    memory_db: 1024 # In MB
-    memory_app: 1024 # In MB
-    # NOTE: ALWAYS leave some spare memory for the server
-    php_memory_limit: 256 # In MB
-    nginx_workers: 2 # This should be equal to core count
-
-    innodb_buffer_pool_size: "{{ memory_db }}"
-    php_fpm_pm_max_children: "{{ memory_app // 2 // php_memory_limit }}"
-    php_fpm_pm_start_servers: "{{ php_fpm_pm_max_children|int // 2 }}"
-    php_fpm_pm_min_spare_servers: "{{ php_fpm_pm_max_children|int // 2 }}"
-    php_fpm_pm_max_spare_servers: "{{ php_fpm_pm_max_children|int // 2 }}"
-
-    # </EXAMPLE>
-
-
-    newrelic_enabled: False
-    newrelic_license_key: "this-is-a-fake-key-replace-with-a-real-1"
-
-    monit_enabled: False
-    monit_alert_email_service_name: "vagrant-reference"
-    monit_alert_email_from: "alert@ansibleref.com"
-    monit_alert_email_to: alert@ansibleref.com
-    monit_collector_address: https://user:password@mmonit.ansibleref.io:8443/collector
-    monit_allow:
-      - localhost
-      - user:password
-
-    logentries_enabled: False
-    logentries_account_key: 00000000-0000-0000-0000-000000000000
-    logentries_service_name: "vagrant-reference"
-    logentries_hostname: "localhost"
-    logentries_follow:
-      - /var/log/secure
-
-    # Apps I want to run on this server
-    apps:
-      - server_name: www.test1.com
-        server_aliases: bob1.com
-        server_forwards: test1.com
-        http_port: 8080
-        docroot: /var/www/test1.com/drupal/current
-      - server_name: www.test2.com
-        server_aliases: bob2.com
-        server_forwards: test2.com
-        http_port: 8080
-        docroot: /var/www/test2.com/drupal/current
-
-    # This server also acts as a load balancer
-    varnish:
-      port: 80
-      memory: 512M
-      directors:
-        - name: test1
-          host: www.test1.com
-          backends:
-            - name: test1_http
-              address: 127.0.0.1
-              port: 8080
-        - name: test2
-          host: www.test2.com
-          backends:
-            - name: test2_http
-              address: 127.0.0.1
-              port: 8080
-
-      # BUT, we only use https for this host
-      sslterminators:
-        - server_name: www.test1.com
-          server_forwards: test1.com
-          ssl_certificate: certificate.crt
-          ssl_certificate_key: certificate.key
-          backends:
-            - 127.0.0.1:80
-        - server_name: www.test2.com
-          server_forwards: test2.com
-          ssl_certificate: certificate.crt
-          ssl_certificate_key: certificate.key
-          backends:
-            - 127.0.0.1:80
-
-
+    wkv_site_env: prod

@@ -23,10 +23,10 @@ function parse_yaml {
 
 show_help() {
 cat <<EOF
-Usage: ${0##*/} [-fm MYSQL_ROOT_PASS] [-t|s ANSIBLE_TAGS] [-v ANSIBLE_VAULT_FILE] [ENVIRONMENT]
+Usage: ${0##*/} [-fm MYSQL_ROOT_PASS] [-t|s ANSIBLE_TAGS] [-p ANSIBLE_VAULT_FILE] [ENVIRONMENT] 
       -f                    First run, use when provisioning new servers.
       -m MYSQL_ROOT_PASS    For first run you need to provide new mysql root password.
-      -v ANSIBLE_VAULT_FILE Path to ansible vault password. This can also be provided with WT_ANSIBLE_VAULT_FILE environment variable.
+      -p ANSIBLE_VAULT_FILE Path to ansible vault password. This can also be provided with WT_ANSIBLE_VAULT_FILE environment variable.
       -t ANSIBLE_TAGS       Ansible tags to be provisioned.
       -s ANSIBLE_TAGS       Ansible tags to be skipped when provisioning.
          ENVIRONMENT        Environment to be provisioned.
@@ -93,14 +93,15 @@ self_update
 
 OPTIND=1
 ANSIBLE_TAGS=""
+EXTRA_OPTS=""
 
-while getopts "hfv:m:t:s:" opt; do
+while getopts ":hfp:m:t:s:" opt; do
     case "$opt" in
     h)
         show_help
         exit 0
         ;;
-    v)  VAULT_FILE=$OPTARG
+    p)  VAULT_FILE=$OPTARG
         ;;
     f)  FIRST_RUN=1
         ;;
@@ -110,6 +111,7 @@ while getopts "hfv:m:t:s:" opt; do
         ;;
     s)  ANSIBLE_SKIP_TAGS=$OPTARG
         ;;
+    *)  EXTRA_OPTS="$EXTRA_OPTS -$OPTARG"
     esac
 done
 
@@ -122,10 +124,11 @@ if [ -z $ENVIRONMENT ]; then
 fi
 
 if [ -z $VAULT_FILE ]; then
-  echo "Vault password file missing."
-  echo "You can provide the path to the file with -v option."
-  echo "Alternatively you can set WT_ANSIBLE_VAULT_FILE environment variable."
-  exit 1
+  echo -e "\e[31mVault password file missing.\e[0m"
+  echo -e "You can provide the path to the file with -p option."
+  echo -e "Alternatively you can set WT_ANSIBLE_VAULT_FILE environment variable."
+  echo -e "If you don't have any ansible-vault encrypted config file this is just fine,"
+  echo -e "Otherwise your provisioning will fail horribly.\e[31mYou have been warned!\e[0m"
 fi
 
 pushd `dirname $0` > /dev/null
@@ -147,14 +150,14 @@ if [ $FIRST_RUN ]; then
     echo "Mysql root password missing. You need to provide password using -m flag."
     exit 1
   else
-    ansible-playbook $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS"  -e "change_db_root_password=True mariadb_root_password=$MYSQL_ROOT_PASS" --ask-pass --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
+    ansible-playbook $EXTRA_OPTS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS"  -e "change_db_root_password=True mariadb_root_password=$MYSQL_ROOT_PASS first_run=True" --ask-pass --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
   fi
 else
   if [ $ANSIBLE_TAGS ]; then
-    ansible-playbook $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --tags "$ANSIBLE_TAGS"
+    ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --tags "$ANSIBLE_TAGS"
   elif [ $ANSIBLE_SKIP_TAGS ]; then
-    ansible-playbook $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --skip-tags "$ANSIBLE_SKIP_TAGS"
+    ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --skip-tags "$ANSIBLE_SKIP_TAGS"
   else
-    ansible-playbook $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE
+   ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE
   fi
 fi

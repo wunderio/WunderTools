@@ -1,0 +1,137 @@
+---
+
+- hosts: wundertools-prod-db
+  roles:
+   - { role: base, tags: [ 'base' ] }
+   - { role: backups, tags: [ 'backups' ] }
+   - { role: dbserver, tags: [ 'dbserver' ] }
+   - { role: drupal-db, tags: [ 'drupal-db' ] }
+   #- { role: solr, tags: [ 'solr' ] }
+   - { role: elasticsearch, tags: [ 'elasticsearch' ] }
+   - { role: nfs_server, tags: [ 'nfs_server' ] }
+   - { role: monit, tags: [ 'monit' ] }
+   - { role: papertrail, tags: [ 'papertrail' ] }
+   - { role: newrelic-sysmon, tags: [ 'newrelic-sysmon' ] }
+
+  tasks:
+
+
+  vars:
+    ## Base ##
+
+    # /var/log on it's own partition
+    partition_var_log: True
+    # On Upcloud we usually get /dev/vdb for logs, but this may vary so you can define the disk here
+    #var_log_disk: /dev/vdb
+
+    # We want to manage our server access with public key authentication server
+    #base_pubkeys_enable: True
+    # key server is configured in prod-vars.yml
+
+    # On default we disable iptables but we want option to keep it on for customer-servers without external firewall
+    #disable_iptables: True
+
+
+    ## Backups ##
+
+    backup_db_name:
+      - example1
+      - example2
+    backup_location: /nfs-files/backups
+
+    ## DB server ##
+
+    memory_db: 4096 # In MB
+
+    partition_var_lib_mysql: True
+    var_lib_mysql_disk: /dev/vdd
+
+    # Additional mysql configs available
+    #max_connections: 500
+    #connection_timeout: 5
+    #wait_timeout: 60
+    #max_allowed_packet: 256M
+    #innodb_buffer_pool_instances: 6
+    #innodb_log_buffer_size: 8M
+    #innodb_log_file_size: 24M
+    #innodb_additional_mem_pool_size: 10M
+    #innodb_concurrency: 16
+    #max_allowed_packet: 128M
+
+    #innodb_buffer_pool_size configured in variables.yml based on memory_db
+
+
+    ## Drupal DB ##
+
+    databases:
+      - name: example1
+        user: example1user
+        # defined in prod-vars.yml
+        pass: "{{ drupal_db1_password }}"
+        hosts:
+          - "127.0.0.1"
+          - "::1"
+          - "localhost"
+          - "{{ front1_ip }}"
+          - "{{ front2_ip }}"
+      - name: example2
+        user: example2user
+        # defined in prod-vars.yml
+        pass: "{{ drupal_db2_password }}"
+        hosts:
+          - "127.0.0.1"
+          - "::1"
+          - "localhost"
+          - "{{ front1_ip }}"
+          - "{{ front2_ip }}"
+
+
+    ## Solr ##
+    # See ansible/playbook/roles/solr/defaults/main.yml for reference
+
+    ## Elasticsearch ##
+    # See ansible/playbook/roles/elasticsearch/defaults/main.yml for reference
+
+
+    ## Nfs server ##
+
+    partition_nfs_share: True
+    nfs_share_disk: /dev/vdc
+
+    nfs_exports:
+      - "/nfs-files {{ front1_ip }}(rw,async,no_root_squash,no_subtree_check)"
+      - "/nfs-files {{ front2_ip }}(rw,async,no_root_squash,no_subtree_check)"
+
+
+    ## Monit ##
+    monit_enabled: True
+    monit_alert_email_service_name: "wundertools db {{ ansible_nodename }}"
+    monit_alert_email_from: "alert@wundertools.com"
+    monit_alert_email_to: alert@wundertools.com
+    monit_allow:
+      - localhost
+      - user:password
+
+    monit_check_sshd: True
+    monit_check_remote_syslog: True
+    monit_check_cron: True
+    monit_check_mysql: True
+
+    # Which ever you are using
+    #monit_check_solr: True
+    monit_check_elasticsearch: True
+
+    ## Papertrail ##
+    papertrail_enabled: True
+    papertrail_remote_syslog2_version: "0.16"
+    papertrail_conf: "/etc/log_files.yml"
+    papertrail_logs:
+      - /var/log/secure
+
+    # papertrail host and port defined in prod-vars.yml
+
+    ## Newrelic ##
+    newrelic_enabled: True
+    # newrelic_license_key defined in prod_vars.yml
+
+

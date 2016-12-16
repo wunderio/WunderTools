@@ -1,8 +1,15 @@
-[ansibleref-dev]
+[wundertools-dev]
 10.10.10.1
 
-[ansibleref-stage]
+[wundertools-stage]
 10.10.10.2
 
-[ansibleref-prod]
+[wundertools-prod-db]
 10.10.10.3
+
+[wundertools-prod-lb]
+10.10.10.4
+
+[wundertools-prod-front]
+10.10.10.5
+10.10.10.6
