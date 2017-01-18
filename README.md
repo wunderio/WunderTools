@@ -41,11 +41,7 @@ This will/should generate the packages and project directory, and also install d
 
 If you get some errors during build you can try to rebuild cache with "drush cr" and just login at https://local.wundertools.site
 
-Sync database:
-
-```$ ./sync.sh```
-
-##### Done! You should now have a working drupal site.
+##### Done! You should now have a working drupal site at http://<hostname>:8080 or https://<hostname>
 
 ### Install and building composer packages
 
