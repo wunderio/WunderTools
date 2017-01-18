@@ -39,6 +39,7 @@ default:
     - files: sites/default/files
     - code/modules/custom: sites/all/modules/custom
     - code/themes/custom: sites/all/themes/custom
+    - code/modules/features: sites/all/modules/features
     - code/profiles/wk: profiles/wk
     - conf/vagrant.settings.php: sites/default/settings.php
     - conf/_ping.php: _ping.php
