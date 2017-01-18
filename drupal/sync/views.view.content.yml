@@ -1,4 +1,4 @@
-uuid: ab6ad64f-1bdf-44c9-a4fc-97d9dff7bcaa
+uuid: 4d882220-dc70-4447-bd39-74c00f155ad7
 langcode: en
 status: true
 dependencies:
@@ -6,7 +6,7 @@ dependencies:
     - node
     - user
 _core:
-  default_config_hash: YIwhIF9MSP1E_HMam6MrYeti_UqMXQiLDMjDsPFKK8s
+  default_config_hash: fUDNcSYKNw6cTMPsX3G9VhsUGov5yUe6_TBHbcnZHyo
 id: content
 label: Content
 module: node
@@ -373,7 +373,7 @@ display:
           group_type: group
           admin_label: ''
           operator: '='
-          value: true
+          value: '1'
           group: 1
           exposed: true
           expose:

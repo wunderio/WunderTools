@@ -1,4 +1,4 @@
-uuid: 7b09f3ba-45b9-4ea4-bab8-81adb89d48e5
+uuid: 9b3e0a3c-0c97-4366-90e9-c5d6f53a5f74
 langcode: en
 status: true
 dependencies:
@@ -9,7 +9,7 @@ dependencies:
     - node
     - user
 _core:
-  default_config_hash: rwRoOr3DiobxwoWSmtUcna1LQz5_HxHvS7H5dl7_-Uo
+  default_config_hash: GNfx9kN8-0_KgQ-xf3fjdXCCzZwXCI8T0IPFW8SIe7g
 id: frontpage
 label: Frontpage
 module: node
@@ -108,7 +108,7 @@ display:
           operator: '='
           relationship: none
           table: node_field_data
-          value: true
+          value: '1'
           plugin_id: boolean
           entity_type: node
           entity_field: promote
@@ -119,7 +119,7 @@ display:
           group: 1
           id: status
           table: node_field_data
-          value: true
+          value: '1'
           plugin_id: boolean
           entity_type: node
           entity_field: status

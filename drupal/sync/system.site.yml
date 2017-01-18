@@ -1,14 +1,14 @@
-uuid: 5c02b175-922d-4ab4-9098-f7f0706326fc
-name: Drupal
-mail: ''
+uuid: be33881d-cc6c-4806-988c-8211795ea08a
+name: Site-Install
+mail: admin@example.com
 slogan: ''
 page:
   403: ''
   404: ''
-  front: /user/login
+  front: /node
 admin_compact_mode: false
 weight_select_max: 100
 langcode: en
 default_langcode: en
 _core:
-  default_config_hash: yXadRE77Va-G6dxhd2kPYapAvbnSvTF6hO4oXiOEynI
+  default_config_hash: AyT9s8OUcclfALRE_imByOMgtZ19eOlqdF6zI3p7yqo

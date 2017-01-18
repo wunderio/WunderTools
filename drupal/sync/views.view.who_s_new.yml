@@ -1,11 +1,11 @@
-uuid: 3f3e5482-7aa1-44e4-9ce8-ac67a8b9837d
+uuid: 307c2070-9b47-4886-bedb-a4ed8de025de
 langcode: en
 status: true
 dependencies:
   module:
     - user
 _core:
-  default_config_hash: B2M6BoNVm-hHVnH2ILCpbhCZV71T6zLNs8Ag5QH-oNE
+  default_config_hash: o_8fSWHZOVIbydZACGsSX09DtuJhqkRmNOzcVj-4bQI
 id: who_s_new
 label: 'Who''s new'
 module: user
@@ -92,7 +92,7 @@ display:
           entity_field: name
       filters:
         status:
-          value: true
+          value: '1'
           table: users_field_data
           field: status
           id: status

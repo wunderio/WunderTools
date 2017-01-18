@@ -1,11 +1,11 @@
-uuid: 0e8d8f2f-eb8d-4bd9-96b9-b17e76d7187a
+uuid: 4a444aff-8d40-4427-b38f-0c0929ab9e61
 langcode: en
 status: true
 dependencies:
   module:
     - user
 _core:
-  default_config_hash: DWLCIpl8ku4NbiI9t3GgDeuW13KSOy2l1zho7ReP_Bg
+  default_config_hash: m0vmYmhrzMR6S_IC0UlK0Cl-q5lEvL8-EbxbbcDtk34
 id: who_s_online
 label: 'Who''s online block'
 module: user
@@ -99,7 +99,7 @@ display:
           entity_field: name
       filters:
         status:
-          value: true
+          value: '1'
           table: users_field_data
           field: status
           id: status
