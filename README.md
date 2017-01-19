@@ -78,7 +78,7 @@ Let Vagrant create your new machine:
 `vagrant up`
 
 This will create a new Virtual machine on your computer, configure it with all the nice bells & whistles that you can
-think of (like MariaDB, nginx, Varnish, memcached and whatnot) and start it up for you. 
+think of (like MariaDB, nginx, Varnish, memcached and whatnot) and start it up for you. This will also install vagrant plugin depedencies, if you encounter issues while installing the plugins then you could use: `vagrant --skip-dependency-manager up`
 
 SSH into your box and build and install Drupal: 
 
