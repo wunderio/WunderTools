@@ -44,6 +44,8 @@ externaldrupal:
   branch:
 ```
 
+Edit `conf/develop.yml` and change the variables to something that makes sense for your project.
+
 ## Configure Drupal build
 
 Edit `drupal/conf/site.yml`, remove things you don't need and add stuff you want in your project.
