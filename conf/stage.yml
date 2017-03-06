@@ -42,6 +42,7 @@
     memory_db: 1024 # In MB
     memory_app: 1024 # In MB
 
+    # NOTE: memory_app needs to be at least 2x php_memory_limit
     # NOTE: ALWAYS leave some spare memory for the server
     # php memory limits etc are in variables.yml
 
