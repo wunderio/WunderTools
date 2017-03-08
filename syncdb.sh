@@ -57,16 +57,19 @@ drush $TARGET ssh "mkdir -p /tmp/syncdb/drupal"
 # --compress-level=1 is used here as testing shows on fast network it's enough compression while at default level (6) we are already bound by the cpu
 # on slow connections it might still be worth to use --compress-level=6 which could save around 40% of the bandwith
 drush -y rsync --mode=akzi --compress-level=1 $SOURCE:/tmp/syncdb/drupal /tmp/syncdb/drupal
+# Delete the exported sql files from the source for security.
+drush $SOURCE ssh "rm -rf /tmp/syncdb/drupal"
 drush -y rsync --mode=akzi --compress-level=1 /tmp/syncdb/drupal/ $TARGET:/tmp/syncdb/drupal
+# Delete the exported sql files from the local machine for security.
+rm -rf /tmp/syncdb/drupal
 
 # Let's not use -y here yet so that we have at least one confirmation in this
 # script before we destroy the $TARGET data.
 drush $TARGET sql-drop
 drush $TARGET importdb --dump-dir=/tmp/syncdb/drupal
 
-# Delete the exported sql files from both machines for security.
+# Delete the exported sql files from target for security.
 drush $TARGET ssh "rm -rf /tmp/syncdb/drupal"
-drush $SOURCE ssh "rm -rf /tmp/syncdb/drupal"
 
 # Sanitize users.
 drush $TARGET sqlq "UPDATE users SET mail = 'user@example.com' WHERE name != 'admin'"
