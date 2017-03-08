@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# Local dependencies:
+# - drush
+# - rsync
+# - drush aliases (automatically setup with `vagrant up`)
+
+# Function to parse the project configuration yaml.
 function parse_yaml {
    local prefix=$2
    local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
@@ -16,11 +22,6 @@ function parse_yaml {
       }
    }'
 }
-
-# Local dependencies:
-# - drush
-# - rsync
-# - drush aliases (automatically setup with `vagrant up`)
 
 pushd `dirname $0` > /dev/null
 ROOT=`pwd -P`
