@@ -63,6 +63,10 @@ drush -y rsync --mode=akzi --compress-level=1 /tmp/syncdb/drupal/ $TARGET:/tmp/s
 drush $TARGET sql-drop
 drush $TARGET importdb --dump-dir=/tmp/syncdb/drupal
 
+# Delete the exported sql files from both machines for security.
+drush $TARGET ssh "rm -rf /tmp/syncdb/drupal"
+drush $SOURCE ssh "rm -rf /tmp/syncdb/drupal"
+
 # Sanitize users.
 drush $TARGET sqlq "UPDATE users SET mail = 'user@example.com' WHERE name != 'admin'"
 drush $TARGET sqlq "UPDATE users SET init = '' WHERE name != 'admin'"
