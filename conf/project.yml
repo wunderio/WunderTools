@@ -1,5 +1,6 @@
 project:
   name: wundertools
+  file_sync_url: https://www.example1.com
 ansible:
   remote: git@github.com:wunderkraut/WunderMachina.git
   branch: master
@@ -13,4 +14,3 @@ wundertools:
 externaldrupal:
   remote:
   branch:
-
