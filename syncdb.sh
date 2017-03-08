@@ -71,7 +71,10 @@ drush $TARGET upwd admin --password=admin
 echo 'Sanitized users.'
 
 # Enable Stage File Proxy.
-drush $TARGET pm-download --yes stage_file_proxy;
-drush $TARGET pm-enable --yes stage_file_proxy;
-drush $TARGET variable-set stage_file_proxy_origin "$project_file_sync_url";
+drush $TARGET pm-download --yes stage_file_proxy
+drush $TARGET pm-enable --yes stage_file_proxy
+drush $TARGET variable-set stage_file_proxy_origin "$project_file_sync_url"
 echo 'Enabled Stage File Proxy.'
+
+# Clear caches after sync.
+drush $TARGET cache-clear all
