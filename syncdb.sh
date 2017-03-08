@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 function parse_yaml {
    local prefix=$2
    local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
@@ -73,6 +74,12 @@ drush $TARGET sqlq "UPDATE users SET init = '' WHERE name != 'admin'"
 drush $TARGET sqlq "UPDATE users SET pass = '' WHERE name != 'admin'"
 drush $TARGET upwd admin --password=admin
 echo 'Sanitized users.'
+
+# Include any project specific sync commands.
+if [ -f syncdb_local.sh ]
+then
+  source syncdb_local.sh
+fi
 
 # Enable Stage File Proxy.
 drush $TARGET pm-download --yes stage_file_proxy
