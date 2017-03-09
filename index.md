@@ -1,7 +1,6 @@
 # Project reference setup with ansible & vagrant
 
-[![Build Status](https://travis-ci.org/wunderkraut/WunderTools)](https://travis-ci.org/wunderkraut/WunderTools)
-
+[![Build Status](https://travis-ci.org/wunderkraut/WunderTools.svg?branch=master)](https://travis-ci.org/wunderkraut/WunderTools)
 ##Introduction
 
 
