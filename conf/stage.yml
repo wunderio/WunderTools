@@ -16,7 +16,7 @@
    - { role: nginx, tags: [ 'nginx' ] }
    - { role: php-fpm, tags: [ 'php-fpm' ] }
    - { role: drush, tags: [ 'drush' ] }
-   - { role: memcached, tags: [ 'memcached' ] }
+   #- { role: memcached, tags: [ 'memcached' ] }
    - { role: drupal-log, tags: [ 'drupal-log' ] }
 
   vars_files:
