@@ -38,7 +38,7 @@
       - "www.{{ domain1_name }}"
       - "{{ domain2_name }}"
       - "www.{{ domain2_name }}"
-    certbot_renewal_docroot: /var/www/certbot-auto
+    certbot_renewal_docroot: /var/www/letsencrypt-auto
     #certbot_commands: allows yo uto customize the command to run, see ansible/playbook/roles/certbot/defaults/main.yml
 
 

@@ -50,7 +50,7 @@
     certbot_email: support@wundertools.com
     certbot_domains:
       - "{{ domain_name }}"
-    certbot_renewal_docroot: /var/www/certbot-auto
+    certbot_renewal_docroot: /var/www/letsencrypt-auto
 
     # On dev and stage it's good idea to protect the site with htauth
     basicauth_enabled: True
