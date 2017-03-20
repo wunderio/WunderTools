@@ -1,9 +1,7 @@
 ---
 
-# Creates firewalls for upcloud
-- hosts: localhost
-  roles:
-    - { role: upcloud-firewall, tags: ['upcloud','firewall'] }
+# Setup firewalls using upcloud api
+- include: upcloud.yml
 
 # Example of standard single server setup without production services (monitoring, logging etc.)
 - hosts: wundertools-stage

@@ -1,6 +1,6 @@
 ---
 
-# Creates firewalls
+# Setup firewalls using upcloud api
 - include: upcloud.yml
 
 - include: prod-lb.yml
