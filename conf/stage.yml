@@ -1,7 +1,11 @@
 ---
 
-# Example of standard single server setup without production services (monitoring, logging etc.)
+# Creates firewalls for upcloud
+- hosts: localhost
+  roles:
+    - { role: upcloud-firewall, tags: ['upcloud','firewall'] }
 
+# Example of standard single server setup without production services (monitoring, logging etc.)
 - hosts: wundertools-stage
   become: false
   become_method: sudo

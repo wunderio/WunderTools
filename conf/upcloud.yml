@@ -1,0 +1,4 @@
+# Creates firewalls for all machines
+- hosts: localhost
+  roles:
+    - { role: upcloud-firewall, tags: ['upcloud','firewall'] }
