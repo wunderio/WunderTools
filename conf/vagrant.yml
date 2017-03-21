@@ -11,7 +11,7 @@
    # Instead of php-fpm + nginx you can also use apache + php
    # - { role: httpd-php, tags: [ 'httpd-php' ] }
    - { role: varnish, tags: [ 'varnish' ] }
-   - { role: memcached, tags: [ 'memcached' ] }
+   #- { role: memcached, tags: [ 'memcached' ] }
    # Drush also includes composer and prestissimo for speedier composer runs
    - { role: drush, tags: [ 'drush' ] }
    # Drupal console is also available:
