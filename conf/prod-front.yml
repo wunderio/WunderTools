@@ -5,7 +5,7 @@
    - { role: base, tags: [ 'base' ] }
    - { role: nginx, tags: [ 'nginx' ] }
    - { role: php-fpm, tags: [ 'php-fpm' ] }
-   - { role: memcached, tags: [ 'memcached' ] }
+   #- { role: memcached, tags: [ 'memcached' ] }
    - { role: drush, tags: [ 'drush' ] }
    - { role: drupal-log, tags: [ 'drupal-log' ] }
    - { role: external-smtp, tags: [ 'external-smtp' ] }
@@ -72,10 +72,10 @@
 
     ## Memcached ##
 
-    memcached_port: 11211
-    memcached_maxconn: 1024
-    memcached_cachesize: 256
-    memcached_options: "-I 4M"
+    #memcached_port: 11211
+    #memcached_maxconn: 1024
+    #memcached_cachesize: 256
+    #memcached_options: "-I 4M"
 
 
     ## Drush ##
