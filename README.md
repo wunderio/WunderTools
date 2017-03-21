@@ -29,10 +29,6 @@ SSH to your local vagrant environment:
 
 ```$ vagrant ssh```
 
-Create a files directory under drupal:
-
-```$ mkdir /vagrant/drupal/files```
-
 Install the drupal project from configuration and create root directory (you only need to do this once):
 
 ```$ cd /vagrant/drupal/ && ./build.sh new```
