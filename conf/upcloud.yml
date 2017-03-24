@@ -1,3 +1,8 @@
+---
+##
+# This plabook configures Upcloud firewalls
+##
+
 # Login to machines to figure out private eth1 addresses too
 - hosts: all
   tasks:
