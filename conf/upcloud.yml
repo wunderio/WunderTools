@@ -1,0 +1,14 @@
+---
+##
+# This plabook configures Upcloud firewalls
+##
+
+# Login to machines to figure out private eth1 addresses too
+- hosts: all
+  tasks:
+    - meta: refresh_inventory
+
+# Creates firewalls for all machines
+- hosts: localhost
+  roles:
+    - { role: upcloud-firewall, tags: ['upcloud', 'firewall'] }

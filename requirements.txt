@@ -1,0 +1,6 @@
+# Lock ansible version to have similiar experience for everyone
+ansible==2.2.1.0
+
+# This installs custom fork of upcloud-api
+# Which allows us to search machines with IP-addresses
+https://github.com/onnimonni/upcloud-python-api/archive/feature-get-machine-by-ip.zip#upcloud-api
