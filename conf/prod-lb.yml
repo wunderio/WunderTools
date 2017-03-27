@@ -9,6 +9,7 @@
    - { role: sslterminator, tags: [ 'sslterminator' ] }
    - { role: monit, tags: [ 'monit' ] }
    - { role: papertrail, tags: [ 'papertrail' ] }
+   - { role: newrelic-infra, tags: [ 'newrelic-infra' ] }
    - { role: newrelic-sysmon, tags: [ 'newrelic-sysmon' ] }
 
   tasks:
@@ -208,6 +209,7 @@
 
     ## Newrelic ##
     newrelic_enabled: True
+    newrelic_infra_enabled: True
     # newrelic_license_key defined in prod_vars.yml
 
 

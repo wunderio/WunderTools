@@ -13,6 +13,7 @@
    - { role: monit, tags: [ 'monit' ] }
    - { role: papertrail, tags: [ 'papertrail' ] }
    - { role: newrelic, tags: [ 'newrelic' ] }
+   - { role: newrelic-infra, tags: [ 'newrelic-infra' ] }
    - { role: newrelic-sysmon, tags: [ 'newrelic-sysmon' ] }
 
 
@@ -136,6 +137,7 @@
 
     ## Newrelic ##
     newrelic_enabled: True
+    newrelic_infra_enabled: True
     # newrelic_license_key defined in prod_vars.yml
     newrelic_appname: "Exampleapp"
 
