@@ -43,41 +43,28 @@ default:
 
   # In development environments we usually want to use symlinks, note the settings.php linking
   link:
-    #- conf/composer.json: composer.json
-    #- conf/composer.lock: composer.lock
     - files: web/sites/default/files
-    - code/modules/custom: web/modules/custom
-    - code/themes/custom: web/themes/custom
-      #- sync: sync
 
-  copy:
-    - conf/services.yml: web/sites/default/services.yml
-    - conf/settings.php: web/sites/default/settings.php
-    - conf/settings.local.php: web/sites/default/settings.local.php
-    - conf/_ping.php: web/_ping.php
 
   local_commands:
     new:
-      - verify: "Composer Type yes to verify you want to build a new installation: "
-      - shell: chmod -R a+w web
+      - verify: "Type yes to verify you want to build a new installation: "
       - make
-        #- backup
-        #- purge
-        #- finalize
+      - backup
       - install
+      - drush: cim
+      - drush: cr
       - cleanup
-      - shell: chmod -R a-w web
 
 
     # Basic site update functionality
     update:
-      - shell: chmod -R a+w web
       - make
       - backup
-        #- finalize
       - update
+      - drush: cim
+      - drush: cr
       - cleanup
-      - shell: chmod -R a-w web
 
 
 
@@ -92,22 +79,35 @@ test:
   link:
     - files: web/sites/default/files
 
-  # Other files are copied, again note the settings.php, in our test enviroment we want to use another settings file.
-  link:
-    - files: sites/default/files
 
+  # You can use copy to put some custom files in place if needed
   copy:
-    - code/modules: web/modules
-    - code/themes: web/themes
-    - conf/composer.json: composer.json
-    - conf/composer.lock: composer.lock
-    - sync: sync
-    - conf/settings.php: web/sites/default/settings.php
-    - conf/stage.settings.php: web/sites/default/settings.local.php
-    - conf/services.yml: web/sites/default/services.yml
-    - conf/_ping.php: web/_ping.php
+    #- conf/_ping.php: web/_ping.php
   # We can provide local commands or override global ones.
   local_commands:
+    new:
+      - verify: "Type yes to verify you want to build a new installation: "
+      - shell: chmod -R a+w web
+      - make
+      - backup
+      - install
+      - drush: cim
+      - drush: cr
+      - cleanup
+      - shell: chmod -R a-w web
+
+
+    # Basic site update functionality
+    update:
+      - shell: chmod -R a+w web
+      - make
+      - backup
+      - update
+      - drush: cim
+      - drush: cr
+      - cleanup
+      - shell: chmod -R a-w web
+
 
     # Running command ./build.sh hello test will print Hello world!
     hello:
@@ -118,18 +118,64 @@ production:
 
   aliases: prod
 
+  # Directory used to build the site
+  temporary: _build
+
+  make_cache: .make_cache
+
+  # Specify Drupal version
+  drupal_version: d8
+
+  # The final produced Drupal installation
+  final: current
+
+  # The Subpath of "final" and "temporary" where drupal resides.
+  drupal_subpath: web
+
+  build_in_place: False
+ 
   # Prod environment only symlinks files
   link:
     - files: web/sites/default/files
 
-  # Other files are copied, note settings.php
   copy:
-    - code/modules: web/modules
-    - code/themes: web/themes
-    - conf/composer.json: composer.json
-    - conf/composer.lock: composer.lock
+    - web: web/
+    - composer.json: composer.json
     - sync: sync
-    - conf/settings.php: web/sites/default/settings.php
-    - conf/prod.settings.php: web/sites/default/settings.local.php
-    - conf/services.yml: web/sites/default/services.yml
-    - conf/_ping.php: web/_ping.php
+
+  local_commands:
+    new:
+      - verify: "Type yes to verify you want to build a new installation: "
+      - shell: chmod -R a+w current
+      - make
+      - backup
+      - purge
+      - finalize
+      - install
+      - drush: cim
+      - drush: cr
+      - cleanup
+      - shell: chmod -R a-w current
+
+
+    # Basic site update functionality
+    update:
+      - shell: chmod -R a+w current
+      - make
+      - backup
+      - finalize
+      - update
+      - drush: cim
+      - drush: cr
+      - cleanup
+      - shell: chmod -R a-w current
+
+    hotfix:
+      - link
+      - shell: chmod -R a+w current
+      - shell: rsync -a _build/ current
+      - shell: rm -r _build
+      - shell: chmod -R a-w current
+      - update
+
+
