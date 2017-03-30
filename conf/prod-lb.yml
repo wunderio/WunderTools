@@ -9,6 +9,7 @@
    - { role: sslterminator, tags: [ 'sslterminator' ] }
    - { role: monit, tags: [ 'monit' ] }
    - { role: papertrail, tags: [ 'papertrail' ] }
+   - { role: newrelic-infra, tags: [ 'newrelic-infra' ] }
    - { role: newrelic-sysmon, tags: [ 'newrelic-sysmon' ] }
 
   tasks:
@@ -38,7 +39,7 @@
       - "www.{{ domain1_name }}"
       - "{{ domain2_name }}"
       - "www.{{ domain2_name }}"
-    certbot_renewal_docroot: /var/www/certbot-auto
+    certbot_renewal_docroot: /var/www/letsencrypt-auto
     #certbot_commands: allows yo uto customize the command to run, see ansible/playbook/roles/certbot/defaults/main.yml
 
 
@@ -208,6 +209,7 @@
 
     ## Newrelic ##
     newrelic_enabled: True
+    newrelic_infra_enabled: True
     # newrelic_license_key defined in prod_vars.yml
 
 

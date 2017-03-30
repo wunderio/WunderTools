@@ -14,15 +14,17 @@
    - { role: papertrail, tags: [ 'papertrail' ] }
    - { role: newrelic, tags: [ 'newrelic' ] }
    - { role: newrelic-sysmon, tags: [ 'newrelic-sysmon' ] }
+   - { role: newrelic-infra, tags: [ 'newrelic-infra' ] }
+
 
 
   tasks:
 
     # Set drupal cron to be run every minute alternately on both servers
-    - cron: name="Example Drupal cron job" minute="*/2" job="su nginx --shell=/bin/sh -c '/usr/lib/composer/vendor/bin/drush --root=/var/www/example.com/current elysia-cron > /dev/null 2>&1'" state="present"
+    - cron: name="Example Drupal cron job" minute="*/2" job="su nginx --shell=/bin/sh -c '/usr/lib/composer/vendor/bin/drush --root=/var/www/example.com/current elysia-cron run > /dev/null 2>&1'" state="present"
       when: ansible_eth0.ipv4.address == groups['wundertools-prod-front'][0]
 
-    - cron: name="Example Drupal cron job" minute="1-59/2" job="su nginx --shell=/bin/sh -c '/usr/lib/composer/vendor/bin/drush --root=/var/www/example.com/current elysia-cron > /dev/null 2>&1'" state="present"
+    - cron: name="Example Drupal cron job" minute="1-59/2" job="su nginx --shell=/bin/sh -c '/usr/lib/composer/vendor/bin/drush --root=/var/www/example.com/current elysia-cron run > /dev/null 2>&1'" state="present"
       when: ansible_eth0.ipv4.address == groups['wundertools-prod-front'][1]
 
   vars:

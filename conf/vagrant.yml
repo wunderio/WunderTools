@@ -11,7 +11,7 @@
    # Instead of php-fpm + nginx you can also use apache + php
    # - { role: httpd-php, tags: [ 'httpd-php' ] }
    - { role: varnish, tags: [ 'varnish' ] }
-   #- { role: memcached, tags: [ 'memcached' ] }
+   - { role: memcached, tags: [ 'memcached' ] }
    # Drush also includes composer and prestissimo for speedier composer runs
    - { role: drush, tags: [ 'drush' ] }
    # Drupal console is also available:
@@ -44,12 +44,13 @@
     - cron: name="check dirs" minute="0" hour="5,2" job="ls -alh > /dev/null"
 
   vars:
+    domain_name: local.example.com
     wkv_site_env: local
-
-    nginx_disable_content_security_policy: True
 
     partition_var_log: False
     partition_var_lib_mysql: False
+
+    nginx_disable_content_security_policy: True
 
     # How to assign memory for each role and set the correct
     # amount of worker processes / threads
@@ -69,13 +70,13 @@
     # letsencrypt variables are also used by selfencrypt
     letsencrypt_email: support@example.com
     letsencrypt_domains:
-      - local.example.com
+      - "{{ domain_name }}"
 
     # Apps I want to run on this server
     apps:
-      - server_name: local.example.com
+      - server_name: "{{ domain_name }}"
         http_port: 8080
-        docroot: /vagrant/drupal/current/web
+        docroot: /vagrant/drupal/web
 
     # This server also acts as a load balancer
     varnish:
@@ -91,7 +92,7 @@
         - ip: 127.0.0.1
       directors:
         - name: example
-          host: local.example.com
+          host: "{{ domain_name }}"
           backends:
             - name: local_example_http
               address: 127.0.0.1
@@ -99,7 +100,7 @@
 
     # BUT, we only use https for this host
     sslterminators:
-      - server_name: local.example.com
+      - server_name: "{{ domain_name }}"
         server_forwards: example.com
         ssl_certificate: certificate.crt
         ssl_certificate_key: ssl/certificate.key
@@ -107,6 +108,5 @@
           - 127.0.0.1:8081
 
     httpforwards:
-      - server_name: local.example.com
-        forwarded_domains: 'local.example.com'
-
+      - server_name: "{{ domain_name }}"
+        forwarded_domains: '"{{ domain_name }}"'
