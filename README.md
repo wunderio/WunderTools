@@ -145,24 +145,3 @@ You can also fix your vagrant/ansible base setup to certain branch/revision
 
 XDebug tools are installed via the devtools role. Everything should work out
 of the box for PHPStorm. PHP script e.g. drush debugging should also work.
-
-Example Sublime Text project configuration (via Project->Edit Project):
-
-    {
-       "folders":
-       [
-         {
-           "follow_symlinks": true,
-           "path": "/path/to/wundertools"
-         }
-       ],
-
-       "settings":
-       {
-         "xdebug": {
-              "path_mapping": {
-                    "/vagrant" : "/path/to/wundertools"
-                 }
-            }
-          }
-    }
