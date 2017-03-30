@@ -11,7 +11,7 @@
 
 ## Prerequisites
 
-If you are starting a new project, see: [Setup.md](Setup.md)
+If you are starting a new project, see: [Setup.md](docs/Setup.md)
 
 ## Getting started
 
