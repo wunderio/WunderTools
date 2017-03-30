@@ -77,7 +77,7 @@ All Drupal-related configurations are under drupal/conf
 Drush is usable without ssh access with the drush.sh script e.g:
 
 ```bash
-$ ./drush.sh cc all
+$ ./drush.sh cr
 ```
 
 To open up ssh access to the virtual machine:
