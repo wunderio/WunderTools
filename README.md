@@ -3,12 +3,21 @@
 [![Build Status](https://travis-ci.org/wunderkraut/WunderMachina.svg)](https://travis-ci.org/wunderkraut/WunderMachina)
 [![Build Status](https://travis-ci.org/wunderkraut/WunderTools.svg)](https://travis-ci.org/wunderkraut/WunderTools)
 
+
+## Requirements
+- Install [Vagrant](https://www.vagrantup.com/downloads.html) 1.9.2 or greater
+- Install [vagrant-cachier](https://github.com/fgrehm/vagrant-cachier)
+ `vagrant plugin install vagrant-cachier`
+- Install Ansible in your host machine. For OS X:
+ `brew install ansible`
+- Install [Virtualbox](https://www.virtualbox.org/wiki/Downloads) 5.1 or greater 
+
 ## Creating a new project
 
 If you are starting a new project, see: [Setup.md](docs/Setup.md)
 
 
-# Getting your new local development environment up and running
+# Setting up an existing project locally
 
 Find the IP-address and hostname that this local environment is configured to use from `conf/vagrant_local.yml` and add
 it to your own `/etc/hosts` file:
@@ -35,26 +44,6 @@ from your local machine:
 
 `sync.sh`
 
-### Requirements
-A working combination of:
-- Vagrant
-- The vagrant-cachier plugin https://github.com/fgrehm/vagrant-cachier
-( $ vagrant plugin install vagrant-cachier )
-- Ansible in your host machine. For OS X:
- brew install ansible
-- Virtualbox (or Wmware)
-
-#### Working version combinations
-
-We depend of different software that gets constantly and independently updated, so it's not trivial to know which versions work well together.
-At the time of writing (dec 9 2016) these are combinations that are known to work (there might be others):
-
-- virtualbox 5.1, vagrant 1.9.0, ansible 2.2, geerlinguy box 1.1.4 (vagrant 1.9.1 should be avoided because of a bug that interferes with nfs mounting)
-- virtualbox 5.0, vagrant 1.8.4, ansible 2.0.0.2, geerlingguy box 1.1.3 (vagrant > 1.8.4 has issues with nfs and keys)
-
-Ansible >= 2.2 is highly recommended. If you need devtools 2.2 is the minimum working version)
-
-If you are using different versions, you are on your own :)
 
 ##Introduction
 
