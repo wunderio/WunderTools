@@ -1,74 +1,235 @@
-# Wundertools D8
+# Project reference setup with Ansible & Vagrant
 
-# Important: Follow the steps accordingly!
+[![Build Status](https://travis-ci.org/wunderkraut/WunderMachina.svg)](https://travis-ci.org/wunderkraut/WunderMachina)
+[![Build Status](https://travis-ci.org/wunderkraut/WunderTools.svg)](https://travis-ci.org/wunderkraut/WunderTools)
 
-### Requirements:
-- Vagrant 1.7.x
-- https://github.com/fgrehm/vagrant-cachier
+# Starting a new Drupal 8 Project with WunderTools
+
+## Preparation
+Start by downloading a zipball of the WunderTools master branch as a base for your new project from
+https://github.com/wunderkraut/WunderTools/archive/master.zip
+
+If you already have an empty git repository, you can move the contents of WunderTools-master into
+your git repo directory (Excercise to reader: Find a way to move content + dotfiles in one command that works in all shells). 
+
+  `mv WunderTools-master/* ~/Projects/my-new-project`
+  `mv WunderTools-master/.* ~/Projects/my-new-project`
+
+If not, rename WunderTools-master to whatever project folder you have and run git init inside it:
+
+  ```
+  mv WunderTools-master ~/Projects/my-new-project
+  cd ~/Projects/my-new-project
+  git init
+  ```
+  
+
+## Configure WunderTools
+
+Edit `conf/vagrant_local.yml` and change: 
+ - name to the name of your project
+ - hostname to a good hostname for your local environment
+ - ip to something that no other project in your company uses
+
+Edit `conf/vagrant.yml`, find&replace "wundertools" with you project name.
+
+Edit `conf/project.yml` and change the variables to something that makes sense for your project.
+ 
+```
+project:
+  name: wundertools
+ansible:
+  remote: https://github.com/wunderkraut/WunderMachina.git
+  branch: master # Master branch is for CentOS 7. If you want CentOS 6, use centos6 branch.
+  revision:
+buildsh:
+  enabled: true
+  branch: develop # Supports both Drupal 8 and Drupal 7.
+  revision: # As with composer.lock, could be a good idea to use a specific git revision. 
+wundertools:
+  branch: master
+externaldrupal:
+  remote:
+  branch:
+```
+
+## Configure Drupal build
+
+Edit `drupal/conf/site.make`, remove things you don't need and add stuff you want in your project.
+
+Edit `drupal/conf/site.yml`, remove things you don't need and add stuff you want in your project.
+
+Rename `drupal/conf/wundertools.aliases.drushrc.php` to `project_name` and configure it to fit your setup. This will be
+ automatically symlinked from ~/.drush when running vagrant up.
+
+## Finishing up
+Delete this section of Readme.md because it does not affect developers joining an already configured project. And move
+on to the next section! 
+
+# Getting your new local development environment up and running
+
+Find the IP-address and hostname that this local environment is configured to use from `conf/vagrant_local.yml` and add
+it to your own `/etc/hosts` file:
+
+`10.0.13.37 local.wundertools.com`
+
+Let Vagrant create your new machine:
+
+`vagrant up`
+
+This will create a new Virtual machine on your computer, configure it with all the nice bells & whistles that you can
+think of (like MariaDB, nginx, Varnish, memcached and whatnot) and start it up for you. This will also install vagrant plugin depedencies, if you encounter issues while installing the plugins then you could use: `vagrant --skip-dependency-manager up`
+
+SSH into your box and build and install Drupal: 
+
+```
+vagrant ssh
+cd /vagrant/drupal
+./build.sh new
+```
+
+If this is a project with an existing production/staging server, you should probably sync the production database now,
+from your local machine: 
+
+`sync.sh`
+
+### Requirements
+A working combination of:
+- Vagrant
+- The vagrant-cachier plugin https://github.com/fgrehm/vagrant-cachier
 ( $ vagrant plugin install vagrant-cachier )
 - Ansible in your host machine. For OS X:
  brew install ansible
+- Virtualbox (or Wmware)
 
-## Prerequisites
+#### Working version combinations
 
-If you are starting a new project, see: [Setup.md](Setup.md)
+We depend of different software that gets constantly and independently updated, so it's not trivial to know which versions work well together.
+At the time of writing (dec 9 2016) these are combinations that are known to work (there might be others):
 
-## Getting started
+- virtualbox 5.1, vagrant 1.9.0, ansible 2.2, geerlinguy box 1.1.4 (vagrant 1.9.1 should be avoided because of a bug that interferes with nfs mounting)
+- virtualbox 5.0, vagrant 1.8.4, ansible 2.0.0.2, geerlingguy box 1.1.3 (vagrant > 1.8.4 has issues with nfs and keys)
 
-#### 1. Setup the local vagrant environment
+Ansible >= 2.2 is highly recommended. If you need devtools 2.2 is the minimum working version)
+
+If you are using different versions, you are on your own :)
+
+##Introduction
 
 Start by running:
 
-```$ vagrant up```
+```bash
+$ vagrant up
+```
 
-If everything went well, proceed to step 2.
+This will do the following:
 
-#### 2. Setup the drupal project for the first time
+- clone the latest WunderMachina ansible/vagrant setup (or the version specified in conf/project.yml)
+- Bring up & provision the virtual machine (if needed)
+- Build the drupal site under drupal/current (not yet actually)
 
-SSH to your local vagrant environment:
+After finishing provisioning (first time is always slow) and building the site
+you need to install the Drupal site in http://x.x.x.x:8080/install.php
+(Note: on rare occasion php-fpm/varnish/e.g. requires to be restarted before
+starting to work. You can do this by issuing the following command:
 
-```$ vagrant ssh```
+```bash
+$ vagrant  ssh -c "sudo service php-fpm restart"
+$ vagrant  ssh -c "sudo service varnish restart"
+```
 
-Install the drupal project from configuration and create root directory (you only need to do this once):
 
-```$ cd /vagrant/drupal/ && ./build.sh new```
+All Drupal-related configurations are under drupal/conf
 
-This will/should generate the packages and project directory, and also install drupal using config_installer profile.
+Drush is usable without ssh access with the drush.sh script e.g:
 
-If you get some errors during build you can try to rebuild cache with "drush cr" and just login at https://local.wundertools.site
+```bash
+$ ./drush.sh cc all
+```
 
-##### Done! You should now have a working drupal site at http://<hostname>:8080 or https://<hostname>
+To open up ssh access to the virtual machine:
 
-### Install and building composer packages
+```bash
+$ vagrant ssh
+```
 
-Composer commands could be done inside or outside the vagrant environment from **/drupal/current** directory.
+-------------------------------------------------------------------------------
+Useful things
 
-##### Note: DO NOT run composer from /drupal/conf directory. If you do not see the /drupal/current directory, go back to Step 2. It should have been generated by build.sh.
+At the moment IP is configured in
+  Vagrantfile
+    variable INSTANCE_IP
 
-Installing or updating packages
+Varnish responds to
+  http://x.x.x.x/
 
-```composer require <package>```
+Nginx responds to
+  http://x.x.x.x:8080/
 
-Downloading packpages
+Solr responds to
+  http://x.x.x.x:8983/solr
 
-```composer install```
+MailHOG responds to
+  http://x.x.x.x:8025
 
-### Updating Drupal core
+Docs are in
+        http://x.x.x.x:8080/index.html
+        You can setup the dir where the docs are taken from and their URL from the
+        variables.yml file.
 
-```composer update drupal/core --with-dependencies```
+        #Docs
+        docs:
+          hostname : 'docs.local.wundertools.com'
+          dir : '/vagrant/docs'
 
-### Configuration management
 
-Importing configuration (this will override your current configuration):
+##Vagrant + Ansible configuration
 
-```$ ./drush.sh cim```
+Vagrant is using Ansible provision stored under the ansible subdirectory.
+The inventory file (which stores the hosts and their IP's) is located under
+ansible/inventory. Host specific configurations for Vagrant are stored in
+ansible/vagrant.yml and the playbooks are under ansible/playbook directory.
+Variable overrides are defined in ansible/variables.yml.
 
-Exporting configuration:
+You should only bother with the following:
 
-```$ ./drush.sh cex```
+  Vagrant box setup
+    conf/vagrant.yml
 
-Note: Please take care when committing exported configuration code, making sure you are not overriding configuration that were not related to the changes that you have made.
+  What components do you want to install?
+    conf/vagrant.yml
 
-### Deploying in staging/production
+  And how are those set up?
+    conf/variables.yml
 
-```./build.sh update```
+You can also fix your vagrant/ansible base setup to certain branch/revision
+    conf/project.yml
+  There you can also do the same for build.sh
+
+
+
+## Debugging tools
+
+XDebug tools are installed via the devtools role. Everything should work out
+of the box for PHPStorm. PHP script e.g. drush debugging should also work.
+
+Example Sublime Text project configuration (via Project->Edit Project):
+
+    {
+       "folders":
+       [
+         {
+           "follow_symlinks": true,
+           "path": "/path/to/wundertools"
+         }
+       ],
+
+       "settings":
+       {
+         "xdebug": {
+              "path_mapping": {
+                    "/vagrant" : "/path/to/wundertools"
+                 }
+            }
+          }
+    }
