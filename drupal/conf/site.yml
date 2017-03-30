@@ -133,7 +133,7 @@ production:
   drupal_subpath: web
 
   build_in_place: False
- 
+
   # Prod environment only symlinks files
   link:
     - files: web/sites/default/files
