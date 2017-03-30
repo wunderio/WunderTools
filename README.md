@@ -46,34 +46,6 @@ from your local machine:
 
 `sync.sh`
 
-
-##Introduction
-
-Start by running:
-
-```bash
-$ vagrant up
-```
-
-This will do the following:
-
-- clone the latest WunderMachina ansible/vagrant setup (or the version specified in conf/project.yml)
-- Bring up & provision the virtual machine (if needed)
-- Build the drupal site under drupal/current (not yet actually)
-
-After finishing provisioning (first time is always slow) and building the site
-you need to install the Drupal site in http://x.x.x.x:8080/install.php
-(Note: on rare occasion php-fpm/varnish/e.g. requires to be restarted before
-starting to work. You can do this by issuing the following command:
-
-```bash
-$ vagrant  ssh -c "sudo service php-fpm restart"
-$ vagrant  ssh -c "sudo service varnish restart"
-```
-
-
-All Drupal-related configurations are under drupal/conf
-
 Drush is usable without ssh access with the drush.sh script e.g:
 
 ```bash
