@@ -571,11 +571,12 @@ class Maker:
     # Symlink file from source to target
     def _link_files(self, source, target):
         self._ensure_container(target)
-        if os.path.exists(source) and not os.path.exists(target):
-            source = os.path.relpath(source, os.path.dirname(target))
-            os.symlink(source, target)
-        else:
-            raise BuildError("Can't link " + source + " to " + target + ". Make sure that the source exists.")
+        if not os.path.exists(target):
+            if os.path.exists(source):
+                source = os.path.relpath(source, os.path.dirname(target))
+                os.symlink(source, target)
+            else:
+                raise BuildError("Can't link " + source + " to " + target + ". Make sure that the source exists.")
 
     # Unlink file from target
     def _unlink_files(self, target):
