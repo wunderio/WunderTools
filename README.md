@@ -19,7 +19,7 @@ Reference setup with Ansible & Vagrant for Drupal 8 projects. For Drupal 7 suppo
 If you are starting a new project, see: [Setup.md](docs/Setup.md)
 
 
-# Setting up an existing project locally
+## Setting up an existing project locally
 
 Find the IP-address and hostname that this local environment is configured to use from `conf/vagrant_local.yml` and add
 it to your own `/etc/hosts` file:
@@ -86,8 +86,8 @@ To open up ssh access to the virtual machine:
 $ vagrant ssh
 ```
 
--------------------------------------------------------------------------------
-Useful things
+
+## Useful things
 
 At the moment IP is configured in
   Vagrantfile
@@ -116,7 +116,7 @@ Docs are in
           dir : '/vagrant/docs'
 
 
-##Vagrant + Ansible configuration
+## Vagrant + Ansible configuration
 
 Vagrant is using Ansible provision stored under the ansible subdirectory.
 The inventory file (which stores the hosts and their IP's) is located under
@@ -126,19 +126,11 @@ Variable overrides are defined in ansible/variables.yml.
 
 You should only bother with the following:
 
-  Vagrant box setup
-    conf/vagrant.yml
-
-  What components do you want to install?
-    conf/vagrant.yml
-
-  And how are those set up?
-    conf/variables.yml
-
-You can also fix your vagrant/ansible base setup to certain branch/revision
-    conf/project.yml
+- Vagrant box setup `conf/vagrant.yml`
+- What components do you want to install? `conf/vagrant.yml`
+- And how are those set up? `conf/variables.yml`
+- You can also fix your vagrant/ansible base setup to certain branch/revision `conf/project.yml`
   There you can also do the same for build.sh
-
 
 
 ## Debugging tools
