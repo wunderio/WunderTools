@@ -7,7 +7,7 @@ api = 2
 projects[drupal][type] = core
 projects[drupal][version] = 7.52
 
-defaults[projects][subdir] = "contrib"
+defaults[projects][subdir] = contrib
 
 ; Contrib
 ; ----------------
@@ -46,7 +46,7 @@ projects[navbar][version] = 1.7
 projects[navbar][patch][] = "https://drupal.org/files/issues/navbar-2183753-10-ie-navbar-issue.patch"
 
 projects[simplei][version] = 1.0
-projects[simplei][patch][] = http://www.drupal.org/files/issues/2420513-support-for-navbar_1.patch
+projects[simplei][patch][2420513] = https://www.drupal.org/files/issues/2420513-support-for-navbar_1.patch
 
 projects[views_bulk_operations][version] = 3.3
 
@@ -57,37 +57,39 @@ projects[wunderstatus][version] = 2.0
 
 projects[chosen][version] = 2.0
 
+; projects[ckeditor][type] = module
+; projects[ckeditor][download][type] = git
+; projects[ckeditor][download][url] = https://git.drupal.org/project/ckeditor.git
+; projects[ckeditor][download][revision] = 3657990d71eba79225f01df860adaab84e66f554
+
 projects[media][version] = 2.0-beta10
 
 projects[pathologic][version] = 3.1
 
-projects[wysiwyg][type] = "module"
-projects[wysiwyg][download][type] = "git"
-projects[wysiwyg][download][url] = "http://git.drupal.org/project/wysiwyg.git"
-projects[wysiwyg][download][revision] = "d9c3f6559046ff9790d8ba8589653d0646e2baae"
-projects[wysiwyg][patch][507696][url] = "http://www.drupal.org/files/wysiwyg_field_size_507696_96_0.patch"
+projects[wysiwyg][type] = module
+projects[wysiwyg][download][type] = git
+projects[wysiwyg][download][url] = http://git.drupal.org/project/wysiwyg.git
+projects[wysiwyg][download][revision] = 18deb5ab9cc5255822a7d336891d043d35e660d2
 
 ; Libraries
 ; --------------------
 
-libraries[backbone][download][type] = "get"
-libraries[backbone][type] = "libraries"
-libraries[backbone][download][url] = "https://github.com/jashkenas/backbone/archive/1.1.0.tar.gz"
+libraries[backbone][download][type] = get
+libraries[backbone][type] = libraries
+libraries[backbone][download][url] = https://github.com/jashkenas/backbone/archive/1.3.3.tar.gz
 
-libraries[ckeditor][download][type] = "get"
-libraries[ckeditor][type] = "libraries"
-libraries[ckeditor][download][url] = "http://download.cksource.com/CKEditor/CKEditor/CKEditor%204.4.2/ckeditor_4.4.2_standard.zip"
+libraries[ckeditor][download][type] = get
+libraries[ckeditor][type] = libraries
+libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEditor/CKEditor%204.5.9/ckeditor_4.5.9_standard.zip
 
-libraries[chosen][download][type] = "get"
-libraries[chosen][type] = "libraries"
-libraries[chosen][download][url] = "https://github.com/harvesthq/chosen/releases/download/1.4.2/chosen_v1.4.2.zip"
+libraries[chosen][download][type] = get
+libraries[chosen][type] = libraries
+libraries[chosen][download][url] = https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip
 
-libraries[modernizr][download][type] = "get"
-libraries[modernizr][type] = "libraries"
-libraries[modernizr][download][url] = "https://github.com/Modernizr/Modernizr/archive/v2.7.1.tar.gz"
+libraries[modernizr][download][type] = get
+libraries[modernizr][type] = libraries
+libraries[modernizr][download][url] = https://github.com/Modernizr/Modernizr/archive/v2.8.3.tar.gz
 
-libraries[underscore][download][type] = "get"
-libraries[underscore][type] = "libraries"
-libraries[underscore][download][url] = "https://github.com/jashkenas/underscore/archive/1.5.2.zip"
-
-
+libraries[underscore][download][type] = get
+libraries[underscore][type] = libraries
+libraries[underscore][download][url] = https://github.com/jashkenas/underscore/archive/1.8.3.tar.gz
