@@ -47,7 +47,3 @@ $config['system.logging']['error_level'] = 'verbose';
 $config['system.performance']['css']['preprocess'] = FALSE;
 $config['system.performance']['js']['preprocess'] = FALSE;
 
-/*
- * Set configuration directory
- */
-$config_directories['sync'] = '../sync';

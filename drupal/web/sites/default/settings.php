@@ -11,9 +11,11 @@
 $databases = array();
 
 /**
- * Location of the site configuration files (overridden per environment).
+ * Location of the site configuration files.
  */
-$config_directories = array();
+$config_directories = array(
+  CONFIG_SYNC_DIRECTORY => '../sync',
+);
 
 /**
  * Salt for one-time login links, cancel links, form tokens, etc.
