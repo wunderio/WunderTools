@@ -13,7 +13,7 @@ if [ -z "$WKV_SITE_ENV" ]; then
 		exit 1
 	fi
 
-	vagrant ssh -c "cd /vagrant/drupal/current/web/;drush $params"
+	vagrant ssh -c "cd /vagrant/drupal/web/;drush $params"
 
 else
 
