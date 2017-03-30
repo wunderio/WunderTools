@@ -16,7 +16,7 @@ $aliases['local'] = array(
   'parent' => '@parent',
   'site' => 'wundertools',
   'env' => 'vagrant',
-  'root' => '/vagrant/drupal/current/web',
+  'root' => '/vagrant/drupal/web',
   'remote-host' => 'local.wundertools.com',
   'remote-user' => 'vagrant',
   'ssh-options' => '-i ' . $key,
@@ -30,7 +30,7 @@ $aliases['dev'] = array(
   'uri' => 'https://dev.wundertools.com',
   'remote-user' => 'www-admin',
   'remote-host' => 'dev.wundertools.com',
-  'root' => '/var/www/dev.wundertools.com/current/web',
+  'root' => '/var/www/dev.wundertools.com/web',
   'path-aliases' => array(
     '%dump-dir' => '/home/www-admin',
   ),
@@ -45,7 +45,7 @@ $aliases['stage'] = array(
   'uri' => 'https://stage.wundertools.com',
   'remote-user' => 'www-admin',
   'remote-host' => 'stage.wundertools.com',
-  'root' => '/var/www/stage.wundertools.com/current/web',
+  'root' => '/var/www/stage.wundertools.com/web',
   'path-aliases' => array(
     '%dump-dir' => '/home/www-admin',
   ),
@@ -60,7 +60,7 @@ $aliases['prod'] = array(
   'uri' => 'https://wundertools.com',
   'remote-user' => 'www-admin',
   'remote-host' => 'wundertools.com',
-  'root' => '/var/www/wundertools.com/current/web',
+  'root' => '/var/www/wundertools.com/web',
   'path-aliases' => array(
     '%dump-dir' => '/home/www-admin',
   ),
