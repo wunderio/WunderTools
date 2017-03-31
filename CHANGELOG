@@ -1,3 +1,7 @@
+10
+Provisioning is now run as www-admin user instead of root except for the first run (when www-admin doesn't exist yet)
+Make sure to change user to www-admin and become to True in evironment configs.
+
 9
 (optional) WunderTools now supports having a custom repository for WunderTools
 and build.sh (only on GitHub for now). To use it, create a fork of WunderTools
