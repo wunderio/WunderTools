@@ -17,11 +17,6 @@ default:
   # makefile: conf/site.make
   type: composer
 
-  # Directory used to build the site
-  temporary: .
-
-  make_cache: .make_cache
-
   # Specify Drupal version
   drupal_version: d8
 
