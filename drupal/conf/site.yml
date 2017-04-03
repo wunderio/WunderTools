@@ -24,7 +24,7 @@ default:
   final: .
 
   # The Subpath of "final" and "temporary" where drupal resides.
-  drupal_subpath: .
+  drupal_subpath: /web
   # Directory which will house all the previous builds
   previous: builds
 
@@ -39,7 +39,7 @@ default:
   # In development environments we usually want to use symlinks, note the settings.php linking
   link:
     - files: web/sites/default/files
-
+    - conf/settings.local.php: web/sites/default/settings.local.php
 
   local_commands:
     new:
