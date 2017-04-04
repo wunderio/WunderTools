@@ -59,6 +59,7 @@ default:
       - update
       - drush: cim
       - drush: cr
+      - drush: entity-updates
       - cleanup
 
 
@@ -100,6 +101,7 @@ test:
       - update
       - drush: cim
       - drush: cr
+      - drush: entity-updates
       - cleanup
       - shell: chmod -R a-w web
 
@@ -161,6 +163,7 @@ production:
       - finalize
       - update
       - drush: cim
+      - drush: entity-updates
       - drush: cr
       - cleanup
       - shell: chmod -R a-w current
