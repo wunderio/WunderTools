@@ -4,7 +4,7 @@ Tests can be found under test/ folder.
 Test are run using Behat and Mink.
 
 To get started cd into test folder and follow these steps:
-1. Install selenium server from [http://docs.seleniumhq.org/download/](http://docs.seleniumhq.org/download/)
+1. Install selenium server from [http://docs.seleniumhq.org/download/](http://docs.seleniumhq.org/download/) tested lately with 2.52.0 version
 2. Run selenium:
 
     `java -jar selenium-server-standalone-x.xx.x.jar &`

@@ -6,5 +6,7 @@ default:
   extensions:
     Behat\MinkExtension:
       goutte: ~
-      selenium2: ~
-      base_url: http://local.wundertools.com
+      javascript_session: selenium2
+      selenium2:
+        browser: chrome
+      base_url: https://local.wundertools.com
