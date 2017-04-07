@@ -77,7 +77,9 @@
       - server_name: "{{ domain_name }}"
         http_port: 8080
         docroot: /vagrant/drupal/web
-
+      - server_name: "docs.{{ domain_name}}"
+        http_port: 8082
+        docroot: /vagrant/docs
     # This server also acts as a load balancer
     varnish:
       port: 8081
