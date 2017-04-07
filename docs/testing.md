@@ -10,11 +10,12 @@ To get started cd into test folder and follow these steps:
     `java -jar selenium-server-standalone-x.xx.x.jar &`
 
   note the version you downloaded and adjust accordingly
-3. Install requirements with composer
+3. Get also the [chromedriver] (https://sites.google.com/a/chromium.org/chromedriver/downloads) and launch it. Remember to always get it updated when you update your chrome browser!
+4. Install requirements with composer
 
     `composer install`
 
-4. Run tests
+5. Run tests
 
     `bin/behat --maybe-needs --some-flags=here`
 
