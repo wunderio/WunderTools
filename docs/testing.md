@@ -4,17 +4,18 @@ Tests can be found under test/ folder.
 Test are run using Behat and Mink.
 
 To get started cd into test folder and follow these steps:
-1. Install selenium server from [http://docs.seleniumhq.org/download/](http://docs.seleniumhq.org/download/)
+1. Install selenium server from [http://docs.seleniumhq.org/download/](http://docs.seleniumhq.org/download/) tested lately with 3.3.1 version
 2. Run selenium:
 
     `java -jar selenium-server-standalone-x.xx.x.jar &`
 
   note the version you downloaded and adjust accordingly
-3. Install requirements with composer
+3. Get also the [chromedriver] (https://sites.google.com/a/chromium.org/chromedriver/downloads) and launch it. Remember to always get it updated when you update your chrome browser!
+4. Install requirements with composer
 
     `composer install`
 
-4. Run tests
+5. Run tests
 
     `bin/behat --maybe-needs --some-flags=here`
 
