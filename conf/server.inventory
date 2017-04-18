@@ -13,3 +13,8 @@
 [wundertools-prod-front]
 10.10.10.5
 10.10.10.6
+
+[prod:children]
+wundertools-prod-db
+wundertools-prod-lb
+wundertools-prod-front

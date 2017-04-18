@@ -7,7 +7,7 @@
 - include: prod-db.yml
 - include: prod-front.yml
 
-- hosts: all
+- hosts: prod
   become: false
   become_method: sudo
   user: root
