@@ -14,3 +14,5 @@ wundertools:
 externaldrupal:
   remote:
   branch:
+wundersecrets:
+  remote: git@github.com:wunderkraut/WunderSecrets.git
