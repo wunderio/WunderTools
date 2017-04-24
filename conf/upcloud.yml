@@ -1,0 +1,34 @@
+---
+##
+# This plabook configures Upcloud firewalls
+##
+
+# Make sure that the upcloud credentials are set as env
+- hosts: localhost
+  become: false
+  vars:
+    - upcloud_api_user: "{{ lookup('env', 'UPCLOUD_API_USER') }}"
+    - upcloud_api_passwd: "{{ lookup('env', 'UPCLOUD_API_PASSWD') }}"
+  tasks:
+    - name: Ensure that UPCLOUD_API_USER is present
+      fail:
+        msg: "You must set UPCLOUD_API_USER env in your local machine"
+      when: upcloud_api_user == ""
+
+    - name: Ensure that UPCLOUD_API_PASSWD is present
+      fail:
+        msg: "You must set UPCLOUD_API_PASSWD env in your local machine"
+      when: upcloud_api_passwd == ""
+
+# Login to machines to figure out private eth1 addresses too
+- hosts: all
+  user: root
+  tasks:
+    - meta: refresh_inventory
+
+# Creates firewalls for all machines
+- hosts: localhost
+  connection: local
+  become: false
+  roles:
+    - { role: upcloud-firewall, tags: ['upcloud', 'firewall'] }
