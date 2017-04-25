@@ -164,7 +164,7 @@ EXTRA_VARS=$ROOT/conf/variables.yml
 
 
 # Setup&Use WunderSecrets if the additional config file exists
-if [ -d $wundersecrets_path/ansible.yml ]; then
+if [ -f $wundersecrets_path/ansible.yml ]; then
   WUNDER_SECRETS="--extra-vars=@$wundersecrets_path/ansible.yml"
 else
   WUNDER_SECRETS=""
