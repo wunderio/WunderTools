@@ -12,3 +12,9 @@ test/composer.lock
 test/vendor
 test/bin
 VERSION
+
+# Ignore ansible retry files
+conf/*.retry
+
+# Ignore secrets folder
+secrets

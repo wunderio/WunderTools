@@ -59,6 +59,14 @@ $ vagrant ssh
 ```
 
 
+## Optional additions
+
+### WunderSecrets
+
+You can setup additional git repository for shared secrets. You need to set that in `conf/project.yml` -> `wundersecrets: remote: git@github.com:username/repo`.
+
+Only the file `ansible.yml` is loaded from that repository.
+
 ## Useful things
 
 At the moment IP is configured in
