@@ -43,6 +43,9 @@ default:
 
   local_commands:
     new:
+      - shell: echo "Use the 'create' command to create a new project and the 'reset' command to join an existing one."
+
+    create:
       - verify: "Type yes to verify you want to create a new installation: "
       - backup
       - make
@@ -86,7 +89,7 @@ test:
     #- conf/_ping.php: web/_ping.php
   # We can provide local commands or override global ones.
   local_commands:
-    new:
+    create:
       - shell: echo "Creating a new installation should only be done in local environments."
 
     reset:
@@ -143,7 +146,7 @@ production:
     - sync: sync
 
   local_commands:
-    new:
+    create:
       - shell: echo "Creating a new installation should only be done in local environments."
 
     reset:
