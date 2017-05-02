@@ -88,13 +88,13 @@ wundersecrets:
   remote: git@github.com:wunderkraut/WunderSecrets.git
 ```
 
-## Using upcloud firewall
-Wundertools contains role for setupping firewall rules using [Upcloud Firewall](https://www.upcloud.com/). This reduces load on the machines hosted in Upcloud. We prefer that over `iptables` or `ufw` because it can be disabled even if we don't have access to the machines so it's more foolproof and we don't lock us out by accidental changes.
+## Using UpCloud firewall
+Wundertools contains role for setupping firewall rules using [UpCloud Firewall](https://www.upcloud.com/). This reduces load on the machines hosted in UpCloud. We prefer the firewall provided by UpCloud over `iptables` or `ufw` because it can be disabled even if we don't have access to the machines so it's more foolproof and we don't lock us out by accidental changes.
 
-To use upcloud firewall role you need to:
+To use UpCloud firewall role you need to:
 1. Set up WunderSecrets for the project to access our shared list of allowed IP addresses
 2. Set up a sub-account for the UpCloud main user
-  * Allow API access for the sub-account and remember to limit the access for the VPN IP address near your location. <br>![](img/upcloud-allow-api-access.png "Upcloud API-Access")
+  * Allow API access for the sub-account and remember to limit the access for the VPN IP address near your location. <br>![](img/upcloud-allow-api-access.png "UpCloud API-Access")
   * Allow user to modify all servers <br>![](img/upcloud-allow-server-access.png)
   * Ensure that 2FA is enabled for the user
 
@@ -105,7 +105,7 @@ export UPCLOUD_API_USER=your-username; UPCLOUD_API_PASSWD=your-password
 
 To setup the sub-user you need to login with the main user:
 1. Create the sub-account
-2. Enable Upcloud API for the sub-account
+2. Enable UpCloud API for the sub-account
 
 ### Configuration variables for the firewall
 ```
