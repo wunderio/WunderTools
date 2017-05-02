@@ -79,7 +79,7 @@ varnish:
 ```
 and the rest will be merged from the defaults.
 
-## Using Wundersecrets
+## Using WunderSecrets
 You can use shared secret variables by providing a private repository into `conf/project.yml`. The repository needs to contain `ansible.yml` in the root folder. Variables from that file are are to wundertools run automatically.
 
 ** For example the default Wunder config: **
@@ -89,16 +89,16 @@ wundersecrets:
 ```
 
 ## Using upcloud firewall
-Wundertools contains role for setupping firewall rules using [Upcloud Firewall](https://www.upcloud.com/). This reduces load on the machines hosted in Upcloud. We prefer that over `iptables` or `ufw because it can be disabled even if we don't have access to the machines so it's more foolproof and we don't lock us out by accidental changes.
+Wundertools contains role for setupping firewall rules using [Upcloud Firewall](https://www.upcloud.com/). This reduces load on the machines hosted in Upcloud. We prefer that over `iptables` or `ufw` because it can be disabled even if we don't have access to the machines so it's more foolproof and we don't lock us out by accidental changes.
 
 To use upcloud firewall role you need to:
-1. Setup WunderSecrets for the project to access our shared list of allowed IP-addresses
-2. Setup a sub-account with the Upcloud main user
-  * Allow API access for the sub-account and remember to limit the access for the VPN IP-address near your location. <br>![](img/upcloud-allow-api-access.png "Upcloud API-Access")
-  * Allow user to modify All servers <br>![](img/upcloud-allow-server-access.png)
+1. Set up WunderSecrets for the project to access our shared list of allowed IP addresses
+2. Set up a sub-account for the UpCloud main user
+  * Allow API access for the sub-account and remember to limit the access for the VPN IP address near your location. <br>![](img/upcloud-allow-api-access.png "Upcloud API-Access")
+  * Allow user to modify all servers <br>![](img/upcloud-allow-server-access.png)
   * Ensure that 2FA is enabled for the user
 
-3. You need to export your username and password for ansible
+3. You need to export your username and password for before running `provision.sh`:
 ```bash
 export UPCLOUD_API_USER=your-username; UPCLOUD_API_PASSWD=your-password
 ```
@@ -109,7 +109,7 @@ To setup the sub-user you need to login with the main user:
 
 ### Configuration variables for the firewall
 ```
-# This is a list of allowed IP-addresses to SSH port.
+# This is a list of allowed IP addresses to SSH port.
 # It is inherited from WunderSecrets by default
 firewall_ssh_allowed:
   #- comment: Admin machine
@@ -117,14 +117,14 @@ firewall_ssh_allowed:
   #- comment: Test Machine
   #  ip: 10.0.0.2
 
-# These IP-addresses should be unique for certain project and they are added into `firewall_ssh_rules`
+# These IP addresses should be unique for certain project and they are added into `firewall_ssh_rules`
 project_additional_ssh_firewall_rules:
   #- comment: Admin machine
   #  ip: 10.0.0.1
   #- comment: Test Machine
   #  ip: 10.0.0.2
 
-# IP-addresses from this list are ensured to be removed
+# IP addresses from this list are ensured to be removed
 remove_ssh_firewall_rules:
   #- comment: Admin machine
   #  ip: 10.0.0.1
