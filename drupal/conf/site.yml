@@ -43,18 +43,28 @@ default:
 
   local_commands:
     new:
-      - verify: "Type yes to verify you want to build a new installation: "
-      - make
+      - shell: echo "Use the 'create' command to create a new project and the 'reset' command to join an existing one."
+
+    create:
+      - verify: "Type yes to verify you want to create a new installation: "
       - backup
-      - install
-      - drush: cim
+      - make
+      - drush: site-install standard
+      - drush: cex
+      - shell: echo "New installation is complete and configuration has been exported. Please commit it."
       - cleanup
 
+    reset:
+      - verify: "Type yes to verify you want to reset your local environment: "
+      - backup
+      - make
+      - drush: site-install config_installer
+      - cleanup
 
     # Basic site update functionality
     update:
-      - make
       - backup
+      - make
       - update
       - drush: cim
       - drush: entity-updates
@@ -79,22 +89,21 @@ test:
     #- conf/_ping.php: web/_ping.php
   # We can provide local commands or override global ones.
   local_commands:
-    new:
-      - verify: "Type yes to verify you want to build a new installation: "
-      - shell: chmod -R a+w web
-      - make
-      - backup
-      - install
-      - drush: cim
-      - cleanup
-      - shell: chmod -R a-w web
+    create:
+      - shell: echo "Creating a new installation should only be done in local environments."
 
+    reset:
+      - verify: "Type yes to verify you want to reset your local environment: "
+      - backup
+      - make
+      - drush: site-install config_installer
+      - cleanup
 
     # Basic site update functionality
     update:
       - shell: chmod -R a+w web
-      - make
       - backup
+      - make
       - update
       - drush: cim
       - drush: entity-updates
@@ -137,24 +146,22 @@ production:
     - sync: sync
 
   local_commands:
-    new:
-      - verify: "Type yes to verify you want to build a new installation: "
-      - shell: chmod -R a+w current
-      - make
+    create:
+      - shell: echo "Creating a new installation should only be done in local environments."
+
+    reset:
+      - verify: "Type yes to verify you want to reset your local environment: "
       - backup
-      - purge
-      - finalize
-      - install
-      - drush: cim
+      - make
+      - drush: site-install config_installer
       - cleanup
-      - shell: chmod -R a-w current
 
 
     # Basic site update functionality
     update:
       - shell: chmod -R a+w current
-      - make
       - backup
+      - make
       - finalize
       - update
       - drush: cim
