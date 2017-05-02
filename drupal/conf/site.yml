@@ -44,6 +44,7 @@ default:
   local_commands:
     new:
       - verify: "Type yes to verify you want to create a new installation: "
+      - backup
       - make
       - drush: site-install standard
       - drush: cex
@@ -52,12 +53,14 @@ default:
 
     reset:
       - verify: "Type yes to verify you want to reset your local environment: "
+      - backup
       - make
       - drush: site-install config_installer
       - cleanup
 
     # Basic site update functionality
     update:
+      - backup
       - make
       - update
       - drush: cim
@@ -88,6 +91,7 @@ test:
 
     reset:
       - verify: "Type yes to verify you want to reset your local environment: "
+      - backup
       - make
       - drush: site-install config_installer
       - cleanup
@@ -95,8 +99,8 @@ test:
     # Basic site update functionality
     update:
       - shell: chmod -R a+w web
-      - make
       - backup
+      - make
       - update
       - drush: cim
       - drush: entity-updates
@@ -144,6 +148,7 @@ production:
 
     reset:
       - verify: "Type yes to verify you want to reset your local environment: "
+      - backup
       - make
       - drush: site-install config_installer
       - cleanup
@@ -152,8 +157,8 @@ production:
     # Basic site update functionality
     update:
       - shell: chmod -R a+w current
-      - make
       - backup
+      - make
       - finalize
       - update
       - drush: cim
