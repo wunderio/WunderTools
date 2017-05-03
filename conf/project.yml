@@ -14,3 +14,5 @@ wundertools:
 externaldrupal:
   remote:
   branch:
+drush:
+  alias_path: drupal/drush

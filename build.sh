@@ -28,8 +28,13 @@ popd > /dev/null
 PROJECTCONF=$ROOT/conf/project.yml
 eval $(parse_yaml $PROJECTCONF)
 ALIASFILE=${project_name}.aliases.drushrc.php
-ALIASPATH=$ROOT/drupal/conf/$ALIASFILE
 ALIASTARGET=$HOME/.drush/$ALIASFILE
+
+if [ -z "$drush_alias_path" ]; then
+  ALIASPATH=$ROOT/drupal/conf/$ALIASFILE
+else
+  ALIASPATH=$ROOT/${drush_alias_path}/$ALIASFILE
+fi
 
 if [ -z "$wundertools_branch" ]; then
   GITBRANCH="master"
