@@ -79,8 +79,70 @@ varnish:
 ```
 and the rest will be merged from the defaults.
 
+## Using WunderSecrets
+You can use shared secret variables by providing a private repository into `conf/project.yml`. The repository needs to contain `ansible.yml` in the root folder. Variables from that file are added for `provision.sh` ansible run automatically.
 
+** For example the default Wunder config: **
+```yaml
+wundersecrets:
+  remote: git@github.com:wunderkraut/WunderSecrets.git
+```
 
+## Using UpCloud firewall
+Wundertools contains role for setupping firewall rules using [UpCloud Firewall](https://www.upcloud.com/). This reduces load on the machines hosted in UpCloud. We prefer the firewall provided by UpCloud over `iptables` or `ufw` because it can be disabled even if we don't have access to the machines so it's more foolproof and we don't lock us out by accidental changes.
+
+To use UpCloud firewall role you need to:
+1. Set up WunderSecrets for the project to access our shared list of allowed IP addresses
+2. Set up a sub-account for the UpCloud main user
+  * Allow API access for the sub-account and remember to limit the access for the VPN IP address near your location. <br>![](img/upcloud-allow-api-access.png "UpCloud API-Access")
+  * Allow user to modify all servers <br>![](img/upcloud-allow-server-access.png)
+  * Ensure that 2FA is enabled for the user
+
+3. You need to export your username and password for before running `provision.sh`:
+```bash
+export UPCLOUD_API_USER=your-username; UPCLOUD_API_PASSWD=your-password
+```
+
+To setup the sub-user you need to login with the main user:
+1. Create the sub-account
+2. Enable UpCloud API for the sub-account
+
+### Configuration variables for the firewall
+```
+# This is a list of allowed IP addresses to SSH port.
+# It is inherited from WunderSecrets by default
+firewall_ssh_allowed:
+  #- comment: Admin machine
+  #  ip: 10.0.0.1
+  #- comment: Test Machine
+  #  ip: 10.0.0.2
+
+# These IP addresses should be unique for certain project and they are added into `firewall_ssh_rules`
+project_additional_ssh_firewall_rules:
+  #- comment: Admin machine
+  #  ip: 10.0.0.1
+  #- comment: Test Machine
+  #  ip: 10.0.0.2
+
+# IP addresses from this list are ensured to be removed
+remove_ssh_firewall_rules:
+  #- comment: Admin machine
+  #  ip: 10.0.0.1
+  #- comment: Test Machine
+  #  ip: 10.0.0.2
+
+# This is list of custom rules for the project
+# This feature can be used for example to allow DB access to additional servers
+project_additional_firewall_rules:
+#- direction: in
+#  family: IPv4
+#  protocol: tcp
+#  source_address_start: 127.0.0.1
+#  source_address_end: 127.0.0.255
+#  destination_port_start: 22
+#  destination_port_end: 22
+#  action: accept
+```
 
 ## Debugging tools
 
