@@ -18,3 +18,6 @@ conf/*.retry
 
 # Ignore secrets folder
 secrets
+
+# Ignore python virtualenv created by provision.sh
+.virtualenv

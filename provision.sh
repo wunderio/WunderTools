@@ -162,6 +162,32 @@ else
 fi
 EXTRA_VARS=$ROOT/conf/variables.yml
 
+# Check if pip is installed
+which -a pip >> /dev/null
+if [[ $? != 0 ]] ; then
+    echo "ERROR: pip is not installed!"
+    exit 1
+else
+  # Install virtualenv
+  which -a virtualenv >> /dev/null
+  if [[ $? != 0 ]] ; then
+    pip install virtualenv
+  fi
+  # Create a virtualenv for this project and use it for ansible
+  if [ ! -f $ROOT/.virtualenv ]; then
+    virtualenv --python=python2.7 $ROOT/.virtualenv
+  fi
+
+  # Use the virtualenv
+  source $ROOT/.virtualenv/bin/activate
+
+  # Ensure ansible & ansible library versions with pip
+  if [ -f $ROOT/ansible/requirements.txt ]; then
+    pip install -r $ROOT/ansible/requirements.txt
+  else
+    pip install ansible
+  fi
+fi
 
 # Setup&Use WunderSecrets if the additional config file exists
 if [ -f $wundersecrets_path/ansible.yml ]; then
