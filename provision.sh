@@ -163,13 +163,13 @@ fi
 EXTRA_VARS=$ROOT/conf/variables.yml
 
 # Check if pip is installed
-which -s pip
+which -a pip >> /dev/null
 if [[ $? != 0 ]] ; then
     echo "ERROR: pip is not installed!"
     exit 1
 else
   # Install virtualenv
-  which -s virtualenv
+  which -a virtualenv >> /dev/null
   if [[ $? != 0 ]] ; then
     pip install virtualenv
   fi
