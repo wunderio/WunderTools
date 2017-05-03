@@ -19,7 +19,6 @@ default:
 
     create:
       - verify: "Type yes to verify you want to create a new installation: "
-      - backup
       - make
       - drush: site-install standard
       - drush: cex
@@ -28,7 +27,6 @@ default:
 
     reset:
       - verify: "Type yes to verify you want to reset your local environment: "
-      - backup
       - make
       - drush: site-install config_installer
       - cleanup
