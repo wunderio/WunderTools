@@ -168,10 +168,18 @@ if [[ $? != 0 ]] ; then
     echo "ERROR: pip is not installed!"
     exit 1
 else
+  # Install virtualenv
+  which -s virtualenv
+  if [[ $? != 0 ]] ; then
+    pip install virtualenv
+  fi
   # Create a virtualenv for this project and use it for ansible
-  pip install virtualenv
-  virtualenv --python=python2.7 .virtualenv
-  source $ROOT/ansible/.virtualenv/bin/activate
+  if [ ! -f $ROOT/.virtualenv ]; then
+    virtualenv --python=python2.7 $ROOT/.virtualenv
+  fi
+
+  # Use the virtualenv
+  source $ROOT/.virtualenv/bin/activate
 
   # Ensure ansible & ansible library versions with pip
   if [ -f $ROOT/ansible/requirements.txt ]; then
