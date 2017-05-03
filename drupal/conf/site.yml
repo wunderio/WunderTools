@@ -8,19 +8,6 @@ default:
 
   aliases: local
 
-  type: composer
-
-  # The final produced Drupal installation
-  final: .
-
-  # The Subpath of "final" and "temporary" where drupal resides.
-  drupal_subpath: /web
-
-  # Directory which will house all the previous builds
-  previous: builds
-
-  build_in_place: True
-
   # In development environments we usually want to use symlinks, note the settings.php linking
   link:
     - files: web/sites/default/files
@@ -54,10 +41,6 @@ default:
       - drush: cim
       - drush: entity-updates
       - cleanup
-
-
-
-
 
 # Test environment:
 test:
