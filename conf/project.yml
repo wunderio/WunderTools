@@ -16,3 +16,6 @@ externaldrupal:
   branch:
 drush:
   alias_path: drupal/drush
+wundersecrets:
+  remote: git@github.com:wunderkraut/WunderSecrets.git
+

@@ -72,7 +72,25 @@ self_update() {
     fi
   fi
 
+  # Use secrets if it's defined in conf/project.yml
+  if [ "$wundersecrets_remote" != "" ]; then
+    # Set defaults for WunderSecrets
+    export wundersecrets_path=$ROOT/secrets
+    export wundersecrets_branch=${wundersecrets_branch-master}
 
+    # Clone and update virtual environment secrets
+    if [ ! -d "$wundersecrets_path" ]; then
+      git clone  -b $wundersecrets_branch $wundersecrets_remote $wundersecrets_path
+      if [ -n "$wundersecrets_revision" ]; then
+        git -C "$wundersecrets_path" reset --hard $wundersecrets_revision
+      fi
+    else
+      if [ -z "$wundersecrets_revision" ]; then
+        git -C "$wundersecrets_path" pull
+        git -C "$wundersecrets_path" checkout $wundersecrets_branch
+      fi
+    fi
+  fi
 }
 pushd `dirname $0` > /dev/null
 ROOT=`pwd -P`
@@ -145,19 +163,26 @@ fi
 EXTRA_VARS=$ROOT/conf/variables.yml
 
 
+# Setup&Use WunderSecrets if the additional config file exists
+if [ -f $wundersecrets_path/ansible.yml ]; then
+  WUNDER_SECRETS="--extra-vars=@$wundersecrets_path/ansible.yml"
+else
+  WUNDER_SECRETS=""
+fi
+
 if [ $FIRST_RUN ]; then
   if [ -z $MYSQL_ROOT_PASS ]; then
     echo "Mysql root password missing. You need to provide password using -m flag."
     exit 1
   else
-    ansible-playbook $EXTRA_OPTS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS"  -e "change_db_root_password=True mariadb_root_password=$MYSQL_ROOT_PASS first_run=True" --ask-pass --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
+    ansible-playbook $EXTRA_OPTS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS"  -e "change_db_root_password=True mariadb_root_password=$MYSQL_ROOT_PASS first_run=True" --ask-pass --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
   fi
 else
   if [ $ANSIBLE_TAGS ]; then
-    ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --tags "$ANSIBLE_TAGS"
+    ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --tags "$ANSIBLE_TAGS"
   elif [ $ANSIBLE_SKIP_TAGS ]; then
-    ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --skip-tags "$ANSIBLE_SKIP_TAGS"
+    ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --skip-tags "$ANSIBLE_SKIP_TAGS"
   else
-   ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE
+   ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE
   fi
 fi

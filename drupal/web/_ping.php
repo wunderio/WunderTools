@@ -53,7 +53,10 @@ if (isset($settings['memcache']['servers'])) {
   foreach ($settings['memcache']['servers'] as $address => $bin) {
     list($ip, $port) = explode(':', $address);
     if (!memcache_connect($ip, $port)) {
-      $errors[] = 'Memcache bin <em>' . $bin . '</em> at address ' . $address . ' is not available.';
+      $fails[] = 'Memcache bin <em>' . $bin . '</em> at address ' . $address . ' is not available.';
+    }
+    if(count($fails) >= count($settings['memcache']['servers'])) {
+      $errors += $fails;
     }
   }
 }
