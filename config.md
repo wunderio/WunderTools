@@ -107,6 +107,21 @@ To setup the sub-user you need to login with the main user:
 1. Create the sub-account
 2. Enable UpCloud API for the sub-account
 
+And finally create a `firewall_web` group in your inventory file like this:
+```
+[loadbalancer]
+10.0.0.1
+
+[stage]
+10.0.0.2
+
+[firewall_web:children]
+loadbalancer
+stage
+```
+
+All servers which belong into this group will have their web ports 80/443 open.
+
 ### Configuration variables for the firewall
 ```
 # This is a list of allowed IP addresses to SSH port.
