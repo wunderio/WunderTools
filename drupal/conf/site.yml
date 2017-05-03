@@ -6,33 +6,7 @@
 # other site definitions.
 default:
 
-  # An alias or aliases for the site, this could also be:
-  # aliases:
-  #   - vagrant
-  #   - mylocalbox
-  aliases: vagrant
   aliases: local
-
-  # Omit makefile to leave out drush
-  # makefile: conf/site.make
-  type: composer
-
-  # Specify Drupal version
-  drupal_version: d8
-
-  # The final produced Drupal installation
-  final: .
-
-  # The Subpath of "final" and "temporary" where drupal resides.
-  drupal_subpath: /web
-
-  # Installation profile to use
-  profile: config_installer
-
-  # Site name given at installation phase
-  site: Wundersite
-
-  build_in_place: True
 
   # In development environments we usually want to use symlinks, note the settings.php linking
   link:
@@ -65,10 +39,6 @@ default:
       - drush: cim
       - drush: entity-updates
       - cleanup
-
-
-
-
 
 # Test environment:
 test:
@@ -106,11 +76,6 @@ test:
       - cleanup
       - shell: chmod -R a-w web
 
-
-    # Running command ./build.sh hello test will print Hello world!
-    hello:
-      - shell: echo "Hello world!"
-
 # Production environment:
 production:
 
@@ -118,11 +83,6 @@ production:
 
   # Directory used to build the site
   temporary: _build
-
-  make_cache: .make_cache
-
-  # Specify Drupal version
-  drupal_version: d8
 
   # The final produced Drupal installation
   final: current
