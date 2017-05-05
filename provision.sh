@@ -25,6 +25,7 @@ show_help() {
 cat <<EOF
 Usage: ${0##*/} [-fm MYSQL_ROOT_PASS] [-t|s ANSIBLE_TAGS] [-p ANSIBLE_VAULT_FILE] [ENVIRONMENT] 
       -f                    First run, use when provisioning new servers.
+      -r                    Skip installing requirements from ansible/requirements.txt.
       -m MYSQL_ROOT_PASS    For first run you need to provide new mysql root password.
       -p ANSIBLE_VAULT_FILE Path to ansible vault password. This can also be provided with WT_ANSIBLE_VAULT_FILE environment variable.
       -t ANSIBLE_TAGS       Ansible tags to be provisioned.
@@ -113,7 +114,7 @@ OPTIND=1
 ANSIBLE_TAGS=""
 EXTRA_OPTS=""
 
-while getopts ":hfp:m:t:s:" opt; do
+while getopts ":hfrp:m:t:s:" opt; do
     case "$opt" in
     h)
         show_help
@@ -122,6 +123,8 @@ while getopts ":hfp:m:t:s:" opt; do
     p)  VAULT_FILE=$OPTARG
         ;;
     f)  FIRST_RUN=1
+        ;;
+    r)  SKIP_REQUIREMENTS=1
         ;;
     m)  MYSQL_ROOT_PASS=$OPTARG
         ;;
@@ -162,30 +165,32 @@ else
 fi
 EXTRA_VARS=$ROOT/conf/variables.yml
 
-# Check if pip is installed
-which -a pip >> /dev/null
-if [[ $? != 0 ]] ; then
-    echo "ERROR: pip is not installed!"
-    exit 1
-else
-  # Install virtualenv
-  which -a virtualenv >> /dev/null
+if [ ! $SKIP_REQUIREMENTS ] ; then
+  # Check if pip is installed
+  which -a pip >> /dev/null
   if [[ $? != 0 ]] ; then
-    pip install virtualenv
-  fi
-  # Create a virtualenv for this project and use it for ansible
-  if [ ! -f $ROOT/.virtualenv ]; then
-    virtualenv --python=python2.7 $ROOT/.virtualenv
-  fi
-
-  # Use the virtualenv
-  source $ROOT/.virtualenv/bin/activate
-
-  # Ensure ansible & ansible library versions with pip
-  if [ -f $ROOT/ansible/requirements.txt ]; then
-    pip install -r $ROOT/ansible/requirements.txt
+      echo "ERROR: pip is not installed!"
+      exit 1
   else
-    pip install ansible
+    # Install virtualenv
+    which -a virtualenv >> /dev/null
+    if [[ $? != 0 ]] ; then
+      pip install virtualenv
+    fi
+    # Create a virtualenv for this project and use it for ansible
+    if [ ! -f $ROOT/.virtualenv ]; then
+      virtualenv --python=python2.7 $ROOT/.virtualenv
+    fi
+
+    # Use the virtualenv
+    source $ROOT/.virtualenv/bin/activate
+
+    # Ensure ansible & ansible library versions with pip
+    if [ -f $ROOT/ansible/requirements.txt ]; then
+      pip install -r $ROOT/ansible/requirements.txt
+    else
+      pip install ansible
+    fi
   fi
 fi
 
