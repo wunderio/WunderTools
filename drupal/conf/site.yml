@@ -7,6 +7,8 @@
 default:
 
   aliases: local
+  
+  drupal_version: d8
 
   # In development environments we usually want to use symlinks, note the settings.php linking
   link:
