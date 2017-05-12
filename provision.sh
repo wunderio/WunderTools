@@ -179,11 +179,11 @@ if [ ! $SKIP_REQUIREMENTS ] ; then
     fi
     # Create a virtualenv for this project and use it for ansible
     if [ ! -f $ROOT/.virtualenv ]; then
-      virtualenv --python=python2.7 $ROOT/.virtualenv
+      virtualenv --python=python2.7 $ROOT/ansible/.virtualenv
     fi
 
     # Use the virtualenv
-    source $ROOT/.virtualenv/bin/activate
+    source $ROOT/ansible/.virtualenv/bin/activate
 
     # Ensure ansible & ansible library versions with pip
     if [ -f $ROOT/ansible/requirements.txt ]; then
