@@ -34,7 +34,7 @@
       ini_file:
         state: "{{ item['invocation']['module_args']['state'] }}"
         path: ./server.inventory
-        section: "{{ item['item'] | json_query( '[*].group' ) | first }}" 
+        section: "{{ item['item'] | json_query( '[*].group' ) | first }}"
         option: "{{ item['public_ip'] }}"
         allow_no_value: yes
       with_items:
@@ -48,7 +48,6 @@
   become: false
   roles:
     - { role: upcloud-firewall, tags: ['upcloud', 'firewall'] }
-    
 
 # Setups disks for all servers and disallows SSH password access
 - name: Setup Upcloud Servers
@@ -68,6 +67,7 @@
 
   handlers:
     - name: restart sshd
-      service: 
+      service:
         name: sshd
         state: restarted
+
