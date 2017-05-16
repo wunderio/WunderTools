@@ -22,7 +22,7 @@ If not, rename WunderTools-d8 to whatever project folder you have and run git in
 Edit `conf/vagrant_local.yml` and change:
  - name to the name of your project
  - hostname to a good hostname for your local environment
- - ip to something that no other project in your company uses
+ - ip to something that no other project in your company uses (increment the value by one and commit the new ip address to WunderTools repository)
 
 Edit `conf/project.yml` and change the variables to something that makes sense for your project.
 
@@ -50,5 +50,5 @@ Edit `conf/develop.yml` and change the variables to something that makes sense f
 
 Edit `drupal/conf/site.yml`, remove things you don't need and add stuff you want in your project.
 
-Rename `drupal/conf/ansibleref.aliases.drushrc.php` to `project_name` and configure it to fit your setup. This will be
+Rename `drupal/drush/wundertools.aliases.drushrc.php` to `project_name` and configure it to fit your setup. This will be
  automatically symlinked from ~/.drush when running vagrant up.
