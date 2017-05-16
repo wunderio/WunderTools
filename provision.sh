@@ -187,7 +187,7 @@ if [ ! $SKIP_REQUIREMENTS ] ; then
 
     # Ensure ansible & ansible library versions with pip
     if [ -f $ROOT/ansible/requirements.txt ]; then
-      pip install -r $ROOT/ansible/requirements.txt
+      pip install -r $ROOT/ansible/requirements.txt --upgrade
     else
       pip install ansible
     fi
