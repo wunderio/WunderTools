@@ -201,6 +201,11 @@ else
   WUNDER_SECRETS=""
 fi
 
+# Use vault encrypted file from WunderSecrets when available
+if [ "$VAULT_FILE" != "" ] && [ -f $wundersecrets_path/vault.yml ]; then
+  WUNDER_SECRETS="$WUNDER_SECRETS --extra-vars=@$wundersecrets_path/vault.yml"
+fi
+
 if [ $FIRST_RUN ]; then
   if [ -z $MYSQL_ROOT_PASS ]; then
     echo "Mysql root password missing. You need to provide password using -m flag."
