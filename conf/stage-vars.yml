@@ -3,8 +3,9 @@
 # Note this file must be encrypted with ansible-vault!
 
 base_pubkeys_auth: username:password
-base_pubkeys_url: https://key.server.tld/auth?hostname={{ ansible_nodename }}
-base_addhost_url: https://key.server.tld/auth/add_server?hostname={{ ansible_nodename }}
+base_pubkeys_host: key.server.tld
+base_pubkeys_url: https://{{ base_pubkeys_host }}/auth?hostname={{ ansible_nodename }}
+base_addhost_url: https://{{ base_pubkeys_host }}/auth/add_server?hostname={{ ansible_nodename }}
 
 drupal_db_password: supersecret
 
