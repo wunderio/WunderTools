@@ -59,6 +59,7 @@ switch ($env) {
   case 'local':
 		$settings['simple_environment_indicator'] = '#88b700 Local';
 	break;
+}
 /**
  * Location of the site configuration files.
  */
