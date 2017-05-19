@@ -112,3 +112,5 @@
     httpforwards:
       - server_name: "{{ domain_name }}"
         forwarded_domains: '"{{ domain_name }}"'
+
+    php_env_vars_include_db: True
