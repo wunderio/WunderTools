@@ -9,3 +9,6 @@ box: "geerlingguy/centos7"
 box_version: 1.2.0
 # optional host aliases
 aliases: local.alias.wundertools.com local.alias2.wundertools.com docs.local.wundertools.com
+# Uncomment to enable ssh-agent forwarding to vagrant box
+# Enables you to use your host keys from inside the box to access remotes
+#ssh_forward_agent: true
