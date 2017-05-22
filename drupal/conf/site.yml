@@ -10,6 +10,15 @@ default:
 
   drupal_version: d8
 
+  # Codecept path relative to drupal root or absolute
+  codecept_bin: ../vendor/bin/codecept
+
+  # Flags to pass to codeception test.
+  # Give boolean to flags that doesn't require value
+  codecept_options:
+    --steps: true
+    --tap: true
+
   # In development environments we usually want to use symlinks, note the settings.php linking
   link:
     - files: web/sites/default/files
@@ -42,10 +51,16 @@ default:
       - drush: entity-updates
       - cleanup
 
+    test:
+      - codecept
+
 # Test environment:
 test:
 
   aliases: stage
+
+  # Require development packages in test environment
+  require_dev: true
 
   # Test environment only symlinks files
   link:
@@ -53,8 +68,9 @@ test:
 
 
   # You can use copy to put some custom files in place if needed
-  copy:
+  #copy:
     #- conf/_ping.php: web/_ping.php
+
   # We can provide local commands or override global ones.
   local_commands:
     create:
@@ -77,6 +93,7 @@ test:
       - drush: entity-updates
       - cleanup
       - shell: chmod -R a-w web
+      - codecept
 
 # Production environment:
 production:

@@ -25,13 +25,11 @@
         "drupal/config_installer": "~1.0"
     },
     "require-dev": {
-        "behat/mink": "~1.7",
-        "behat/mink-goutte-driver": "~1.2",
-        "jcalderonzumba/gastonjs": "^1.1@dev",
-        "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
-        "mikey179/vfsStream": "~1.2",
-        "phpunit/phpunit": "~4.8",
-        "symfony/css-selector": "~2.8"
+        "codeception/codeception": "^2.2",
+        "site5/phantoman": "^1.1",
+        "jakoch/phantomjs-installer": "^2.1.1-p08",
+        "guncha25/drupal-8-bootstrap": "0.1",
+        "codeception/visualception": "^0.9.0"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -51,8 +49,12 @@
         }
     },
     "scripts": {
-      "post-install-cmd": [
-        "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
-      ]
+        "post-install-cmd": [
+            "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
+            "PhantomInstaller\\Installer::installPhantomJS"
+        ],
+        "post-update-cmd": [
+            "PhantomInstaller\\Installer::installPhantomJS"
+        ]
     }
 }

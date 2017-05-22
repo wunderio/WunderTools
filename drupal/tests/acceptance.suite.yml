@@ -1,0 +1,22 @@
+# Codeception Test Suite Configuration
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WebDriver or PhpBrowser.
+# If you need both WebDriver and PHPBrowser tests - create a separate suite.
+
+class_name: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver:
+            url: https://local.wundertools.com
+            browser: phantomjs
+            restart: true
+            port: 4444
+            capabilities:
+              phantomjs.cli.args: ["--ignore-ssl-errors=true"]
+        - \Helper\Acceptance
+        - DrupalBootstrap
+    config:
+        DrupalBootstrap:
+          drupal_root: '/vagrant/drupal/web'
+          site_path: 'sites/default'

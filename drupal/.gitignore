@@ -7,6 +7,9 @@
 /web/profiles/contrib/
 /web/libraries/
 
+# Ignore test logs
+/tests/_log
+
 # Ignore sensitive information
 /web/sites/*/settings.local.php
 
