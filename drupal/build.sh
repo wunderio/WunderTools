@@ -326,7 +326,7 @@ class Maker:
            if not value:
                raise BuildError("Tests failed.")
        else:
-           self.warning("Needed packages are not required in this environment. Skipping tests.")
+           self.warning("Dev packages are not required in this environment. Skipping tests.")
 
     # Update existing final build
     def update(self):
