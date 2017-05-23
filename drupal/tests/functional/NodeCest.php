@@ -37,7 +37,7 @@ class NodeCest {
    * @inheritdoc
    */
   public function _failed() {
-    $this->_failed();
+    $this->_after();
   }
 
 }
