@@ -1,5 +1,6 @@
 ##Troubleshooting
 If you encounter any problems first things to check:
+
 1. Does the build.sh point to wunderkraut github account when it tries to download drupal/build.sh?
 This could lead into such problems as trying to run drupal/build.sh: ./build.sh: line 1: Not: command not found"
 There are 2 lines late in the build.sh like this:
@@ -27,3 +28,6 @@ Ensure you have your key added to your github account.
 
 7. NFS shares should not be one inside the other:
 If you have multiple projects and NFS shares in your host machine, check that no share is inside another one, because NFS definitely does not like that. 
+
+8. (Linux specific) NFS times out or produces the following error message: `mount.nfs: requested NFS version or transport protocol is not supported`:
+It could be possible that your OS has updated nfs-utils package to the latest upstream version which by default has UDP protocol support disabled. Quick fix is to edit `/etc/sysconfig/nfs` (Fedora) or `/etc/default/nfs-kernel-server` (Ubuntu) and add `--udp` to `RPCNFSDARGS` and then restart the NFS server.
