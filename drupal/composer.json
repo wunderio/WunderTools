@@ -28,7 +28,7 @@
         "codeception/codeception": "^2.2",
         "site5/phantoman": "^1.1",
         "jakoch/phantomjs-installer": "^2.1.1-p08",
-        "guncha25/drupal-8-bootstrap": "0.1",
+        "guncha25/drupal-8-bootstrap": "^0.2",
         "codeception/visualception": "^0.9.0"
     },
     "conflict": {
