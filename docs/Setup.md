@@ -2,17 +2,21 @@
 
 ### Preparation
 
-Start by downloading a zipball of the WunderTools d8 branch as a base for your new project from
-https://github.com/wunderkraut/WunderTools/archive/d8.zip
+Start by downloading and unarchiving a zipball of the WunderTools as a base for your new project from
+https://github.com/wunderkraut/WunderTools/archive/master.zip
 
-If you already have an empty git repository, you can move the contents of WunderTools-d8 into your git repo
-directory (Excercise to reader: Find a way to move content + dotfiles in one command that works in all shells).
+#### a) if you already have git repo
 
-`mv WunderTools-d8/* ~/Projects/my-new-project mv WunderTools-d8/.* ~/Projects/my-new-project`
+Move the content (with dotfiles) of WunderTools-master into your git repo directory.
 
-If not, rename WunderTools-d8 to whatever project folder you have and run git init inside it:
+`mv WunderTools-master/{.[!.],}* ~/Projects/my-existing-project/`  
+(works on OSX, but you should know how to copy if that's not bulletproof one-liner on your system)
+
+#### b) if you don't already have git
+
+Just rename WunderTools-master to whatever project folder you have and run git init inside it:
 ```
-  mv WunderTools-d8 ~/Projects/my-new-project
+  mv WunderTools-master ~/Projects/my-new-project
   cd ~/Projects/my-new-project
   git init
 ```
@@ -22,29 +26,37 @@ If not, rename WunderTools-d8 to whatever project folder you have and run git in
 Edit `conf/vagrant_local.yml` and change:
  - name to the name of your project
  - hostname to a good hostname for your local environment
- - ip to something that no other project in your company uses (increment the value by one and commit the new ip address to WunderTools repository)
+ - ip to something that no other project in your company uses (increment the value by one and commit the new ip address 
+ to WunderTools repository)
 
 Edit `conf/project.yml` and change the variables to something that makes sense for your project.
 
 ```
 project:
-  name: ansibleref
+  name: myproject
+  file_sync_url: https://www.myproject.com
 ansible:
-  remote: https://github.com/wunderkraut/WunderMachina.git
+  remote: git@github.com:wunderkraut/WunderMachina.git
   branch: master # Master branch is for CentOS 7. If you want CentOS 6, use centos6 branch.
   revision:
 buildsh:
   enabled: true
-  branch: develop # Supports both Drupal 8 and Drupal 7.
+  branch: master
   revision: # As with composer.lock, could be a good idea to use a specific git revision.
 wundertools:
   branch: master
 externaldrupal:
   remote:
   branch:
+drush:
+  alias_path: drupal/drush
+wundersecrets:
+  remote: git@github.com:wunderkraut/WunderSecrets.git
 ```
 
 Edit `conf/develop.yml` and change the variables to something that makes sense for your project.
+
+Edit `conf/vagrant.yml` and change `domain_name` variable to match your domain.
 
 ## Configure Drupal build
 
