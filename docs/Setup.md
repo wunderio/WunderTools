@@ -2,53 +2,42 @@
 
 ### Preparation
 
-Start by downloading a zipball of the WunderTools d8 branch as a base for your new project from
-https://github.com/wunderkraut/WunderTools/archive/d8.zip
+Start by downloading and unarchiving a zipball of the WunderTools as a base for your new project from
+https://github.com/wunderkraut/WunderTools/archive/master.zip
 
-If you already have an empty git repository, you can move the contents of WunderTools-d8 into your git repo
-directory (Excercise to reader: Find a way to move content + dotfiles in one command that works in all shells).
+##### a) if you already have git repo
 
-`mv WunderTools-d8/* ~/Projects/my-new-project mv WunderTools-d8/.* ~/Projects/my-new-project`
+* Move the content (with dotfiles) of WunderTools-master into your git repo directory.
+  - `mv WunderTools-master/{.[!.],}* ~/Projects/my-existing-project/`  
+(works on OSX, but you should know how to copy if this is not a bulletproof one-liner on your system)
 
-If not, rename WunderTools-d8 to whatever project folder you have and run git init inside it:
+##### b) if you don't already have git
+
+* Just rename WunderTools-master to whatever project folder you have and init git inside it:
 ```
-  mv WunderTools-d8 ~/Projects/my-new-project
-  cd ~/Projects/my-new-project
-  git init
+mv WunderTools-master ~/Projects/my-new-project
+cd ~/Projects/my-new-project
+git init
 ```
 
 ## Configure WunderTools
 
-Edit `conf/vagrant_local.yml` and change:
- - name to the name of your project
- - hostname to a good hostname for your local environment
- - ip to something that no other project in your company uses (increment the value by one and commit the new ip address to WunderTools repository)
+* Edit `conf/vagrant.yml` and change `domain_name` variable to match your local domain.
+* Edit `conf/vagrant_local.yml` and change:
+  - `name` to the name of your project
+  - `hostname` to a good hostname for your local environment (preferably replace *www* part of your production domain 
+ with *local*)
+  - `ip` to something that no other project in your company uses (increment the value by one and commit the new ip 
+ address to WunderTools repository)
 
-Edit `conf/project.yml` and change the variables to something that makes sense for your project.
+* Edit `conf/project.yml` and change the variables to something that makes sense for your project.
+  - Minimally `project:name` to the name of your project
 
-```
-project:
-  name: ansibleref
-ansible:
-  remote: https://github.com/wunderkraut/WunderMachina.git
-  branch: master # Master branch is for CentOS 7. If you want CentOS 6, use centos6 branch.
-  revision:
-buildsh:
-  enabled: true
-  branch: develop # Supports both Drupal 8 and Drupal 7.
-  revision: # As with composer.lock, could be a good idea to use a specific git revision.
-wundertools:
-  branch: master
-externaldrupal:
-  remote:
-  branch:
-```
-
-Edit `conf/develop.yml` and change the variables to something that makes sense for your project.
+* Edit `conf/develop.yml` and change the variables to something that makes sense for your project.
 
 ## Configure Drupal build
 
-Edit `drupal/conf/site.yml`, remove things you don't need and add stuff you want in your project.
-
-Rename `drupal/drush/wundertools.aliases.drushrc.php` to `project_name` and configure it to fit your setup. This will be
- automatically symlinked from ~/.drush when running vagrant up.
+* Edit `drupal/conf/site.yml`, remove things you don't need and add stuff you want in your project.
+* Rename `drupal/drush/wundertools.aliases.drushrc.php` to `drupal/drush/[PROJECT_NAME].aliases.drushrc.php` and 
+configure it to fit your setup. 
+  - this file will be automatically symlinked from `~/.drush` when running vagrant up
