@@ -21,12 +21,26 @@
       fail:
         msg: "You must set UPCLOUD_API_PASSWD env in your local machine"
       when: upcloud_api_passwd == ""
-# Login to machines to figure out private eth1 addresses too
-- hosts: all
-  user: root
+
+- name: Create Upcloud servers
+  hosts: localhost
+  connection: local
+  become: False
+  roles:
+    - { role: upcloud-servers, tags: ['upcloud', 'server'] }
   tasks:
-    - name: Collect all IP-addresses from all available machines
-      meta: refresh_inventory
+    # This task updates the inventory file
+    - name: Update Upcloud Servers to server.inventory file
+      ini_file:
+        state: "{{ item['invocation']['module_args']['state'] }}"
+        path: ./server.inventory
+        section: "{{ item['item'] | json_query( '[*].group' ) | first }}"
+        option: "{{ item['public_ip'] }}"
+        allow_no_value: yes
+      with_items:
+        - "{{ upcloud_created_instances.results }}"
+      when: item['item'] | json_query( '[*].group' ) | length == 1
+      tags: ['create']
 
 # Creates firewalls for all machines
 - hosts: localhost
@@ -34,3 +48,26 @@
   become: false
   roles:
     - { role: upcloud-firewall, tags: ['upcloud', 'firewall'] }
+
+# Setups disks for all servers and disallows SSH password access
+- name: Setup Upcloud Servers
+  hosts: upcloud_created_servers
+  roles:
+    - { role: upcloud-disks, tags: ['upcloud', 'disks'] }
+    - { role: resize-root-disk, tags: ['disks'] }
+
+  tasks:
+    - name: Disallow SSH access with password
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: "^PasswordAuthentication"
+        line: "PasswordAuthentication no"
+        state: present
+      notify: restart sshd
+
+  handlers:
+    - name: restart sshd
+      service:
+        name: sshd
+        state: restarted
+
