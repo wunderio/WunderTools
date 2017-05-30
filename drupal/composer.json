@@ -22,7 +22,8 @@
         "drupal/core": "~8.0",
         "drush/drush": "~8.0",
         "drupal/console": "~1.0",
-        "drupal/config_installer": "~1.0"
+        "drupal/config_installer": "~1.0",
+        "drupal/simplei": "^1.0"
     },
     "require-dev": {
         "codeception/codeception": "^2.2",

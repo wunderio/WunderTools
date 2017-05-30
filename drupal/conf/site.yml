@@ -36,7 +36,9 @@ default:
     # Basic site update functionality
     update:
       - shell: chmod -R a+w web
-      - backup
+      - backup:
+         ignore:
+          - builds
       - shell: composer install
       - drush: updb -y
       - drush: cim -y
@@ -73,7 +75,9 @@ test:
 
     reset:
       - verify: "Type yes to verify you want to reset your local environment: "
-      - backup
+      - backup:
+         ignore:
+          - builds
       - shell: composer install
       - drush: site-install config_installer
       - cleanup
@@ -81,41 +85,29 @@ test:
     # Basic site update functionality
     update:
       - shell: chmod -R a+w web
-      - backup
+      - backup:
+         ignore:
+          - builds
       - shell: composer install
       - drush: updb -y
       - drush: cim
       - drush: entity-updates
       - cleanup
       - shell: chmod -R a-w web
+      - shell: sudo systemctl restart nginx php-fpm varnish
       - shell:
         - vendor/bin/codecept clean -c web/codeception.yml
         - vendor/bin/codecept run -c web/codeception.yml --env test
+
 
 # Production environment:
 production:
 
   aliases: prod
 
-  # Directory used to build the site
-  temporary: _build
-
-  # The final produced Drupal installation
-  final: current
-
-  # The Subpath of "final" and "temporary" where drupal resides.
-  drupal_subpath: web
-
-  build_in_place: False
-
   # Prod environment only symlinks files
   link:
     - files: web/sites/default/files
-
-  copy:
-    - web: web/
-    - composer.json: composer.json
-    - sync: sync
 
   local_commands:
     create:
@@ -123,7 +115,9 @@ production:
 
     reset:
       - verify: "Type yes to verify you want to reset your local environment: "
-      - backup
+      - backup:
+         ignore:
+          - builds
       - shell: composer install --no-dev
       - drush: site-install config_installer
       - cleanup
@@ -132,21 +126,14 @@ production:
     # Basic site update functionality
     update:
       - shell: chmod -R a+w current
-      - backup
+      - backup:
+         ignore:
+          - builds
       - shell: composer install --no-dev
-      - finalize
       - drush: updb -y
-      - drush: cim
-      - drush: entity-updates
+      - drush: cim -y
+      - drush: entity-updates -y
       - cleanup
       - shell: chmod -R a-w current
-
-    hotfix:
-      - link
-      - shell: chmod -R a+w current
-      - shell: rsync -a _build/ current
-      - shell: rm -r _build
-      - shell: chmod -R a-w current
-      - update
-
+      - shell: sudo systemctl restart nginx php-fpm varnish
 
