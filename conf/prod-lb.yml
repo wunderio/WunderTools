@@ -18,10 +18,9 @@
 
     ## Base ##
 
-    # /var/log on it's own partition
-    partition_var_log: True
-    # On Upcloud we usually get /dev/vdb for logs, but this may vary so you can define the disk here
-    #var_log_disk: /dev/vdb
+    # Additional blockdevices are now partitioned by upcloud-disk role
+    partition_var_log: False
+    partition_var_lib_mysql: False
 
     # We want to manage our server access with public key authentication server
     #base_pubkeys_enable: True
