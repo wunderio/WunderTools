@@ -23,7 +23,7 @@ default:
       - verify: "Type yes to verify you want to create a new installation: "
       - shell: composer install
       - drush: site-install standard
-      - drush: cex
+      - drush: cex -y
       - shell: echo "New installation is complete and configuration has been exported. Please commit it."
       - cleanup
 
@@ -42,7 +42,7 @@ default:
       - shell: composer install
       - drush: updb -y
       - drush: cim -y
-      - drush: entup -y
+      - drush: entity-updates -y
       - cleanup
       - shell: chmod -R a-w web
       - shell:
@@ -90,8 +90,8 @@ test:
           - builds
       - shell: composer install
       - drush: updb -y
-      - drush: cim
-      - drush: entity-updates
+      - drush: cim -y
+      - drush: entity-updates -y
       - cleanup
       - shell: chmod -R a-w web
       - shell: sudo systemctl restart nginx php-fpm varnish
