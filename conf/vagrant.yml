@@ -31,7 +31,7 @@
    # To use blackfire you need to define blackfire keys and tokens (see ansible/playbook/roles/devtools/defaults/main.yml for reference)
    # You can get those keys and tokens from https://blackfire.io/docs/up-and-running/installation
    # Otherwise you can disable blackfire by setting enable_blackfire: false
-   #- { role: devtools, tags: [ 'devtools' ] }
+   - { role: devtools, tags: [ 'devtools' ] }
    # Mailhog, uncomment to catch outgoing mail. You can access mailhog at your local site url on port 8025
    - { role: mailhog, tags: [ 'mailhog' ] }
    # Optional HHVM role.
