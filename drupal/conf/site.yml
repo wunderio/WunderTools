@@ -21,28 +21,38 @@ default:
 
     create:
       - verify: "Type yes to verify you want to create a new installation: "
-      - make
+      - shell: composer install
       - drush: site-install standard
-      - drush: cex
+      - drush: cex -y
       - shell: echo "New installation is complete and configuration has been exported. Please commit it."
       - cleanup
 
     reset:
       - verify: "Type yes to verify you want to reset your local environment: "
-      - make
+      - shell: composer install
       - drush: site-install config_installer
       - cleanup
 
     # Basic site update functionality
     update:
+      - shell: chmod -R a+w web
       - backup:
          ignore:
           - builds
-      - make
-      - update
+      - shell: composer install
+      - drush: updb -y
       - drush: cim -y
       - drush: entity-updates -y
       - cleanup
+      - shell: chmod -R a-w web
+      - shell:
+        - vendor/bin/codecept clean -c web/codeception.yml
+        - vendor/bin/codecept run -c web/codeception.yml
+
+    test:
+      - shell:
+        - vendor/bin/codecept clean -c web/codeception.yml
+        - vendor/bin/codecept run -c web/codeception.yml
 
 # Test environment:
 test:
@@ -55,7 +65,9 @@ test:
 
 
   # You can use copy to put some custom files in place if needed
+  #copy:
     #- conf/_ping.php: web/_ping.php
+
   # We can provide local commands or override global ones.
   local_commands:
     create:
@@ -66,7 +78,7 @@ test:
       - backup:
          ignore:
           - builds
-      - make
+      - shell: composer install
       - drush: site-install config_installer
       - cleanup
 
@@ -76,13 +88,17 @@ test:
       - backup:
          ignore:
           - builds
-      - make
-      - update
+      - shell: composer install
+      - drush: updb -y
       - drush: cim -y
       - drush: entity-updates -y
       - cleanup
       - shell: chmod -R a-w web
       - shell: sudo systemctl restart nginx php-fpm varnish
+      - shell:
+        - vendor/bin/codecept clean -c web/codeception.yml
+        - vendor/bin/codecept run -c web/codeception.yml --env test
+
 
 # Production environment:
 production:
@@ -102,7 +118,7 @@ production:
       - backup:
          ignore:
           - builds
-      - make
+      - shell: composer install --no-dev
       - drush: site-install config_installer
       - cleanup
 
@@ -113,8 +129,8 @@ production:
       - backup:
          ignore:
           - builds
-      - make
-      - update
+      - shell: composer install --no-dev
+      - drush: updb -y
       - drush: cim -y
       - drush: entity-updates -y
       - cleanup

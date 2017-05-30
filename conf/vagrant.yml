@@ -38,6 +38,7 @@
    # Requires WunderMachina hhvm branch https://github.com/wunderkraut/WunderMachina/tree/hhvm
    # More in-depth instructions at https://github.com/wunderkraut/WunderTools/wiki/HHVM
    #- { role: hhvm, tags: [ 'hhvm' ] }
+   #- { role: selenium, tags: [ 'selenium' ] }
 
   tasks:
 

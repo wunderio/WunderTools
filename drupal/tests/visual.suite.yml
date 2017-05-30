@@ -1,0 +1,13 @@
+class_name: VisualTester
+modules:
+    enabled:
+        - WebDriver:
+            url: https://local.wundertools.com
+            browser: chrome
+            restart: true
+        - \Helper\Visual
+        - DrupalBootstrap
+        - VisualCeption
+    config:
+        VisualCeption:
+          saveCurrentImageIfFailure: true
