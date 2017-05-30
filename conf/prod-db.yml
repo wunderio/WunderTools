@@ -3,6 +3,7 @@
 - hosts: wundertools-prod-db
   roles:
    - { role: base, tags: [ 'base' ] }
+   - { role: papertrail, tags: [ 'papertrail' ] }
    - { role: backups, tags: [ 'backups' ] }
    - { role: dbserver, tags: [ 'dbserver' ] }
    - { role: drupal-db, tags: [ 'drupal-db' ] }
@@ -10,7 +11,6 @@
    - { role: elasticsearch, tags: [ 'elasticsearch' ] }
    - { role: nfs_server, tags: [ 'nfs_server' ] }
    - { role: monit, tags: [ 'monit' ] }
-   - { role: papertrail, tags: [ 'papertrail' ] }
    - { role: newrelic-infra, tags: [ 'newrelic-infra' ] }
    - { role: newrelic-sysmon, tags: [ 'newrelic-sysmon' ] }
 
