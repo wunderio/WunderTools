@@ -29,7 +29,8 @@
 
   vars:
 
-    partition_var_log: True
+    # Additional blockdevices are now partitioned by upcloud-disk role
+    partition_var_log: False
 
     memory_app: 1024 # In MB should be atleast 4x php_memory_limit
 
