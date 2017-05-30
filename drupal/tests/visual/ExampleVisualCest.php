@@ -1,9 +1,10 @@
 <?php
 
-class HeaderCest
-{
+class ExampleVisualCest {
 
-  // tests
+  /**
+   * @param \VisualTester $I
+   */
   public function headerTest(VisualTester $I) {
     $I->amOnPage('/');
     $I->resizeWindow(720,800);
