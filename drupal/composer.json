@@ -26,10 +26,9 @@
     },
     "require-dev": {
         "codeception/codeception": "^2.2",
-        "site5/phantoman": "^1.1",
-        "jakoch/phantomjs-installer": "^2.1.1-p08",
-        "guncha25/drupal-8-bootstrap": "^0.2",
-        "codeception/visualception": "^0.9.0"
+        "codeception/visualception": "^0.9.0",
+        "guncha25/codecept-drupal-drush": "~0.3",
+        "guncha25/drupal-8-bootstrap": "0.3"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -50,11 +49,6 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
-            "PhantomInstaller\\Installer::installPhantomJS"
-        ],
-        "post-update-cmd": [
-            "PhantomInstaller\\Installer::installPhantomJS"
-        ]
+            "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"]
     }
 }

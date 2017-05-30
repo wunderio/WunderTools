@@ -3,17 +3,11 @@ modules:
     enabled:
         - WebDriver:
             url: https://local.wundertools.com
-            browser: phantomjs
+            browser: chrome
             restart: true
-            port: 4444
-            capabilities:
-              phantomjs.cli.args: ["--ignore-ssl-errors=true"]
         - \Helper\Visual
         - DrupalBootstrap
         - VisualCeption
     config:
-        DrupalBootstrap:
-          drupal_root: '/vagrant/drupal/web'
-          site_path: 'sites/default'
         VisualCeption:
           saveCurrentImageIfFailure: true

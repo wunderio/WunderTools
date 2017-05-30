@@ -10,15 +10,6 @@ default:
 
   drupal_version: d8
 
-  # Codecept path relative to drupal root or absolute
-  codecept_bin: ../vendor/bin/codecept
-
-  # Flags to pass to codeception test.
-  # Give boolean to flags that doesn't require value
-  codecept_options:
-    --steps: true
-    --tap: true
-
   # In development environments we usually want to use symlinks, note the settings.php linking
   link:
     - files: web/sites/default/files
@@ -30,7 +21,7 @@ default:
 
     create:
       - verify: "Type yes to verify you want to create a new installation: "
-      - make
+      - shell: composer install
       - drush: site-install standard
       - drush: cex
       - shell: echo "New installation is complete and configuration has been exported. Please commit it."
@@ -38,29 +29,33 @@ default:
 
     reset:
       - verify: "Type yes to verify you want to reset your local environment: "
-      - make
+      - shell: composer install
       - drush: site-install config_installer
       - cleanup
 
     # Basic site update functionality
     update:
+      - shell: chmod -R a+w web
       - backup
-      - make
-      - update
-      - drush: cim
-      - drush: entity-updates
+      - shell: composer install
+      - drush: updb -y
+      - drush: cim -y
+      - drush: entup -y
       - cleanup
+      - shell: chmod -R a-w web
+      - shell:
+        - vendor/bin/codecept clean -c web/codeception.yml
+        - vendor/bin/codecept run -c web/codeception.yml
 
     test:
-      - codecept
+      - shell:
+        - vendor/bin/codecept clean -c web/codeception.yml
+        - vendor/bin/codecept run -c web/codeception.yml
 
 # Test environment:
 test:
 
   aliases: stage
-
-  # Require development packages in test environment
-  require_dev: true
 
   # Test environment only symlinks files
   link:
@@ -79,7 +74,7 @@ test:
     reset:
       - verify: "Type yes to verify you want to reset your local environment: "
       - backup
-      - make
+      - shell: composer install
       - drush: site-install config_installer
       - cleanup
 
@@ -87,13 +82,15 @@ test:
     update:
       - shell: chmod -R a+w web
       - backup
-      - make
-      - update
+      - shell: composer install
+      - drush: updb -y
       - drush: cim
       - drush: entity-updates
       - cleanup
       - shell: chmod -R a-w web
-      - codecept
+      - shell:
+        - vendor/bin/codecept clean -c web/codeception.yml
+        - vendor/bin/codecept run -c web/codeception.yml --env test
 
 # Production environment:
 production:
@@ -127,7 +124,7 @@ production:
     reset:
       - verify: "Type yes to verify you want to reset your local environment: "
       - backup
-      - make
+      - shell: composer install --no-dev
       - drush: site-install config_installer
       - cleanup
 
@@ -136,9 +133,9 @@ production:
     update:
       - shell: chmod -R a+w current
       - backup
-      - make
+      - shell: composer install --no-dev
       - finalize
-      - update
+      - drush: updb -y
       - drush: cim
       - drush: entity-updates
       - cleanup

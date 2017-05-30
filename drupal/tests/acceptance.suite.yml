@@ -9,14 +9,19 @@ modules:
     enabled:
         - WebDriver:
             url: https://local.wundertools.com
-            browser: phantomjs
+            browser: chrome
             restart: true
-            port: 4444
-            capabilities:
-              phantomjs.cli.args: ["--ignore-ssl-errors=true"]
         - \Helper\Acceptance
         - DrupalBootstrap
+#    Not required in default setup
+#    config:
+#        DrupalBootstrap:
+#          drupal_root: '/vagrant/drupal/web'
+#          site_path: 'sites/default'
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed
+        - Codeception\Extension\Recorder
     config:
-        DrupalBootstrap:
-          drupal_root: '/vagrant/drupal/web'
-          site_path: 'sites/default'
+        Codeception\Extension\Recorder:
+          delete_successful: false

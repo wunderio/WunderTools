@@ -1,0 +1,12 @@
+# `test` environment config goes here
+modules:
+  config:
+    WebDriver:
+      browser: chrome
+      url: 'https://test.wundertools.com'
+      port: 4444
+      restart: true
+    PhpBrowser:
+      url: 'https://test.wundertools.com'
+    DrupalBootstrap:
+      nginx_url: 'http://test.wundertools.com:8080'

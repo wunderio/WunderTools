@@ -15,6 +15,4 @@ modules:
         - DrupalBootstrap
     config:
         DrupalBootstrap:
-          drupal_root: '/vagrant/drupal/web'
-          site_path: 'sites/default'
           nginx_url: 'https://local.wundertools.com:8080'

@@ -12,14 +12,6 @@ settings:
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
-        - Codeception\Extension\Phantoman
-    config:
-      Codeception\Extension\Phantoman:
-        path: '../vendor/bin/phantomjs'
-        ignoreSslErrors: true
-        sslProtocol: any
-        port: 4444
-        suites: ['acceptance', 'visual']
 modules:
     config:
         Db:

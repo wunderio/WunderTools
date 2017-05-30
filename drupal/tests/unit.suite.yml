@@ -8,7 +8,3 @@ modules:
         - Asserts
         - \Helper\Unit
         - DrupalBootstrap
-    config:
-        DrupalBootstrap:
-          drupal_root: '/vagrant/drupal/web'
-          site_path: 'sites/default'
