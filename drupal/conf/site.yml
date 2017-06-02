@@ -21,7 +21,7 @@ default:
 
     create:
       - verify: "Type yes to verify you want to create a new installation: "
-      - shell: composer install
+      - make
       - drush: site-install standard
       - drush: cex -y
       - shell: echo "New installation is complete and configuration has been exported. Please commit it."
@@ -29,22 +29,20 @@ default:
 
     reset:
       - verify: "Type yes to verify you want to reset your local environment: "
-      - shell: composer install
+      - make
       - drush: site-install config_installer
       - cleanup
 
     # Basic site update functionality
     update:
-      - shell: chmod -R a+w web
       - backup:
          ignore:
           - builds
-      - shell: composer install
+      - make
       - drush: updb -y
       - drush: cim -y
       - drush: entity-updates -y
       - cleanup
-      - shell: chmod -R a-w web
       - shell:
         - vendor/bin/codecept clean -c web/codeception.yml
         - vendor/bin/codecept run -c web/codeception.yml
@@ -78,17 +76,15 @@ test:
       - backup:
          ignore:
           - builds
-      - shell: composer install
+      - make
       - drush: site-install config_installer
       - cleanup
 
     # Basic site update functionality
+    build:
+      - make
+
     update:
-      - shell: chmod -R a+w web
-      - backup:
-         ignore:
-          - builds
-      - shell: composer install
       - drush: updb -y
       - drush: cim -y
       - drush: entity-updates -y
@@ -118,18 +114,19 @@ production:
       - backup:
          ignore:
           - builds
-      - shell: composer install --no-dev
+      - make
       - drush: site-install config_installer
       - cleanup
 
 
     # Basic site update functionality
-    update:
-      - shell: chmod -R a+w current
+    build:
       - backup:
          ignore:
           - builds
-      - shell: composer install --no-dev
+      - make
+
+    update:
       - drush: updb -y
       - drush: cim -y
       - drush: entity-updates -y
