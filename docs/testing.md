@@ -3,8 +3,8 @@ Testing instructions
 Tests can be found under drupal/tests folder.
 Test are run using Codeception.
 
-To get started follow these steps:
-1. Uncomment or add selenium role in environment(s) that you will run tests on:
+To get started, follow these steps:
+1. Uncomment or add selenium role in environment(-s) that you will run tests on:
 
     `- { role: selenium, tags: [ 'selenium' ] }`
     
@@ -35,7 +35,7 @@ To add your own tests, cd to web directory and
     `../vendor/bin/codecept generate:cest acceptance MyFirstTestCest`
 
 
-There are four test suite available out of the box:
+There are four test suites available out of the box:
 
 * Acceptance - For testing site with real browser (Chrome or Firefox)
 * Functional - For testing backend interactions that might use browser (PhpBrowser), but does not depend on JS.
