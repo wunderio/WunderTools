@@ -4,7 +4,7 @@ Tests can be found under drupal/tests folder.
 Test are run using Codeception.
 
 To get started, follow these steps:
-1. Uncomment or add selenium role in environment(-s) that you will run tests on:
+1. Uncomment or add selenium role in environment(s) that you will run tests on:
 
     `- { role: selenium, tags: [ 'selenium' ] }`
     
