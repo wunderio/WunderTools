@@ -7,6 +7,9 @@
 /web/profiles/contrib/
 /web/libraries/
 
+# Ignore wunderio/drupal-ping healthcheck module
+web/_ping.php
+
 # Ignore test logs
 /tests/_log
 
