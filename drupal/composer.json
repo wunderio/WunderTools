@@ -23,7 +23,8 @@
         "drush/drush": "~8.0",
         "drupal/console": "~1.0",
         "drupal/config_installer": "~1.0",
-        "drupal/simplei": "^1.0"
+        "drupal/simplei": "^1.0",
+        "wunderio/drupal-ping": "^1.0"
     },
     "require-dev": {
         "codeception/codeception": "^2.2",
@@ -44,6 +45,9 @@
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
             "web/themes/contrib/{$name}": ["type:drupal-theme"],
             "web/drush/commands/{$name}": ["type:drupal-drush"]
+        },
+        "dropin-paths": {
+            "web/": ["type:web-dropin"]
         },
         "patches": {
         }
