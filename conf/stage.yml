@@ -101,6 +101,7 @@
 
     databases:
       - name: drupal
+        host: localhost
         user: drupal
         pass: "{{ drupal_db_password }}"
         hosts:

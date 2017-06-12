@@ -68,6 +68,7 @@
     databases:
       - name: example1
         user: example1user
+        host: localhost
         # defined in prod-vars.yml
         pass: "{{ drupal_db1_password }}"
         hosts:
@@ -78,6 +79,7 @@
           - "{{ front2_ip }}"
       - name: example2
         user: example2user
+        host: localhost
         # defined in prod-vars.yml
         pass: "{{ drupal_db2_password }}"
         hosts:
