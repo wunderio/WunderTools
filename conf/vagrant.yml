@@ -46,10 +46,8 @@
 
   vars:
     domain_name: local.example.com
-    wkv_site_env: local
 
-    partition_var_log: False
-    partition_var_lib_mysql: False
+    wkv_site_env: local
 
     nginx_disable_content_security_policy: True
 

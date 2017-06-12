@@ -20,13 +20,10 @@
 
   tasks:
   # Drupal cron job
-  - cron: name="Example Drupal cron job" minute="*/2" job="su nginx --shell=/bin/sh -c '/usr/lib/composer/vendor/bin/drush --root=/var/www/example.com/current elysia-cron > /dev/null 2>&1'" state="present"
+  - cron: name="Example Drupal cron job" minute="*/2" job="su nginx --shell=/bin/sh -c '/usr/lib/composer/vendor/bin/drush --root=/var/www/example.com/current/web cron > /dev/null 2>&1'" state="present"
 
   vars:
-    wkv_site_env: test
-
-    partition_var_log: False
-    partition_var_lib_mysql: False
+    wkv_site_env: dev
 
     # How to assign memory for each role and set the correct
     # memory_app and memory_db define how much total system memory is allocated to each.

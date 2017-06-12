@@ -12,6 +12,11 @@ php_fpm_pm_max_spare_servers: "{{ php_fpm_pm_max_children|int // 2 }}"
 
 nginx_workers: "{{ ansible_processor_vcpus }}" # This should be equal to core count
 
+base_pubkeys_url: https://{{ base_pubkeys_host }}/auth?hostname={{ ansible_nodename }}
+base_addhost_url: https://{{ base_pubkeys_host }}/auth/add_server?hostname={{ ansible_nodename }}
+
+partition_var_log: False
+partition_var_lib_mysql: False
 
 # PHP version to be used. Available options: php56u, php70u
 php_package: "php70u"
