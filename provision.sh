@@ -74,7 +74,8 @@ self_update() {
   fi
 
   # Use secrets if it's defined in conf/project.yml
-  if [ "$wundersecrets_remote" != "" ]; then
+  # Do this for everything else than local vagrant provisioning
+  if [ "$ENVIRONMENT" != "vagrant" ] && [ "$wundersecrets_remote" != "" ]; then
     # Set defaults for WunderSecrets
     export wundersecrets_path=$ROOT/secrets
     export wundersecrets_branch=${wundersecrets_branch-master}
