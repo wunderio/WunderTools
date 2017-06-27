@@ -1,4 +1,5 @@
 <?php
+// If the .vagrant folder exists find the ssh key for the virtual machine
 if (getenv('WKV_SITE_ENV' == 'local')) {
   $home = drush_server_home();
   // Solve the key file to use
@@ -12,6 +13,10 @@ if (getenv('WKV_SITE_ENV' == 'local')) {
     $key = $home . '/.vagrant.d/insecure_private_key';
   }
   $key = rtrim($key);
+
+} else {
+  // .vagrant directory doesn't exist, just use empty key
+  $key = "";
 }
 
 $aliases['local'] = array(
