@@ -35,7 +35,7 @@ if [ $# -gt 0 ]; then
   if [ $# -eq 2 ]; then
     if [ $2 == 'prod' ]; then
       echo "You tried to sync to a production environment!"
-      echo "This is probably newer the intention, so we always fail such attempts."
+      echo "This is probably never the intention, so we always fail such attempts."
       exit
     fi
     TARGET="@$project_name.$2"
