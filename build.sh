@@ -49,32 +49,36 @@ else
 fi
 
 
-VERSIONFILE=$ROOT/VERSION
-CHANGELOG=$ROOT/CHANGELOG
-CHANGELOGURL="https://raw.githubusercontent.com/$WUNDERTOOLSREPOSITORY/$GITBRANCH/CHANGELOG"
-
-if [ -f $VERSIONFILE ]; then
-  typeset -i CURRENT_VERSION=$(<$VERSIONFILE)
+if [ "$CI" = true ]; then
+  echo "You're using CI=$CI. This means that automatic updates for this script are skipped..."
 else
-  CURRENT_VERSION=0
-fi
+  VERSIONFILE=$ROOT/VERSION
+  CHANGELOG=$ROOT/CHANGELOG
+  CHANGELOGURL="https://raw.githubusercontent.com/$WUNDERTOOLSREPOSITORY/$GITBRANCH/CHANGELOG"
 
-if [ "$CURRENT_VERSION" -ne "$VERSION" ]; then
-  echo -e "\033[0;31mBuild.sh version has been updated.\033[0m Make sure your project complies with the changes outlined in the CHANGELOG since version $CURRENT_VERSION"
-  while read -p "I have updated everything ([y]es / [n]o / show [c]hangelog)? " -n 1 -r && [[ $REPLY =~ ^[Cc]$ ]]; do
-    echo $CHANGELOGURL
-    if [ ! -f $CHANGELOG ]; then
-      curl -s -o $CHANGELOG $CHANGELOGURL
-    fi
-    sed -e '/^'$CURRENT_VERSION'$/,$d' $CHANGELOG
-  done
-  echo
-  if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo $VERSION > $VERSIONFILE
-    echo "Current version updated, make sure to commit all the changes before continuing."
+  if [ -f $VERSIONFILE ]; then
+    typeset -i CURRENT_VERSION=$(<$VERSIONFILE)
   else
-    echo "Please update everything to comply with the latest version before continuing!"
-    exit 0
+    CURRENT_VERSION=0
+  fi
+
+  if [ "$CURRENT_VERSION" -ne "$VERSION" ]; then
+    echo -e "\033[0;31mBuild.sh version has been updated.\033[0m Make sure your project complies with the changes outlined in the CHANGELOG since version $CURRENT_VERSION"
+    while read -p "I have updated everything ([y]es / [n]o / show [c]hangelog)? " -n 1 -r && [[ $REPLY =~ ^[Cc]$ ]]; do
+      echo $CHANGELOGURL
+      if [ ! -f $CHANGELOG ]; then
+        curl -s -o $CHANGELOG $CHANGELOGURL
+      fi
+      sed -e '/^'$CURRENT_VERSION'$/,$d' $CHANGELOG
+    done
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      echo $VERSION > $VERSIONFILE
+      echo "Current version updated, make sure to commit all the changes before continuing."
+    else
+      echo "Please update everything to comply with the latest version before continuing!"
+      exit 0
+    fi
   fi
 fi
 
