@@ -65,6 +65,13 @@
         state: present
       notify: restart sshd
 
+    # This circumvents DNS UPD issue: https://github.com/wunderkraut/WunderTools/issues/197
+    - name: Use TCP for dns requests
+      lineinfile:
+        dest: /etc/resolv.conf
+        line: "options use-vc"
+        state: present
+
   handlers:
     - name: restart sshd
       service:
