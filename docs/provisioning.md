@@ -1,7 +1,9 @@
 Provisioning Servers
 ====================
 
-This project uses UpCloud server provisioning with ansible. The servers are deployed using a central Upcloud Account. In order to use it you need to export username and password for ansible as `UPCLOUD_API_USER` and `UPCLOUD_API_PASSWD`.
+This project uses UpCloud server provisioning with ansible. The servers are deployed using the central or personal UpCloud account. This account needs to have the api-connections enabled in UpCloud dashboard.
+
+In order to use it you need to export username and password for ansible as `UPCLOUD_API_USER` and `UPCLOUD_API_PASSWD`.
 
 This is easiest to do with `lpass` lastpass cli helper. You can install it from https://github.com/lastpass/lastpass-cli.
 
