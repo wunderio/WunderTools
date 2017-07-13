@@ -20,17 +20,17 @@ if ( file_exists( __DIR__ . '/settings.global.php' ) ) {
  * Database settings from env
  */
 $databases['default']['default'] = array (
-	'database'  => env( 'DB_NAME_DEVELOPMENT' ),
-	'username'  => env( 'DB_USER_DEVELOPMENT' ),
-	'password'  => env( 'DB_PASS_DEVELOPMENT' ),
-	'host'      => env( 'DB_HOST_DEVELOPMENT' ) ?: '127.0.0.1',
-	'port'      => env( 'DB_PORT_DEVELOPMENT' )	?: 3306,
-	'prefix'    => env( 'DB_PREFIX' )       	?: '',
-	'driver'    => env( 'DB_DRIVER' )       	?: 'mysql',
+	'database'  => getenv( 'DB_NAME_DEVELOPMENT' ),
+	'username'  => getenv( 'DB_USER_DEVELOPMENT' ),
+	'password'  => getenv( 'DB_PASS_DEVELOPMENT' ),
+	'host'      => getenv( 'DB_HOST_DEVELOPMENT' ) ?: '127.0.0.1',
+	'port'      => getenv( 'DB_PORT_DEVELOPMENT' )	?: 3306,
+	'prefix'    => getenv( 'DB_PREFIX' )       	?: '',
+	'driver'    => getenv( 'DB_DRIVER' )       	?: 'mysql',
 	'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
 );
 
 /**
  * Set salts, prefer salt for the environment but fallback to global salt
  */
-$settings['hash_salt'] = env( 'DRUPAL_HASH_SALT_DEVELOPMENT' ) ?: env( 'DRUPAL_HASH_SALT' );
+$settings['hash_salt'] = getenv( 'DRUPAL_HASH_SALT_DEVELOPMENT' ) ?: getenv( 'DRUPAL_HASH_SALT' );
