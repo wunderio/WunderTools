@@ -38,7 +38,7 @@
     php_env_vars:
       - key: "DRUPAL_HASH_SALT_PRODUCTION"
         value: "{{ drupal_hash_salt }}"
-    
+
     # Automatically inject DB_NAME_{env}, DB_USER_{env}, DB_PASS_{env} variables for Drupal
     php_env_vars_include_db: True
 
