@@ -28,6 +28,21 @@
       when: ansible_eth0.ipv4.address == groups['wundertools-prod-front'][1]
 
   vars:
+    # You can set custom variables if the same value is used in multiple places so it can be easily changed here
+    # You can use it anywhere after this using " {{ variable_name }}"
+    domain_name: production.example.com
+
+    wkv_site_env: production
+
+    # Add secrets as env for php
+    php_env_vars:
+      - key: "WKV_SITE_ENV"
+        value: "{{ wkv_site_env }}"
+      - key: "DRUPAL_HASH_SALT_PRODUCTION"
+        value: "{{ drupal_hash_salt }}"
+    
+    # Automatically inject DB_NAME_{env}, DB_USER_{env}, DB_PASS_{env} variables for Drupal
+    php_env_vars_include_db: True
 
     # Additional blockdevices are now partitioned by upcloud-disk role
     partition_var_log: False
