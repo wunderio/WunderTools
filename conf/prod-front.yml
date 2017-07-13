@@ -36,8 +36,6 @@
 
     # Add secrets as env for php
     php_env_vars:
-      - key: "WKV_SITE_ENV"
-        value: "{{ wkv_site_env }}"
       - key: "DRUPAL_HASH_SALT_PRODUCTION"
         value: "{{ drupal_hash_salt }}"
     
@@ -156,4 +154,3 @@
     newrelic_enabled: True
     # newrelic_license_key defined in prod_vars.yml
     newrelic_appname: "Exampleapp"
-
