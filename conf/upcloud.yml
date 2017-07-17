@@ -43,8 +43,8 @@
       tags: ['create']
 
 # Creates firewalls for all project machines in UpCloud.
-# This means that the firewall rules will be updated
-# for machines which were not provisioned by ansible too.
+# This means that the firewall rules will be updated even
+# for machines which were not provisioned by ansible originally.
 - hosts: localhost
   connection: local
   become: false
