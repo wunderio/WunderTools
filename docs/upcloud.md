@@ -161,6 +161,18 @@ project_additional_firewall_rules:
   action: accept
 ```
 
+#### Allow web traffic for machines
+To allow web traffic for http (80) and https (443) ports for certain machine you need to add the machines into `firewall_web` group. This is easiest to achieve by adding the web machine group names under the `[firewall_web:children]` directive into `conf/server.inventory`:
+
+```
+[firewall_web:children]
+wundertools-dev
+wundertools-stage
+wundertools-prod-lb
+```
+
+All other rules are universal for all machines in the project. Web ports are only opened for machines that really need them.
+
 ### Deploy firewall settings to UpCloud
 
 When you are ready you can provision firewall rules with `provision.sh`:
@@ -170,4 +182,25 @@ When you are ready you can provision firewall rules with `provision.sh`:
 $ export UPCLOUD_API_USER=first.last@example.com UPCLOUD_API_PASSWD=XXXXXXXXXX
 
 ./provision.sh -t firewall upcloud
+```
+
+
+## Troubleshooting
+**ERROR! no action detected in task.**
+
+If ansible outputs this error to you it's probably because `ansible.cfg` is missing custom library path. You can fix this by adding this line into it:
+
+```ini
+library=./ansible/playbook/library
+```
+
+**The conditional check 'item in groups['firewall_web']' failed.**
+
+If you have this error the `[firewall_web]` group in `conf/server.inventory` is empty. You need to add all groups that use web ports into `firewall_web` group like this:
+
+```ini
+[firewall_web:children]
+wundertools-dev
+wundertools-stage
+wundertools-prod-lb
 ```
