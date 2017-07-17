@@ -128,8 +128,8 @@ project_additional_firewall_rules:
   protocol: tcp
   source_address_start: 127.0.0.1
   source_address_end: 127.0.0.255
-  destination_port_start: 330
-  destination_port_end: 22
+  destination_port_start: 3306
+  destination_port_end: 3306
   action: accept
 ```
 
