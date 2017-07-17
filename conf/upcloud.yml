@@ -42,7 +42,9 @@
       when: item['item'] | json_query( '[*].group' ) | length == 1
       tags: ['create']
 
-# Creates firewalls for all machines
+# Creates firewalls for all project machines in UpCloud.
+# This means that the firewall rules will be updated
+# for machines which were not provisioned by ansible too.
 - hosts: localhost
   connection: local
   become: false
