@@ -16,14 +16,42 @@ You need to set unique project name for UpCloud in `conf/variables.yml`:
 upcloud_project_name: Example-Client
 ```
 
-The role uses root user ssh keys automatically from the key server when WunderSecrets are used but you can override that by providing your own:
+The role uses root user ssh keys automatically from the key server when [WunderSecrets](https://github.com/wunderio/wundersecrets) are used but you can override that by providing your own:
 ```yml
 upcloud_server_admin_ssh_keys:
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAA...
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQAB...
 ```
 
+You can change the UpCloud region by providing following variable:
+```
+# Other options: de-fra1, uk-lon1 ...
+upcloud_default_zone: fi-hel1
+```
+
+**WARNING:** The provision works by doing hostname mapping per server to the UpCloud servers. This means that every machine needs to have unique hostname. This is achieved by declaring `upcloud_server_hostname_base_domain` variable in `conf/variables.yml`. For example:
+
+```
+upcloud_server_hostname_base_domain: upcloud.example.com
+```
+
+This example domain will create machines with following logic:
+```
+{members.name}.{group}.{upcloud_project_name|lowercase}.{region}.upcloud.example.com
+```
+
+So the server examples below would create machines correspondingly:
+```
+production-web1.example-client.de-fra1.upc.wunder.io
+stage-web1.example-client.de-fra1.upc.wunder.io
+```
+
+**NOTE:** If you are using [WunderSecrets](https://github.com/wunderio/wundersecrets) you don't need to add `upcloud_server_hostname_base_domain` because Wunder uses shared subdomain for all servers.
+
+### How to modify server details
+
 You can edit the UpCloud server specifications in `conf/variables.yml`:
+
 ```yaml
 # These are the specifications for servers in this project
 upcloud_server_spec_list:
