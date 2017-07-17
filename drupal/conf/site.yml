@@ -52,6 +52,16 @@ default:
         - vendor/bin/codecept clean -c web/codeception.yml
         - vendor/bin/codecept run -c web/codeception.yml
 
+# Allow doing minimal builds first in Travis CI
+# These can then be deployed to servers
+ci:
+  aliases: travis
+
+  local_commands:
+    build:
+      - make
+      - shell: chmod -R a+w web
+
 # Test environment:
 test:
 
