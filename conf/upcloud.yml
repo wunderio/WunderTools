@@ -22,6 +22,7 @@
         msg: "You must set UPCLOUD_API_PASSWD env in your local machine"
       when: upcloud_api_passwd == ""
 
+# NOTE: This will create servers if upcloud_server_spec_list and upcloud_project_name variables are defined
 - name: Create Upcloud servers
   hosts: localhost
   connection: local
@@ -42,13 +43,17 @@
       when: item['item'] | json_query( '[*].group' ) | length == 1
       tags: ['create']
 
-# Creates firewalls for all machines
+# Creates firewalls for all project machines in UpCloud.
+# This means that the firewall rules will be updated even
+# for machines which were not provisioned by ansible originally.
+# NOTE: This will work for any machine in server.inventory which has IP-address from UpCloud.
 - hosts: localhost
   connection: local
   become: false
   roles:
     - { role: upcloud-firewall, tags: ['upcloud', 'firewall'] }
 
+# NOTE: This will setup disks to servers if upcloud_server_spec_list and upcloud_project_name variables are defined
 # Setups disks for all servers and disallows SSH password access
 - name: Setup Upcloud Servers
   hosts: upcloud_created_servers
