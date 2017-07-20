@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<ruleset name="Wunder Drupal Project">
+  <description>A custom set of rules to check php coding style for projects inside Wunder</description>
+
+  <!--
+    The soft limit on line length MUST be 100 characters
+    automated style checkers MUST warn but MUST NOT error at the soft limit.
+  -->
+  <rule ref="Generic.Files.LineLength">
+    <properties>
+      <property name="lineLimit" value="100"/>
+      <property name="absoluteLineLimit" value="0"/>
+    </properties>
+  </rule>
+
+  <!-- All PHP files MUST use the Unix LF (linefeed) line ending. -->
+  <rule ref="Generic.Files.LineEndings">
+    <properties>
+      <property name="eolChar" value="\n"/>
+    </properties>
+  </rule>
+
+  <!-- Method arguments with default values MUST go at the end of the argument list. -->
+  <rule ref="PEAR.Functions.ValidDefaultValue"/>
+
+  <!-- Don't allow commentedoutcode block -->
+  <!-- This means almost always that developer used an ugly hotfix -->
+  <rule ref="Squiz.PHP.CommentedOutCode"/>
+
+  <!-- Don't allow random whitespacing into multiple lines-->
+  <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
+
+  <!-- Don't put unused function parameters into function definition -->
+  <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
+
+  <!-- No TODO comments, open issues in github instead -->
+  <rule ref="Generic.Commenting.Todo"/>
+
+  <!-- Don't allow oneliner ifs without brackets {} -->
+  <rule ref="Generic.ControlStructures.InlineControlStructure"/>
+
+  <!-- No spaces before comma in function calls -->
+  <rule ref="Generic.Functions.FunctionCallArgumentSpacing.SpaceBeforeComma"/>
+
+  <!--
+    Ending tags '?>' can be really painful to debug.
+    Just disallow them in the end of the file
+  -->
+  <rule ref="PSR2.Files.ClosingTag.NotAllowed"/>
+
+  <!-- <?php tags and constants (true,false,null) need to be lowercase  -->
+  <rule ref="Generic.PHP.LowerCaseKeyword"/>
+
+</ruleset>
