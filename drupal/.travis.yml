@@ -34,8 +34,8 @@ before_script:
   # Enable custom branch based configs from .travis-extra.yml
   - eval $(travis-extra --load-env)
 script:
-  # Syntax check all php files with strict rules
-  - ! find . -type f -name "*.php" -exec php -d error_reporting=32767 -l {} \; 2>&1 >&- | grep "^"
+  # Syntax check all *.php *.inc and *.module files with strict rules
+  - ! find ./drupal -type f \( -name "*.module" -or -name "*.inc" -or -name "*.php" \) -exec php -d error_reporting=32767 -l {} \; 2>&1 >&- | grep "^"
 
   # Install drupal components
   - cd drupal
