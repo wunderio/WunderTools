@@ -39,8 +39,20 @@
         allow_no_value: yes
       with_items:
         - "{{ upcloud_created_instances.results }}"
-      when: item['item'] | json_query( '[*].group' ) | length == 1
-      tags: ['create']
+      when: upcloud_created_instances is defined and item['item'] | json_query( '[*].group' ) | length == 1
+      tags: ['create','ini-config']
+
+    - name: Update UpCloud Secondary Groups to server.inventory file
+      ini_file:
+        state: present
+        path: ./server.inventory
+        section: "{{ item.1 }}:children"
+        option: "{{ item.0.group }}"
+        allow_no_value: yes
+      with_subelements:
+        - "{{ upcloud_server_spec_list }}"
+        - secondary_groups
+      tags: ['create','ini-config']
 
 # Creates firewalls for all machines
 - hosts: localhost
