@@ -204,3 +204,7 @@ wundertools-dev
 wundertools-stage
 wundertools-prod-lb
 ```
+
+**UpCloudAPIError: AUTHENTICATION_FAILED Authentication failed using the given username and password**
+
+You are either using wrong credentials or the API-access is not enabled. Test to login with those credentials to confirm that they are correct. You can enable API-access from: https://my.upcloud.com/account
