@@ -42,7 +42,7 @@ self_update() {
   fi
 
   SELF=$(basename $0)
-  UPDATEURL="https://raw.githubusercontent.com/wunderkraut/WunderTools/$GITBRANCH/provision.sh"
+  UPDATEURL="https://raw.githubusercontent.com/wunderio/WunderTools/$GITBRANCH/provision.sh"
   MD5SELF=$($MD5COMMAND $0 | awk '{print $1}')
   MD5LATEST=$(curl -s $UPDATEURL | $MD5COMMAND | awk '{print $1}')
   if [[ "$MD5SELF" != "$MD5LATEST" ]]; then
