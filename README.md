@@ -1,9 +1,9 @@
 # Wundertools
 
-Reference setup with Ansible & Vagrant for Drupal 8 projects. For Drupal 7 support, see the [Drupal 7 branch](https://github.com/wunderkraut/WunderTools/tree/drupal7).
+Reference setup with Ansible & Vagrant for Drupal 8 projects. For Drupal 7 support, see the [Drupal 7 branch](https://github.com/wunderio/WunderTools/tree/drupal7).
 
-[![Build Status](https://travis-ci.org/wunderkraut/WunderMachina.svg)](https://travis-ci.org/wunderkraut/WunderMachina)
-[![Build Status](https://travis-ci.org/wunderkraut/WunderTools.svg)](https://travis-ci.org/wunderkraut/WunderTools)
+[![Build Status](https://travis-ci.org/wunderio/WunderMachina.svg)](https://travis-ci.org/wunderio/WunderMachina)
+[![Build Status](https://travis-ci.org/wunderio/WunderTools.svg)](https://travis-ci.org/wunderio/WunderTools)
 
 
 ## Requirements
