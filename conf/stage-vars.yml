@@ -7,5 +7,6 @@ base_pubkeys_host: key.server.tld
 base_pubkeys_url: https://{{ base_pubkeys_host }}/auth?hostname={{ ansible_nodename }}
 base_addhost_url: https://{{ base_pubkeys_host }}/auth/add_server?hostname={{ ansible_nodename }}
 
-drupal_db_password: supersecret
+drupal_db_password: "password_to_access_drupal_db"
 
+drupal_hash_salt: "really-hard-to-guess-long-random-string"

@@ -755,6 +755,12 @@ def main(argv):
 
 # Entry point.
 if __name__ == "__main__":
+    # Fail fast if WKV_SITE_ENV is not set
+    # This is needed so that we can symlink the right configs for the site
+    if not 'WKV_SITE_ENV' in os.environ:
+        errtxt = "env WKV_SITE_ENV is not defined! You need to export it for the build process. Use WKV_SITE_ENV={development,staging,production,...}"
+        print("\033[91m** BUILD ERROR: \033[0m%s" % (errtxt))
+        exit(1)
     main(sys.argv[1:])
 
 # vi:ft=python

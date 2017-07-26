@@ -28,12 +28,21 @@
   - cron: name="Example Drupal cron job" minute="*/2" job="su nginx --shell=/bin/sh -c '/usr/lib/composer/vendor/bin/drush --root=/var/www/example.com/current elysia-cron run > /dev/null 2>&1'" state="present"
 
   vars:
-    wkv_site_env: stage
-
     # You can set custom variables if the same value is used in multiple places so it can be easily changed here
     # You can use it anywhere after this using " {{ variable_name }}"
     domain_name: stage.example.com
 
+    wkv_site_env: stage
+
+    # Add secrets as env for php
+    php_env_vars:
+      - key: "DRUPAL_HASH_SALT_STAGE"
+        value: "{{ drupal_hash_salt }}"
+
+    # Automatically inject DB_NAME_{env}, DB_USER_{env}, DB_PASS_{env} variables for Drupal
+    php_env_vars_include_db: True
+
+    # Legacy: Don't use default partition, use partition provided by upcloud-disk role
     partition_var_log: False
     partition_var_lib_mysql: False
 
@@ -100,9 +109,9 @@
         http_port: 80
 
     databases:
-      - name: drupal
+      - name: stage
+        user: stage
         host: localhost
-        user: drupal
         pass: "{{ drupal_db_password }}"
         hosts:
           - "127.0.0.1"

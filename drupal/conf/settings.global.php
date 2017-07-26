@@ -1,40 +1,23 @@
 <?php
 /**
- * Local settings for Vagrant/Local environment only.
- * This should be overridden in staging and production environments.
+ * This file contains global configuration which is shared between all sites
+ * You can override them in environment specific files like settings.stage.php or settings.production.php
  */
 
-/**
- * Assertions.
- *
- * The Drupal project primarily uses runtime assertions to enforce the
- * expectations of the API by failing when incorrect calls are made by code
- * under development.
- *
- * @see http://php.net/assert
- * @see https://www.drupal.org/node/2492225
- *
- * If you are using PHP 7.0 it is strongly recommended that you set
- * zend.assertions=1 in the PHP.ini file (It cannot be changed from .htaccess
- * or runtime) on development machines and to 0 in production.
- *
- * @see https://wiki.php.net/rfc/expectations
- */
-assert_options(ASSERT_ACTIVE, TRUE);
-\Drupal\Component\Assertion\Handle::register();
+if ( (isset($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) == "on")
+  || (isset($_SERVER["HTTP_X_FORWARDED_PROTO"]) && $_SERVER["HTTP_X_FORWARDED_PROTO"] == "https")
+  || (isset($_SERVER["HTTP_HTTPS"]) && $_SERVER["HTTP_HTTPS"] == "on")
+) {
+  $_SERVER["HTTPS"] = "on";
 
-/**
- * Enable local development services.
- */
-$settings['container_yamls'][] = DRUPAL_ROOT . '/sites/development.services.yml';
+  // Tell Drupal we're using HTTPS (url() for one depends on this).
+  $conf['https'] = TRUE;
+}
 
-/**
- * Show all error messages, with backtrace information.
- *
- * In case the error level could not be fetched from the database, as for
- * example the database connection failed, we rely only on this value.
- */
-$config['system.logging']['error_level'] = 'verbose';
+if (isset($_SERVER['REMOTE_ADDR'])) {
+  $settings['reverse_proxy'] = TRUE;
+  $settings['reverse_proxy_addresses'] = array($_SERVER['REMOTE_ADDR']);
+}
 
 /**
  * Disable CSS and JS aggregation.

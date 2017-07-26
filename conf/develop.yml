@@ -23,7 +23,23 @@
   - cron: name="Example Drupal cron job" minute="*/2" job="su nginx --shell=/bin/sh -c '/usr/lib/composer/vendor/bin/drush --root=/var/www/example.com/current/web cron > /dev/null 2>&1'" state="present"
 
   vars:
-    wkv_site_env: dev
+    # You can set custom variables if the same value is used in multiple places so it can be easily changed here
+    # You can use it anywhere after this using " {{ variable_name }}"
+    domain_name: dev.example.com
+
+    wkv_site_env: development
+
+    # Add secrets as env for php
+    php_env_vars:
+      - key: "DRUPAL_HASH_SALT_DEVELOPMENT"
+        value: "{{ drupal_hash_salt }}"
+
+    # Automatically inject DB_NAME_{env}, DB_USER_{env}, DB_PASS_{env} variables for Drupal
+    php_env_vars_include_db: True
+
+    # Legacy: Don't use default partition, use partition provided by upcloud-disk role
+    partition_var_log: False
+    partition_var_lib_mysql: False
 
     # How to assign memory for each role and set the correct
     # memory_app and memory_db define how much total system memory is allocated to each.
@@ -31,25 +47,68 @@
     memory_db: 1024 # In MB
     memory_app: 1024 # In MB
 
+    # NOTE: memory_app needs to be at least 2x php_memory_limit
     # NOTE: ALWAYS leave some spare memory for the server
     # php memory limits etc are in variables.yml
 
+    # Let's encrypt. Always use SSL if possible!
+    certbot_email: support@wundertools.com
+    certbot_domains:
+      - "{{ domain_name }}"
+    certbot_renewal_docroot: /var/www/letsencrypt-auto
+
+    # On dev and stage it's good idea to protect the site with htauth
+    basicauth_enabled: True
+    basicauth_username: wunder
+    basicauth_password: tools
+    # Basic auth can also be disabled for certain ip's
+    basicauth_ip:
+      - address: 84.20.132.177
+      - address: 87.94.15.10
+      - address: 94.237.27.124
+      - address: 94.237.33.88
+      - address: 83.136.248.231
+
     # Apps I want to run on this server
     apps:
-      - server_name: dev.example.com
+      - server_name: "{{ domain_name }}"
         http_port: 8080
         docroot: /var/www/example.com/current/web
 
+    create_docroot: True
+
     # This server also acts as a load balancer
     varnish:
-      port: 80
+      port: 8081
       memory: 512M
       directors:
         - name: example
-          host: dev.example.com
+          host: "{{ domain_name }}"
           backends:
             - name: example_http
               address: 127.0.0.1
               port: 8080
 
+    # Use https for this host
+    sslterminators:
+      - server_name: "{{ domain_name }}"
+        ssl_certificate: "/etc/letsencrypt/live/{{ domain_name }}/fullchain.pem"
+        ssl_certificate_key: "/etc/letsencrypt/live/{{ domain_name }}/privkey.pem"
+        backends:
+          - 127.0.0.1:8081 # Pass it to local varnish
 
+    # Make sure all traffic is redirected to https
+    httpforwards:
+      - server_name: "{{ domain_name }}"
+        forwarded_domains: "{{ domain_name }}"
+        http_port: 80
+
+    databases:
+      - name: development
+        user: development
+        host: localhost
+        pass: "{{ drupal_db_password }}"
+        hosts:
+          - "127.0.0.1"
+          - "::1"
+          - "localhost"

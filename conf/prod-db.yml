@@ -37,8 +37,8 @@
     ## Backups ##
 
     backup_db_name:
-      - example1
-      - example2
+      - production
+      #- example2
     backup_location: /nfs-files/backups
 
     ## DB server ##
@@ -66,28 +66,28 @@
     ## Drupal DB ##
 
     databases:
-      - name: example1
-        user: example1user
+      - name: production
+        user: production
         host: localhost
         # defined in prod-vars.yml
-        pass: "{{ drupal_db1_password }}"
+        pass: "{{ drupal_db_password }}"
         hosts:
           - "127.0.0.1"
           - "::1"
           - "localhost"
           - "{{ front1_ip }}"
           - "{{ front2_ip }}"
-      - name: example2
-        user: example2user
-        host: localhost
-        # defined in prod-vars.yml
-        pass: "{{ drupal_db2_password }}"
-        hosts:
-          - "127.0.0.1"
-          - "::1"
-          - "localhost"
-          - "{{ front1_ip }}"
-          - "{{ front2_ip }}"
+      #- name: example2
+      #  user: example2user
+      #  host: localhost
+      #  # defined in prod-vars.yml
+      #  pass: "{{ drupal_db2_password }}"
+      #  hosts:
+      #    - "127.0.0.1"
+      #    - "::1"
+      #    - "localhost"
+      #    - "{{ front1_ip }}"
+      #    - "{{ front2_ip }}"
 
 
     ## Solr ##
