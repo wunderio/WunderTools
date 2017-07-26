@@ -28,7 +28,7 @@
     # This server hosts multiple domains
     domain1_name: example1.com
     domain2_name: example2.com
-    
+
     # This is D8 web root with atomic builds
     # This variable is used for nginx and cronjobs
     drupal_web_root: "/var/www/{{ domain1_name }}/current/web"
