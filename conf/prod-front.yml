@@ -19,13 +19,35 @@
 
 
   tasks:
+    # Disable email from cron
+    - name: "Disable emails from failed cronjobs for nginx user"
+      cron:
+        name: "MAILTO"
+        env: yes
+        value: ""
+        state: "present"
+        user: nginx
+      tags: ['cron']
 
-    # Set drupal cron to be run every minute alternately on both servers
-    - cron: name="Example Drupal cron job" minute="*/2" job="su nginx --shell=/bin/sh -c '/usr/lib/composer/vendor/bin/drush --root=/var/www/example.com/current elysia-cron run > /dev/null 2>&1'" state="present"
-      when: ansible_eth0.ipv4.address == groups['wundertools-prod-front'][0]
-
-    - cron: name="Example Drupal cron job" minute="1-59/2" job="su nginx --shell=/bin/sh -c '/usr/lib/composer/vendor/bin/drush --root=/var/www/example.com/current elysia-cron run > /dev/null 2>&1'" state="present"
-      when: ansible_eth0.ipv4.address == groups['wundertools-prod-front'][1]
+    # Set drupal cron to be run every minute and alternate between both servers
+    - name: "Run drupal cronjob with nginx user at even minutes"
+      cron:
+        name: "Run Drupal cronjobs with drush"
+        minute: "*/2"
+        job: "/usr/lib/composer/vendor/bin/drush --root={{ drupal_web_root }} elysia-cron run"
+        state: "present"
+        user: nginx
+      tags: ['cron']
+      when: ansible_eth0.ipv4.address == groups['wundertools-prod-front'][0] and drupal_web_root is defined
+    - name: "Run drupal cronjob with nginx user at odd minutes"
+      cron:
+        name: "Run Drupal cronjobs with drush"
+        minute: "1-59/2"
+        job: "/usr/lib/composer/vendor/bin/drush --root={{ drupal_web_root }} elysia-cron run"
+        state: "present"
+        user: nginx
+      tags: ['cron']
+      when: ansible_eth0.ipv4.address == groups['wundertools-prod-front'][1] and drupal_web_root is defined
 
   vars:
 
@@ -43,12 +65,12 @@
         server_aliases: "{{ domain1_name }}"
         server_forwards: "{{ domain1_name }}"  # we redirect to www subdomain
         http_port: 8080
-        docroot: /var/www/prod1/current
-      - server_name: "www.{{ domain2_name }}"
-        server_aliases: "{{ domain2_name }}"
-        server_forwards: "{{ domain2_name }}"  # we redirect to www subdomain
-        http_port: 8080
-        docroot: /var/www/prod2/current/web # This is D8 site!
+        docroot: "{{ drupal_web_root }}"
+      #- server_name: "www.{{ domain2_name }}"
+      #  server_aliases: "{{ domain2_name }}"
+      #  server_forwards: "{{ domain2_name }}"  # we redirect to www subdomain
+      #  http_port: 8080
+      #  docroot: /var/www/prod2/current/web # This is D8 site!
 
     # You can also define aliases with app_dir_aliases, see ansible/playbook/roles/nginx/templates/all_apps.conf.j2
 
