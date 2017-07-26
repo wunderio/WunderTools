@@ -17,7 +17,7 @@
    - { role: newrelic-infra, tags: [ 'newrelic-infra' ] }
 
 
- 
+
   tasks:
     # Disable email from cron
     - name: "Disable emails from failed cronjobs for nginx user"
