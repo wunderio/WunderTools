@@ -1,5 +1,5 @@
 [gimmick:theme](united)
-[gimmick:ForkMeOnGitHub (position: 'right', color: 'green') ](https://github.com/wunderkraut/WunderTools)
+[gimmick:ForkMeOnGitHub (position: 'right', color: 'green') ](https://github.com/wunderio/WunderTools)
 # WunderTools
 [About](index.md)
 [Quick start](start.md)
