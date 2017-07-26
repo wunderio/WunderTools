@@ -83,7 +83,7 @@ and the rest will be merged from the defaults.
 You can use shared secret variables by providing a private repository into `conf/project.yml`. The repository needs to contain `ansible.yml` in the root folder. Variables from that file are added for `provision.sh` ansible run automatically.
 
 ** For example the default Wunder config: **
-```yaml
+```
 wundersecrets:
   remote: git@github.com:wunderkraut/WunderSecrets.git
 ```
