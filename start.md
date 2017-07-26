@@ -6,7 +6,7 @@
 #### 1. Clone the repository and cd into it
 
 ```bash
-git clone git@github.com:wunderkraut/WunderTools.git YourProject
+git clone git@github.com:wunderio/WunderTools.git YourProject
 cd YourProject
 ```
 

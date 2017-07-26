@@ -1,6 +1,6 @@
 # Project reference setup with ansible & vagrant
 
-[![Build Status](https://travis-ci.org/wunderkraut/WunderTools.svg?branch=master)](https://travis-ci.org/wunderkraut/WunderTools)
+[![Build Status](https://travis-ci.org/wunderio/WunderTools.svg?branch=master)](https://travis-ci.org/wunderio/WunderTools)
 ##Introduction
 
 
@@ -33,5 +33,5 @@
 
 ## Getting help
 WunderTools has a public HipChat channel: https://www.hipchat.com/g8Exd95W3
-Any suggestions, feedback and bug reports should be posted to Github issues: https://github.com/wunderkraut/WunderTools/issues
+Any suggestions, feedback and bug reports should be posted to Github issues: https://github.com/wunderio/WunderTools/issues
 

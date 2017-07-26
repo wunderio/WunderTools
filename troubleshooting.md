@@ -1,13 +1,13 @@
 ##Troubleshooting
 If you encounter any problems first things to check:
 
-1. Does the build.sh point to wunderkraut github account when it tries to download drupal/build.sh?
+1. Does the build.sh point to wunderio github account when it tries to download drupal/build.sh?
 This could lead into such problems as trying to run drupal/build.sh: ./build.sh: line 1: Not: command not found"
 There are 2 lines late in the build.sh like this:
-curl -o drupal/build.sh https://raw.githubusercontent.com/wunderkraut/build.sh/$buildsh_revision/build.sh
-Make sure it says wunderkraut there and not tcmug in both of them
+curl -o drupal/build.sh https://raw.githubusercontent.com/wunderio/build.sh/$buildsh_revision/build.sh
+Make sure it says wunderio there and not tcmug in both of them
 
-2. Check the conf/project.yml ansible remote config, make sure it doesnt point to gitlab (unless you are 100% sure it should, some projects might have custom ansible configs) Default is git@github.com:wunderkraut/WunderMachina.git 
+2. Check the conf/project.yml ansible remote config, make sure it doesnt point to gitlab (unless you are 100% sure it should, some projects might have custom ansible configs) Default is git@github.com:wunderio/WunderMachina.git 
 
 3. Still don’t get new updated ansible configs? If you have build the project previously with ansible remote pointing to wrong git remote you probably still have ansible/ folder from that old remote. Simply remove the whole ansible folder and run vagrant provision.
 

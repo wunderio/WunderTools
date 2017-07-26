@@ -85,7 +85,7 @@ You can use shared secret variables by providing a private repository into `conf
 ** For example the default Wunder config: **
 ```
 wundersecrets:
-  remote: git@github.com:wunderkraut/WunderSecrets.git
+  remote: git@github.com:wunderio/WunderSecrets.git
 ```
 
 ## Using UpCloud firewall
