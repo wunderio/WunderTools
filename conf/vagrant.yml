@@ -113,3 +113,7 @@
         forwarded_domains: '"{{ domain_name }}"'
 
     php_env_vars_include_db: True
+
+    # These variables need to be defined even if we don't use them locally.
+    base_pubkeys_enable: False
+    base_pubkeys_host: key.server.tld
