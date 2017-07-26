@@ -32,6 +32,5 @@
   Note: If you don't use hostmanager you need to take care of setting up your local environment hostname manually in /etc/hosts
 
 ## Getting help
-WunderTools has a public HipChat channel: https://www.hipchat.com/g8Exd95W3
 Any suggestions, feedback and bug reports should be posted to Github issues: https://github.com/wunderio/WunderTools/issues
 
