@@ -149,14 +149,14 @@ remove_ssh_firewall_rules:
 # This is list of custom rules for the project
 # This feature can be used for example to allow DB access to additional servers
 project_additional_firewall_rules:
-#- direction: in
-#  family: IPv4
-#  protocol: tcp
-#  source_address_start: 127.0.0.1
-#  source_address_end: 127.0.0.255
-#  destination_port_start: 22
-#  destination_port_end: 22
-#  action: accept
+  #- direction: in
+  #  family: IPv4
+  #  protocol: tcp
+  #  source_address_start: 127.0.0.1
+  #  source_address_end: 127.0.0.255
+  #  destination_port_start: 22
+  #  destination_port_end: 22
+  #  action: accept
 ```
 
 ## Debugging tools
