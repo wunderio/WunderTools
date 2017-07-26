@@ -34,7 +34,7 @@
       cron:
         name: "Run Drupal cronjobs with drush"
         minute: "*/2"
-        job: "/usr/lib/composer/vendor/bin/drush --root={{ drupal_web_root }} elysia-cron run"
+        job: "/usr/lib/composer/vendor/bin/drush --root={{ drupal_web_root }} cron"
         state: "present"
         user: nginx
       tags: ['cron']
@@ -43,7 +43,7 @@
       cron:
         name: "Run Drupal cronjobs with drush"
         minute: "1-59/2"
-        job: "/usr/lib/composer/vendor/bin/drush --root={{ drupal_web_root }} elysia-cron run"
+        job: "/usr/lib/composer/vendor/bin/drush --root={{ drupal_web_root }} cron"
         state: "present"
         user: nginx
       tags: ['cron']
