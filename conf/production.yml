@@ -4,7 +4,9 @@
 # - wundertools-prod-front
 # - wundertools-prod-lb
 # This is currently needed to check the private ip addresses of the front machines
-- hosts: wundertools-prod-lb:wundertools-prod-front:wundertools-prod-db
+- name: Collect facts from machines
+  hosts: wundertools-prod-lb:wundertools-prod-front:wundertools-prod-db
+  user: root
   tasks: [ ]
 
 # Setup firewalls using upcloud api
