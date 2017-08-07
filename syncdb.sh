@@ -30,21 +30,65 @@ popd > /dev/null
 PROJECTCONF=$ROOT/conf/project.yml
 eval $(parse_yaml $PROJECTCONF)
 
-if [ $# -gt 0 ]; then
-  SOURCE="@$project_name.$1"
-  if [ $# -eq 2 ]; then
-    if [ $2 == 'prod' ]; then
-      echo "You tried to sync to a production environment!"
-      echo "This is probably newer the intention, so we always fail such attempts."
-      exit
-    fi
-    TARGET="@$project_name.$2"
-  else
-    TARGET="@$project_name.local"
-  fi
-else
+# Example usage: ./syncdb.sh -p wundertools -s prod -t local
+# Use -gt 1 to consume two arguments per pass in the loop (e.g. each
+# argument has a corresponding value to go with it).
+# Use -gt 0 to consume one or more arguments per pass in the loop (e.g.
+# some arguments don't have a corresponding value to go with it such
+# as in the --default example).
+while [[ $# -gt 1 ]]
+do
+key="$1"
+
+case $key in
+    -p|--project-name)
+    project_name="$2"
+    shift # past argument
+    ;;
+    -s|--source)
+    SOURCE="$2"
+    shift # past argument
+    ;;
+    -t|--target)
+    TARGET="$2"
+    shift # past argument
+    ;;
+    --default)
+    # DEFAULT=YES # just an example
+    ;;
+    *)
+      # unknown option
+    ;;
+esac
+shift # past argument or value
+done
+
+# Make sure we have the $project_name
+if [ -z "$project_name" ]; then
+  echo "Project name missing. Set in config or use -p flag."
+  exit
+fi
+
+# Default $SOURCE to "prod".
+if [ -z "$SOURCE" ]; then
+  echo "Source defaults to 'prod'. You can set it with -s flag."
   SOURCE="@$project_name.prod"
+else
+  SOURCE="@$project_name.$SOURCE"
+fi
+
+# Default $TARGET to "local". Prevent "prod" and "production".
+if [ -z "$TARGET" ]; then
+  echo "Target defaults to 'local'. You can set it with -t flag."
   TARGET="@$project_name.local"
+else
+  if [ $TARGET == 'prod' ] || [ $TARGET == 'production' ]; then
+    echo "You tried to sync to a production environment!"
+    echo "This is probably never the intention, so we always fail such attempts."
+    exit
+  else
+    TARGET="@$project_name.$TARGET"
+  fi
 fi
 
 drush $SOURCE dumpdb --structure-tables-list=cache,cache_*,history,sessions,watchdog --dump-dir=/tmp/syncdb/drupal
