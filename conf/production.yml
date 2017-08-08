@@ -1,4 +1,13 @@
 ---
+# Gather all facts about all groups:
+# - wundertools-prod-db
+# - wundertools-prod-front
+# - wundertools-prod-lb
+# This is currently needed to check the private ip addresses of the front machines
+- name: Collect facts from machines
+  hosts: wundertools-prod-lb:wundertools-prod-front:wundertools-prod-db
+  user: root
+  tasks: [ ]
 
 # Setup firewalls using upcloud api
 - include: upcloud.yml
@@ -20,14 +29,18 @@
     # Production specific
 
     # Use internal network ip's of machines
-    db_ip: "10.10.10.3"
-    lb_ip: "10.10.10.4"
-    front1_ip: "10.10.10.5"
-    front2_ip: "10.10.10.6"
+    db_ip: "{{ groups['wundertools-prod-db'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | first }}"
+    lb_ip: "{{ groups['wundertools-prod-lb'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | first }}"
+    front1_ip: "{{ groups['wundertools-prod-front'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | first }}"
+    front2_ip: "{{ groups['wundertools-prod-front'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | last }}"
 
     # This server hosts multiple domains
     domain1_name: example1.com
     domain2_name: example2.com
+
+    # This is D8 web root with atomic builds
+    # This variable is used for nginx and cronjobs
+    drupal_web_root: "/var/www/{{ domain1_name }}/current/web"
 
     ## Base ##
 

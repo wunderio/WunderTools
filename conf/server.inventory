@@ -14,7 +14,8 @@
 10.10.10.5
 10.10.10.6
 
-[prod:children]
-wundertools-prod-db
+# Add all groups here which need http/https ports to be open in UpCloud firewall
+[firewall_web:children]
+wundertools-dev
+wundertools-stage
 wundertools-prod-lb
-wundertools-prod-front
