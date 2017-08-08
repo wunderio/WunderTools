@@ -158,8 +158,10 @@
           - 127.0.0.1:8081
       - server_name: "www.{{ domain2_name }}"
         server_forwards: "{{ domain2_name }}"  # we redirect to www subdomain
-        ssl_certificate: "/etc/letsencrypt/live/{{ domain2_name }}/fullchain.pem"
-        ssl_certificate_key: "/etc/letsencrypt/live/{{ domain2_name}}/privkey.pem"
+        # Certbot is configured to smash all certificates into the first one
+        # So domain2 uses domain1 certificate
+        ssl_certificate: "/etc/letsencrypt/live/{{ domain1_name }}/fullchain.pem"
+        ssl_certificate_key: "/etc/letsencrypt/live/{{ domain1_name}}/privkey.pem"
         use_dhparam: True
         backends:
           - 127.0.0.1:8081

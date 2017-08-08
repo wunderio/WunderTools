@@ -12,8 +12,7 @@ Reference setup with Ansible & Vagrant for Drupal 8 projects. For Drupal 7 suppo
  `vagrant plugin install vagrant-cachier`
 - Install Ansible in your host machine. For OS X:
  `brew install ansible`
-- Install [Virtualbox](https://www.virtualbox.org/wiki/Downloads) 5.1 or greater 
-
+- Install [Virtualbox](https://www.virtualbox.org/wiki/Downloads) 5.1 or greater. Note version 5.1.24 has a known issue that breaks nfs, do not use it, version 5.1.22 s known to work.
 ## Creating a new project
 
 If you are starting a new project, see: [Setup.md](docs/Setup.md)
