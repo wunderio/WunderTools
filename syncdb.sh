@@ -91,49 +91,40 @@ else
   fi
 fi
 
-drush $SOURCE dumpdb --structure-tables-list=cache,cache_*,history,sessions,watchdog --dump-dir=/tmp/syncdb/drupal
+# Set sync directory with timestamp to allow parallel syncing.
+SYNCDIR="/tmp/syncdb/$project_name$(date +%s)"
+echo "Using directory $SYNCDIR for syncing."
+
+drush $SOURCE dumpdb --structure-tables-list=cache,cache_*,history,sessions,watchdog --dump-dir=$SYNCDIR
 
 # Make sure the tmp folder exists on the machine where this script is run so that rsync will not fail.
-mkdir -p /tmp/syncdb/drupal
+mkdir -p $SYNCDIR
 
 # Make sure the tmp folder is created in the target machine
-drush $TARGET ssh "mkdir -p /tmp/syncdb/drupal"
+drush $TARGET ssh "mkdir -p $SYNCDIR"
 
 # --compress-level=1 is used here as testing shows on fast network it's enough compression while at default level (6) we are already bound by the cpu
 # on slow connections it might still be worth to use --compress-level=6 which could save around 40% of the bandwith
-drush -y rsync --mode=akzi --compress-level=1 $SOURCE:/tmp/syncdb/drupal /tmp/syncdb/drupal
+drush -y rsync --mode=akzi --compress-level=1 $SOURCE:$SYNCDIR $SYNCDIR
 # Delete the exported sql files from the source for security.
-drush $SOURCE ssh "rm -rf /tmp/syncdb/drupal"
-drush -y rsync --mode=akzi --compress-level=1 /tmp/syncdb/drupal/ $TARGET:/tmp/syncdb/drupal
+drush $SOURCE ssh "rm -rf $SYNCDIR"
+drush -y rsync --mode=akzi --compress-level=1 $SYNCDIR $TARGET:$SYNCDIR
 # Delete the exported sql files from the local machine for security.
-rm -rf /tmp/syncdb/drupal
+rm -rf $SYNCDIR
 
 # Let's not use -y here yet so that we have at least one confirmation in this
 # script before we destroy the $TARGET data.
 drush $TARGET sql-drop
-drush $TARGET importdb --dump-dir=/tmp/syncdb/drupal
+drush $TARGET importdb --dump-dir=$SYNCDIR
 
 # Delete the exported sql files from target for security.
-drush $TARGET ssh "rm -rf /tmp/syncdb/drupal"
-
-# Sanitize users.
-drush $TARGET sqlq "UPDATE users SET mail = 'user@example.com' WHERE name != 'admin'"
-drush $TARGET sqlq "UPDATE users SET init = '' WHERE name != 'admin'"
-drush $TARGET sqlq "UPDATE users SET pass = '' WHERE name != 'admin'"
-drush $TARGET upwd admin --password=admin
-echo 'Sanitized users.'
+drush $TARGET ssh "rm -rf $SYNCDIR"
 
 # Include any project specific sync commands.
 if [ -f syncdb_local.sh ]
 then
   source syncdb_local.sh
 fi
-
-# Enable Stage File Proxy.
-drush $TARGET pm-download --yes stage_file_proxy
-drush $TARGET pm-enable --yes stage_file_proxy
-drush $TARGET variable-set stage_file_proxy_origin "$project_file_sync_url"
-echo 'Enabled Stage File Proxy.'
 
 # Clear caches after sync.
 drush $TARGET cache-clear all
