@@ -30,48 +30,73 @@ popd > /dev/null
 PROJECTCONF=$ROOT/conf/project.yml
 eval $(parse_yaml $PROJECTCONF)
 
-# Example usage: ./syncdb.sh -p wundertools -s prod -t local
+# Get config from flags. We are doing this here so that flags override project
+# config.
+#
 # Use -gt 1 to consume two arguments per pass in the loop (e.g. each
 # argument has a corresponding value to go with it).
 # Use -gt 0 to consume one or more arguments per pass in the loop (e.g.
 # some arguments don't have a corresponding value to go with it such
-# as in the --default example).
-while [[ $# -gt 1 ]]
+# as in the --help example).
+while [[ $# -gt 0 ]]
 do
 key="$1"
 
 case $key in
-    -p|--project-name)
+    -n|--name)
     project_name="$2"
-    shift # past argument
+    shift # Past argument
     ;;
     -s|--source)
     SOURCE="$2"
-    shift # past argument
+    shift # Past argument
     ;;
     -t|--target)
     TARGET="$2"
-    shift # past argument
+    shift # Past argument
     ;;
-    --default)
-    # DEFAULT=YES # just an example
+    -f|--file-sync-url)
+    project_file_sync_url="$2"
+    shift # Past argument
+    ;;
+    -h|--help)
+    echo "Usage: ./syncdb.sh [options]
+Options:
+  -n PROJECT_NAME, --name PROJECT_NAME  Specify the project name used as Drush
+                                        aliases prefix. Defaults to
+                                        'project: name' in 'conf/project.yml'.
+  -s SOURCE, --source SOURCE            Specify the source environment for
+                                        the sync. Defaults to 'prod'. Needs to
+                                        match a Drush alias name.
+  -t TARGET, --target TARGET            Specify the target environment for
+                                        the sync. Defaults to 'local'. Needs to
+                                        match a Drush alias name.
+  -f URL, --file-sync-url URL           Specify the URL of the environment used
+                                        for file sync for example with
+                                        Stage File Proxy module. Defaults to
+                                        the SOURCE URI, but can also be set
+                                        globally by 'project: file_sync_url' in
+                                        'conf/project.yml'.
+  -h, --help                            Print this help.
+"
+    exit
     ;;
     *)
-      # unknown option
+      # Unknown option
     ;;
 esac
-shift # past argument or value
+shift # Past argument or value
 done
 
 # Make sure we have the $project_name
 if [ -z "$project_name" ]; then
-  echo "Project name missing. Set in config or use -p flag."
+  echo "Project name missing. Set in 'conf/project.yml' or use -p flag. Use -h for more help."
   exit
 fi
 
 # Default $SOURCE to "prod".
 if [ -z "$SOURCE" ]; then
-  echo "Source defaults to 'prod'. You can set it with -s flag."
+  echo "Source defaults to 'prod'. Set with -s flag. Use -h to see all options."
   SOURCE="@$project_name.prod"
 else
   SOURCE="@$project_name.$SOURCE"
@@ -79,7 +104,7 @@ fi
 
 # Default $TARGET to "local". Prevent "prod" and "production".
 if [ -z "$TARGET" ]; then
-  echo "Target defaults to 'local'. You can set it with -t flag."
+  echo "Target defaults to 'local'. Set with -t flag. Use -h to see all options."
   TARGET="@$project_name.local"
 else
   if [ $TARGET == 'prod' ] || [ $TARGET == 'production' ]; then
