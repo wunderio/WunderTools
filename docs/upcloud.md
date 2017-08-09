@@ -184,6 +184,10 @@ $ export UPCLOUD_API_USER=first.last@example.com UPCLOUD_API_PASSWD=XXXXXXXXXX
 ./provision.sh -t firewall upcloud
 ```
 
+## Notes
+
+* Always use the maximum amount of disk space from the used plan in the root mount. For example when you're using 6xCPU-8GB plan you should use 200gb for the root mount. For 4xCPU-4GB you should use 100gb and so on. This way you can leverage all of the package discount from upcloud plans.
+
 
 ## Troubleshooting
 **ERROR! no action detected in task.**
