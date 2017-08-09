@@ -31,6 +31,9 @@ php_package: "php70u"
 # These are the specifications for servers in this project
 upcloud_server_spec_list:
   - group: production
+    # This can be used to add these machines into multiple groups
+    secondary_groups:
+      - firewall_web
     members:
       - { name: web1, state: present }
     settings:
@@ -68,6 +71,9 @@ upcloud_server_spec_list:
             state: present
             opts: sw
   - group: stage
+    # This can be used to add these machines into multiple groups
+    secondary_groups:
+      - firewall_web
     members:
       - { name: web1, state: present }
     settings:
