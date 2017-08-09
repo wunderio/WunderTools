@@ -116,6 +116,13 @@ else
   fi
 fi
 
+# Get the project_file_sync_url to use from SOURCE URI. This requires the URI to
+# be in full format including the protocol to use like HTTPS. Only get it if not
+# specified in a flag or in project config.
+if [ -z "$project_file_sync_url" ]; then
+  project_file_sync_url=$(drush $SOURCE status | awk 'NR==2{print $4}')
+fi
+
 # Set sync directory with timestamp to allow parallel syncing.
 SYNCDIR="/tmp/syncdb/$project_name$(date +%s)"
 echo "Using directory $SYNCDIR for syncing."
