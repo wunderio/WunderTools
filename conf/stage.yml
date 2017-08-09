@@ -24,8 +24,25 @@
   - stage-vars.yml
 
   tasks:
-  # Drupal cron job
-  - cron: name="Example Drupal cron job" minute="*/2" job="su nginx --shell=/bin/sh -c '/usr/lib/composer/vendor/bin/drush --root=/var/www/example.com/current elysia-cron run > /dev/null 2>&1'" state="present"
+    # Disable email from cron
+    - name: "Disable emails from failed cronjobs for nginx user"
+      cron:
+        name: "MAILTO"
+        env: yes
+        value: ""
+        state: "present"
+        user: nginx
+      tags: ['cron']
+    # Run Drupal cron job
+    - name: "Add drupal cronjob to nginx user"
+      cron:
+        name: "Run Drupal cronjobs with drush"
+        minute: "*/2"
+        job: "/usr/lib/composer/vendor/bin/drush --root={{ drupal_web_root }} cron"
+        state: "present"
+        user: nginx
+      tags: ['cron']
+      when: drupal_web_root is defined
 
   vars:
     wkv_site_env: stage
@@ -33,6 +50,9 @@
     # You can set custom variables if the same value is used in multiple places so it can be easily changed here
     # You can use it anywhere after this using " {{ variable_name }}"
     domain_name: stage.example.com
+
+    # This is used in cronjob and varnish and nginx configs
+    drupal_web_root: "/var/www/{{ domain_name }}/current/web"
 
     partition_var_log: False
     partition_var_lib_mysql: False
@@ -69,7 +89,7 @@
     apps:
       - server_name: "{{ domain_name }}"
         http_port: 8080
-        docroot: /var/www/example.com/current/web
+        docroot: "{{ drupal_web_root }}"
 
     create_docroot: True
 

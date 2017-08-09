@@ -7,7 +7,7 @@ Travis CI is really useful because you can run any shell commands for testing th
 
 How do install Travis CI cli-tools and authenticate to servers
 --------------------------------------------------------------
-Well first you need to have a Travis account which is linked to the Github organization.
+You only need a Github account which has access to the repository, permissions for Travis are synchronised with Github. You need to have admin access to a project to enable Travis.
 
 Then you need to install travis-cli tool:
 ```

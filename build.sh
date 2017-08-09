@@ -43,7 +43,7 @@ else
 fi
 
 if [ -z "$wundertools_repository" ]; then
-  WUNDERTOOLSREPOSITORY="wunderkraut/WunderTools"
+  WUNDERTOOLSREPOSITORY="wunderio/WunderTools"
 else
   WUNDERTOOLSREPOSITORY=$wundertools_repository
 fi
@@ -144,7 +144,7 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
   # If it is enabled in project.yml - get & update drupal/build.sh
   if $buildsh_enabled; then
     if [ -z "$buildsh_repository" ]; then
-      BUILDSHREPOSITORY="wunderkraut/build.sh"
+      BUILDSHREPOSITORY="wunderio/build.sh"
     else
       BUILDSHREPOSITORY=$buildsh_repository
     fi
