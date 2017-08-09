@@ -61,6 +61,7 @@ case $key in
     ;;
     -h|--help)
     echo "Usage: ./syncdb.sh [options]
+Example: ./syncdb.sh -n example1 -s prod -t local -f https://www.example1.com
 Options:
   -n PROJECT_NAME, --name PROJECT_NAME  Specify the project name used as Drush
                                         aliases prefix. Defaults to
