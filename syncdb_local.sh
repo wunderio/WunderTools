@@ -23,7 +23,7 @@ fi
 drush $TARGET sql-query "UPDATE users SET mail = CONCAT('user', uid, '@local') WHERE name != 'admin' AND uid not in($ACCOUNTS)"
 drush $TARGET sql-query "UPDATE users SET init = '' WHERE name != 'admin' AND uid not in($ACCOUNTS)"
 drush $TARGET sql-query "UPDATE users SET pass = '' WHERE name != 'admin' AND uid not in($ACCOUNTS)"
-ADMIN=$(drush $TARGET uinf 1 --fields=name)
+ADMIN=$(drush $TARGET uinf 1 --fields=name | awk 'NR==1{print $4}')
 drush $TARGET upwd $ADMIN --password=admin
 echo 'Sanitized users, emails and database.'
 
