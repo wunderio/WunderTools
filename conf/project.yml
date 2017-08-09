@@ -1,6 +1,6 @@
 project:
   name: wundertools
-  file_sync_url: https://www.example1.com
+# file_sync_url: https://www.example1.com # This can be used to override the file_sync_url for all syncs. By default the source alias uri is used.
 ansible:
   remote: git@github.com:wunderkraut/WunderMachina.git
   branch: master
