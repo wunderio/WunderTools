@@ -22,6 +22,7 @@ if ( file_exists($path) ) {
 $aliases['local'] = array(
   'parent' => '@parent',
   'site' => 'wundertools',
+  'uri' => 'https://www.example1.com',
   'env' => 'vagrant',
   'root' => '/vagrant/drupal/web',
   'remote-host' => 'local.wundertools.com',
