@@ -6,7 +6,7 @@
 function join_by { local IFS="$1"; shift; echo "$*"; }
 
 ## Specify the accounts by ID to retain.
-if [ $project_name == 'wundertools' ]; then
+if [ $project_name == 'wundertools' ]; && [ $TARGET != 'local' ] then
 
   ACCOUNTS[2]=2
   ACCOUNTS[3]=3
@@ -20,10 +20,11 @@ else
 fi
 
 ## Run the sanitation.
-drush $TARGET sql-query "UPDATE users SET mail = CONCAT('user', uid, '@local') WHERE name != 'admin' AND uid not in($ACCOUNTS)"
-drush $TARGET sql-query "UPDATE users SET init = '' WHERE name != 'admin' AND uid not in($ACCOUNTS)"
-drush $TARGET sql-query "UPDATE users SET pass = '' WHERE name != 'admin' AND uid not in($ACCOUNTS)"
-drush $TARGET upwd admin --password=admin
+ADMIN=$(drush $TARGET uinf 1 --fields=name | awk 'NR==1{print $4}')
+drush $TARGET sql-query "UPDATE users SET mail = CONCAT('user', uid, '@local') WHERE name != '$ADMIN' AND uid not in($ACCOUNTS)"
+drush $TARGET sql-query "UPDATE users SET init = '' WHERE name != '$ADMIN' AND uid not in($ACCOUNTS)"
+drush $TARGET sql-query "UPDATE users SET pass = '' WHERE name != '$ADMIN' AND uid not in($ACCOUNTS)"
+drush $TARGET upwd $ADMIN --password=admin
 echo 'Sanitized users, emails and database.'
 
 # Enable Stage File Proxy.
