@@ -23,7 +23,8 @@ fi
 drush $TARGET sql-query "UPDATE users SET mail = CONCAT('user', uid, '@local') WHERE name != 'admin' AND uid not in($ACCOUNTS)"
 drush $TARGET sql-query "UPDATE users SET init = '' WHERE name != 'admin' AND uid not in($ACCOUNTS)"
 drush $TARGET sql-query "UPDATE users SET pass = '' WHERE name != 'admin' AND uid not in($ACCOUNTS)"
-drush $TARGET upwd admin --password=admin
+ADMIN=$(drush $TARGET uinf 1 --fields=name)
+drush $TARGET upwd $ADMIN --password=admin
 echo 'Sanitized users, emails and database.'
 
 # Enable Stage File Proxy.
