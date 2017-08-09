@@ -10,7 +10,7 @@ Start by downloading a zipball of the WunderTools master branch as a base for yo
 https://github.com/wunderkraut/WunderTools/archive/master.zip
 
 If you already have an empty git repository, you can move the contents of WunderTools-master into
-your git repo directory (Excercise to reader: Find a way to move content + dotfiles in one command that works in all shells). 
+your git repo directory (Excercise to reader: Find a way to move content + dotfiles in one command that works in all shells).
 
   `mv WunderTools-master/* ~/Projects/my-new-project`
   `mv WunderTools-master/.* ~/Projects/my-new-project`
@@ -22,11 +22,11 @@ If not, rename WunderTools-master to whatever project folder you have and run gi
   cd ~/Projects/my-new-project
   git init
   ```
-  
+
 
 ## Configure WunderTools
 
-Edit `conf/vagrant_local.yml` and change: 
+Edit `conf/vagrant_local.yml` and change:
  - name to the name of your project
  - hostname to a good hostname for your local environment
  - ip to something that no other project in your company uses
@@ -34,7 +34,7 @@ Edit `conf/vagrant_local.yml` and change:
 Edit `conf/vagrant.yml`, find&replace "wundertools" with you project name.
 
 Edit `conf/project.yml` and change the variables to something that makes sense for your project.
- 
+
 ```
 project:
   name: wundertools
@@ -45,7 +45,7 @@ ansible:
 buildsh:
   enabled: true
   branch: develop # Supports both Drupal 8 and Drupal 7.
-  revision: # As with composer.lock, could be a good idea to use a specific git revision. 
+  revision: # As with composer.lock, could be a good idea to use a specific git revision.
 wundertools:
   branch: master
 externaldrupal:
@@ -64,7 +64,7 @@ Rename `drupal/conf/wundertools.aliases.drushrc.php` to `project_name` and confi
 
 ## Finishing up
 Delete this section of Readme.md because it does not affect developers joining an already configured project. And move
-on to the next section! 
+on to the next section!
 
 # Getting your new local development environment up and running
 
@@ -80,7 +80,7 @@ Let Vagrant create your new machine:
 This will create a new Virtual machine on your computer, configure it with all the nice bells & whistles that you can
 think of (like MariaDB, nginx, Varnish, memcached and whatnot) and start it up for you. This will also install vagrant plugin depedencies, if you encounter issues while installing the plugins then you could use: `vagrant --skip-dependency-manager up`
 
-SSH into your box and build and install Drupal: 
+SSH into your box and build and install Drupal:
 
 ```
 vagrant ssh
@@ -89,9 +89,11 @@ cd /vagrant/drupal
 ```
 
 If this is a project with an existing production/staging server, you should probably sync the production database now,
-from your local machine: 
+from your local machine:
 
-`sync.sh`
+`syncdb.sh`
+
+_See `docs` for more about how to use the sync script._
 
 ### Requirements
 A working combination of:
