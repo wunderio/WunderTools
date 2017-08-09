@@ -6,7 +6,7 @@
 function join_by { local IFS="$1"; shift; echo "$*"; }
 
 ## Specify the accounts by ID to retain.
-if [ $project_name == 'wundertools' ]; then
+if [ $project_name == 'wundertools' ]; && [ $TARGET != 'local' ] then
 
   ACCOUNTS[2]=2
   ACCOUNTS[3]=3
