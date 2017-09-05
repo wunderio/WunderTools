@@ -4,13 +4,15 @@ innodb_buffer_pool_size: "{{ memory_db }}"
 
 php_memory_limit: 256 # In MB "256MB ought to be enough for anyone." -Bill Gates
 
+# Estimated average memory usage per process
+# Use `ps --no-headers -o "rss,cmd" -C php-fpm | awk '{ sum+=$1 } END { printf ("%d%s\n", sum/NR/1024,"Mb") }'` to get the average
+php_app_memory_usage_average: 64
+
 # Following values are highly dependand on server resources so we just calculate suitable values for them here.
-php_fpm_pm_max_children: "{{ memory_app // php_memory_limit }}"
+php_fpm_pm_max_children: "{{ memory_app // php_app_memory_usage_average }}"
 php_fpm_pm_start_servers: "{{ php_fpm_pm_max_children|int // 2 }}"
 php_fpm_pm_min_spare_servers: "{{ php_fpm_pm_max_children|int // 2 }}"
 php_fpm_pm_max_spare_servers: "{{ php_fpm_pm_max_children|int // 2 }}"
-
-nginx_workers: "{{ ansible_processor_vcpus }}" # This should be equal to core count
 
 base_pubkeys_url: https://{{ base_pubkeys_host }}/auth?hostname={{ ansible_nodename }}
 base_addhost_url: https://{{ base_pubkeys_host }}/auth/add_server?hostname={{ ansible_nodename }}
@@ -19,7 +21,7 @@ partition_var_log: False
 partition_var_lib_mysql: False
 
 # PHP version to be used. Available options: php56u, php70u
-php_package: "php70u"
+php_package: "php71u"
 
 # Variables to create/update UpCloud Servers
 #upcloud_server_hostname_base_domain: client-name.wunder.io
