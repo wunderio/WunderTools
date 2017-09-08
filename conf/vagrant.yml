@@ -48,6 +48,7 @@
     domain_name: local.example.com
 
     wkv_site_env: local
+    base_pubkeys_enable: False
 
     nginx_disable_content_security_policy: True
 
