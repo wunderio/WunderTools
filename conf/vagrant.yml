@@ -114,3 +114,6 @@
         forwarded_domains: '"{{ domain_name }}"'
 
     php_env_vars_include_db: True
+
+    # Set a low heap allocation for Elasticsearch on vagrant.
+    elasticsearch_heap_size: 200m
