@@ -54,7 +54,8 @@ script:
   # Run a clean Drupal installation
   - cd $TRAVIS_BUILD_DIR/drupal/web
   - drush status
-  - drush si -y config_installer
+  # If your site supports clean installs, run:
+  # - drush si -y config_installer
 
 notifications:
   email: false
