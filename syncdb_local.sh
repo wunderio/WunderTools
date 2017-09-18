@@ -35,7 +35,3 @@ echo 'Enabled Stage File Proxy.'
 
 # Run any pending updates
 drush $TARGET updb -y
-
-# Revert features because there is usually new ones in the environment where we
-# sync to.
-drush $TARGET fra -y
