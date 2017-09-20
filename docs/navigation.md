@@ -7,6 +7,5 @@
 [Views](views.md)
 [Hacks](hacks.md)
 [Continuous integration](continuous-integration.md)
-[Hosting](hosting.md)
 [Testing](testing.md)
 
