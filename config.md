@@ -22,6 +22,68 @@ You can further divide environment specific config files by role. For example in
 
 conf/server.inventory file is used for defining remote server addresses. Vagrant has it's own inventory file that is used automatically so no need to worry about that.
 
+### Roles
+Following roles are included in Wundermachina. They are atuomaticaly added to any project and usable from there (a bit like Ansible-galaxy, but all in same place).
+More info and configuration options can be found from each roles README.md and defaults/main.yml files.
+
+- [base](https://github.com/wunderio/WunderMachina/tree/master/playbook/roles/base): sets up a lot of basic stuff, installs common packages, creates users and enables authentication
+
+- nginx: our webserver of choice. 
+- sslterminator: By default all modern websites should be served over SSL. This role sets up ssl termination and redirects.  
+- php-fpm: to run the code     
+- httpd-php: We also offer a choice to use Apache webserver instead of nginx
+- varnish: Varnish caching proxy
+
+- dbserver: Mariadb database server
+- memcached: Memcached server 
+- mongodb    
+
+- elasticsearch: You know, for search
+- solr: Older alternative to search, but it checks in
+
+- certbot: Letsencrypt certificates and automated renewal  
+- letsencrypt: Older version of certificate handling, use certbot instead
+- selfencrypt: Self signed certificates for local development environments
+
+- devtools: xdebug and blackfire     
+- selenium: Selenium and other tools for behavioral testing         
+- mailhog: For local email testing
+
+- drupal-db: Creates database for drupal
+- drupal-log: Enables drupal logging to syslog into /var/log/drupal.log. Remember to enable syslog on drupal settings and output to SYSLOG6 
+- drush: Composer and global drush through drush-shim
+- drupal-console:   
+
+- backups: Setup backup cron jobs            
+
+- external-smtp: Use external smtp server to send outgoing mails  
+
+- monit: Setup process monitoring and autorecovery for services
+- papertrail: Send system logs to Papertrail  
+- logentries: Send system logs to Logentries   
+- datadog: Send system logs to Datadog
+
+- newrelic: Newrelic APM       
+- newrelic-infra: Newrelic Infra
+- newrelic-sysmon: Newrelic Servers
+
+- wkhtmltopdf: 
+
+- nfs_client: For mounting external nfs shares       
+- nfs_server: Exporting nfs shares
+
+- upcloud-servers: Creating and updating server instances in Upcloud
+- upcloud-firewall: Managing Upcloud server firewall rules
+- upcloud-disks: Managing disks in Upcloud servers
+
+- resize-root-disk: Old helper to extend logical volumes to virtual partition size
+- glusterfs: Experimental alternative to nfs shares     
+
+- ansible-blockinfile: Helper to create arbitary configuration blocks
+- ansible-yum: Improved yum plugin
+
+
+
 ## Provisioning
 Provisioning different environments is easy with the provided ```provision.sh``` script. To provision an environment you can simply run ```./provision.sh [environment]``` where environment must mach the main environment configuration file name. For example to provision production environment defined in conf/production.yml you can run ```./provision.sh production```.
 
