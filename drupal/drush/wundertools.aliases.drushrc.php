@@ -1,6 +1,6 @@
 <?php
 // If the .vagrant folder exists find the ssh key for the virtual machine
-if (getenv('WKV_SITE_ENV' == 'local')) {
+if (file_exists(drush_server_home() . '/.vagrant.d')) {
   $home = drush_server_home();
   // Solve the key file to use
   $path = explode('/', dirname(__FILE__));
