@@ -1,32 +1,66 @@
-language: python
-python:
-- 2.7
-- 3.6
-- 3.5
-- 3.4
-- 3.3
+language: php
+php:
+  - 7.0
+dist: trusty
 sudo: false
+cache:
+  directories:
+    - $HOME/.composer
+    - $HOME/.local
+    - $HOME/.npm
+
+services:
+  - mysql
+  - elasticsearch
+
+env:
+  global:
+    # Test DB credentials
+    - DB_USER_DRUPAL=travis
+    - DB_PASS_DRUPAL=''
+
+    # Use composer installed packages
+    - PATH="$HOME/.composer/vendor/bin:$PATH"
+
+before_install:
+  - mysql -e 'CREATE DATABASE drupal;'
+  - mysql -e 'GRANT ALL PRIVILEGES ON drupal.* TO "travis"@"%" WITH GRANT OPTION;'
+  - sudo pip install yamllint
+
 install:
-- travis_retry pip install pyflakes
-- travis_retry pip install yamllint
-- travis_retry pip install demjson
+  - cd $TRAVIS_BUILD_DIR/drupal
+  - composer install -n --ignore-platform-reqs
+  - composer global require webflo/drush-shim
+
+  # Build frontend code, adjust these commands to your code.
+  # - cd $TRAVIS_BUILD_DIR/drupal/web/themes/custom/*
+  # - nvm install 8
+  # - npm install
+  # - npm run gulp
+
+  # Install phpcs with Drupal rules.
+  - composer global require drupal/coder
+  - phpcs --config-set installed_paths ~/.composer/vendor/drupal/coder/coder_sniffer
+
 script:
-- pyflakes drupal/build.sh
-- yamllint .
-- find . -name \*.json | xargs -I {} jsonlint {}
-after_success:
-- travis_retry pip install pep8
-- pep8 --statistics --count drupal/build.sh
-matrix:
-  fast_finish: true
-  allow_failures:
-  - python: 3.6
-  - python: 3.5
-  - python: 3.4
-  - python: 3.3
+  # Validate yaml configuration
+  - cd $TRAVIS_BUILD_DIR
+  - yamllint -c .yamllint conf/
+
+  # Check coding standards
+  - cd $TRAVIS_BUILD_DIR/drupal
+  - phpcs --standard=phpcs.xml
+
+  # Run a clean Drupal installation
+  - cd $TRAVIS_BUILD_DIR/drupal/web
+  - drush status
+  # If your site supports clean installs, run:
+  # - drush si -y config_installer
+
 notifications:
   email: false
   slack:
     on_success: never
     on_failure: always
+    # See https://docs.travis-ci.com/user/notifications/
     secure: Fv6McQHQdFOxeV0gjyfpPjN/80Ej4BPHdSSAutvQmR+RViK9gOMI3exmnMoOvp+BBbEJ47YhPqP2fCvlvstXyCMn/e5x7UswBvcpu8UR39f17cKw8jlCHDXAkUGuImasVvh2cPME6wy8QTOVj/7EwDd36VyChHyZA2BjnVF4Cxf3hOHlBKQ+juoLkge3etjCYubhCfCMRmm5tTYo9nR0OVVAad4wlqeyBkLhXfdXt4j3Fq8571OPCuHTciSOQASxAdGPD6FK+8MuKvo3XkUfmeuHNY/tapYoqyzfvy5hwTwAypcBzQX5wDZD7j3e9HScj+TAxLSbIgk9YC7/nqDmcHsR7H8+6HEJuxpaLmMUYI51VNXx+RtCcTrxHbxfC0G17C2I37ldHaJQbFW7cqDYZ2ZHbGQ4ovCqeKcbirRoIib3wy20lpDZKBXP+gcbBLh+n966w4j14G0h0mPBUxW0Ys19Sx+99rizciXn7xmILaO8k+sj55xui6AsSjqihlE1shEEruT0ijhGkxLf3RbDd8M58lnsrnlrxDfwYY4EPZoyPu1oWprgrIumz6EVr38gygFsPNPI95zlsXLMqzO4Od4+xUUB4vaV49Rv5c7rSRgNGfCXYBI79LR78rWjWPZYkbjzb8Piz63v202i1YkkADMQk87yDk/LQWM9Aa9IM6Y=
