@@ -26,6 +26,8 @@ install:
   - pip install pyyaml --user
   # Install drush
   - composer global require drush/drush
+  # Install phpcs
+  - composer global require "squizlabs/php_codesniffer=*"
   # Install imagick extensions
   - printf "\n" | pecl install imagick
   # Install travis-extra
@@ -34,6 +36,9 @@ before_script:
   # Enable custom branch based configs from .travis-extra.yml
   - eval $(travis-extra --load-env)
 script:
+  # Check coding style from all *.php *.inc and *.module files with phpcs
+  - phpcs --runtime-set ignore_warnings_on_exit true --standard=./drupal/phpcs.xml --extensions=php,inc,module -n -p -s ./drupal/
+
   # Install drupal components
   - cd drupal
   - ./build.sh build
