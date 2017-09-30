@@ -30,7 +30,7 @@ before_install:
 install:
   - cd $TRAVIS_BUILD_DIR/drupal
   - composer install -n --ignore-platform-reqs
-  - composer global require webflo/drush-shim
+  - composer global require drush/drush-launcher
 
   # Build frontend code, adjust these commands to your code.
   # - cd $TRAVIS_BUILD_DIR/drupal/web/themes/custom/*
