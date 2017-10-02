@@ -44,8 +44,8 @@ install:
 
 script:
   # Validate yaml configuration
-  - cd $TRAVIS_BUILD_DIR
-  - yamllint -c .yamllint conf/
+  - cd $TRAVIS_BUILD_DIR/conf
+  - yamllint -c .yamllint .
 
   # Check coding standards
   - cd $TRAVIS_BUILD_DIR/drupal
