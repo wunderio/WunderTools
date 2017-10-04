@@ -20,10 +20,11 @@ else
 fi
 
 ## Run the sanitation.
+drush $TARGET sql-query "UPDATE users SET mail = CONCAT('user', uid, '@local') WHERE uid not in($ACCOUNTS)"
+drush $TARGET sql-query "UPDATE users SET init = CONCAT('user', uid, '@local') WHERE name uid not in($ACCOUNTS)"
+drush $TARGET sql-query "UPDATE users SET pass = '' WHERE name uid not in($ACCOUNTS)"
+# Set admin user to be easily usable with password "admin".
 ADMIN=$(drush $TARGET uinf 1 --fields=name | awk 'NR==1{print $4}')
-drush $TARGET sql-query "UPDATE users SET mail = CONCAT('user', uid, '@local') WHERE name != '$ADMIN' AND uid not in($ACCOUNTS)"
-drush $TARGET sql-query "UPDATE users SET init = '' WHERE name != '$ADMIN' AND uid not in($ACCOUNTS)"
-drush $TARGET sql-query "UPDATE users SET pass = '' WHERE name != '$ADMIN' AND uid not in($ACCOUNTS)"
 drush $TARGET upwd $ADMIN --password=admin
 echo 'Sanitized users, emails and database.'
 
@@ -34,7 +35,3 @@ echo 'Enabled Stage File Proxy.'
 
 # Run any pending updates
 drush $TARGET updb -y
-
-# Revert features because there is usually new ones in the environment where we
-# sync to.
-drush $TARGET fra -y

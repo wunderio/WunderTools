@@ -11,3 +11,5 @@ test/composer.lock
 test/vendor
 test/bin
 VERSION
+drupal/SYNCDIR
+drupal/syncdb
