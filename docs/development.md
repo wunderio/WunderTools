@@ -16,3 +16,8 @@ By default we are using WunderFlow as our development workflow.
 See [WunderFlow](http://wunderkraut.github.io/WunderFlow) for reference.
 
 If the project uses something else please document it here.
+
+Syncing database between environments
+-------------------------------------
+
+The `syncdb.sh` script can be used to sync the database between environments. See `./syncdb.sh -h` for usage and options. Also see contents of `syncdb_local.sh` for example of business logic included after sync.
