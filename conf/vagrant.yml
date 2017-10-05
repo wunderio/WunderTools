@@ -109,20 +109,22 @@
         ssl_certificate_key: ssl/certificate.key
         backends:
           - 127.0.0.1:8081
+        # Enable mailhog to be accessed from /mailhog
         extra_proxy_locations:
-          - location: "/mailhog"
-            definition: |
-              rewrite /mailhog/(.*) /$1 break;
-              proxy_pass http://0.0.0.0:8025;
-              chunked_transfer_encoding on;
-              proxy_hide_header X-Frame-Options;
-              add_header Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'; connect-src ws: https:;" always;
-              proxy_set_header X-NginX-Proxy true;
-              proxy_set_header Upgrade $http_upgrade;
-              proxy_set_header Connection "upgrade";
-              proxy_http_version 1.1;
-              proxy_redirect off;
-              proxy_buffering off;
+        - location: "/mailhog"
+          definition: |
+            rewrite /mailhog/(.*) /$1 break;
+            proxy_pass http://0.0.0.0:8025;
+            chunked_transfer_encoding on;
+            proxy_hide_header X-Frame-Options;
+            add_header Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'; connect-src ws: https:;" always;
+            proxy_set_header X-NginX-Proxy true;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            proxy_http_version 1.1;
+            proxy_redirect off;
+            proxy_buffering off;
+
 
     httpforwards:
       - server_name: "{{ domain_name }}"

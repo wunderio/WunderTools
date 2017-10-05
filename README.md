@@ -83,6 +83,8 @@ Solr responds to
 
 MailHOG responds to
   http://x.x.x.x:8025
+  or
+  https://local.project.tld/mailhog/
 
 Docs are in
         http://x.x.x.x:8080/index.html
