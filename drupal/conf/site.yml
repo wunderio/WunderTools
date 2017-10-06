@@ -41,7 +41,7 @@ default:
       - make
       - drush: updb -y
       - drush: cim -y
-      - drush: entity-updates -y
+      - drush: entup -y
       - cleanup
       - shell:
         - vendor/bin/codecept clean -c web/codeception.yml
@@ -97,7 +97,7 @@ test:
     update:
       - drush: updb -y
       - drush: cim -y
-      - drush: entity-updates -y
+      - drush: entup -y
       - cleanup
       - shell: chmod -R a-w web
       - shell: sudo systemctl restart nginx php-fpm varnish
@@ -141,7 +141,7 @@ production:
     update:
       - drush: updb -y
       - drush: cim -y
-      - drush: entity-updates -y
+      - drush: entup -y
       - cleanup
       - shell: chmod -R a-w current
       - shell: sudo systemctl restart nginx php-fpm varnish
