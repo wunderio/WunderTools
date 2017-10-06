@@ -24,6 +24,8 @@ partition_var_lib_mysql: False
 php_package: "php71u"
 
 drush_use_launcher: True
+php_env_vars_include_db: True
+
 # Variables to create/update UpCloud Servers
 #upcloud_server_hostname_base_domain: client-name.wunder.io
 #upcloud_project_name: Client-Name
