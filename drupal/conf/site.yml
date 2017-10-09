@@ -22,6 +22,7 @@ default:
     create:
       - verify: "Type yes to verify you want to create a new installation: "
       - make
+      - shell: composer drupal-scaffold
       - drush: site-install standard
       - drush: cex -y
       - shell: echo "New installation is complete and configuration has been exported. Please commit it."
