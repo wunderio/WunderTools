@@ -10,7 +10,7 @@ Make sure you have provisioned all environment variables.
 `./provision.sh -t drush,drupal-db,php-fpm <env>.yml`
 
 * #### Drush doesn't work, cant connect to db or see any environment variables ####
-See previous question to ensure your environment variables are provisioned.
+See previous question to ensure your environment variables are provisioned. This also seems to affect drush9.
 If your project is using drush-launcher that doesn't use global drushrc.php anymore. You need to have project specific drushrc.php in place that includes the global one.
 Create file called `drushrc.php` under `drupal/drush` with the following content:
 ```
@@ -20,7 +20,7 @@ require '/etc/drush/drushrc.php'
 
 * #### Varnish repo is outdated ####
 Symptom: provision fails
-Old official repo.varnish-cache.org repo is deprecated. This might lead to existing environments provisioning to fail even as we have already fixed the issue in the wundermachina. The fix is to ensure the target environment doesn't have reference to the old repo anymore by either running `sudo yum-config-manager --disable varnish-4.1` or manually removing the `/etc/yum.repos.d/varnish.repo` and reprovisioning varnish again (`./provision.sh -t varnish [env]`)
+Old official repo.varnish-cache.org repo is deprecated. This might lead to existing environments provisioning to fail even as we have already fixed the issue in the wundermachina. The fix is to ensure the target environment doesn't have reference to the old repo anymore by either running `sudo yum-config-manager --disable varnish-4.1` or manually removing the `/etc/yum.repos.d/varnish.repo` from inside the box and then reprovisioning varnish again (running `./provision.sh -t varnish vagrant` from the host)
 
 
 * #### key.wunder.io issues ####
