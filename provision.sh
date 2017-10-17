@@ -77,7 +77,6 @@ self_update() {
   # Do this for everything else than local vagrant provisioning
   if [ "$ENVIRONMENT" != "vagrant" ] && [ "$wundersecrets_remote" != "" ]; then
     # Set defaults for WunderSecrets
-    export wundersecrets_path=$ROOT/secrets
     export wundersecrets_branch=${wundersecrets_branch-master}
 
     # Clone and update virtual environment secrets
@@ -108,6 +107,7 @@ else
   GITBRANCH=$wundertools_branch
 fi
 
+export wundersecrets_path=$ROOT/secrets
 
 self_update
 
