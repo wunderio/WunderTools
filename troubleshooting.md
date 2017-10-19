@@ -4,6 +4,9 @@ WunderTools moves fast and is used in many different projects, so issues emerge.
 
 ### Frequently Asked Questions ###
 
+* #### Vagrant box fails to resume after halt/restart due rpc-statd error ####
+This is fixed in master, but requires destroying and reprovisioning the box.
+Workaround if yo udon't want to destroy the box is to remove the last 3 lines (starting with `net.ipv6`) from /etc/sysctl.conf from inside the box and restarting the box.
 
 * #### Environment variables are not visible on target environment ####
 Make sure you have provisioned all environment variables.
