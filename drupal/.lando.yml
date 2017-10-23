@@ -21,6 +21,9 @@ services:
       - appserver
   
   appserver:
+    extras:
+      - "apt-get update -y"
+      - "apt-get install python-yaml -y"
     overrides:
       services:
         environment:
