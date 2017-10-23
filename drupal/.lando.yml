@@ -7,6 +7,13 @@ config:
   database: mariadb:10.1
   #xdebug: true
 
+tooling:
+  build.sh:
+    service: appserver
+    description: Execute build.sh
+    cmd:
+      - ./build.sh
+
 services:  
   mailhog:
     type: mailhog
