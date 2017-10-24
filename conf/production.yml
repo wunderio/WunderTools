@@ -51,6 +51,7 @@
         domain2_name: "wunderools.com"
         wkv_site_env: "prod"
         databases: "{{ database }}"
+        varnish_control_key: "{{ default | to_uuid }}"
       tags: ['common']
 
     # this need to be separate as we are using another fact here
