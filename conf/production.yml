@@ -43,6 +43,7 @@
         lb_ip: "{{ groups['prod-lb'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | first }}"
         front1_ip: "{{ groups['prod-front'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | first }}"
         front2_ip: "{{ groups['prod-front'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | list | last }}"
+      tags: ['common']
 
     - name: Set common facts
       set_fact:
@@ -50,11 +51,13 @@
         domain2_name: "wunderools.com"
         wkv_site_env: "prod"
         databases: "{{ database }}"
+      tags: ['common']
 
     # this need to be separate as we are using another fact here
     - name: Set drupal web root
       set_fact:
         drupal_web_root: "/var/www/{{ domain1_name }}/current/web"
+      tags: ['common']
 
 - include: prod-lb.yml
 - include: prod-db.yml
