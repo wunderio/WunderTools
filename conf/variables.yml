@@ -44,7 +44,7 @@ upcloud_server_spec_list:
     settings:
       plan: 4xCPU-4GB
       zone: de-fra1
-      # Allows ansible to reboot the machine when making changes to the disks 
+      # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true
       storage_devices:
         - title: root
@@ -65,7 +65,7 @@ upcloud_server_spec_list:
     settings:
       plan: 4xCPU-4GB
       zone: de-fra1
-      # Allows ansible to reboot the machine when making changes to the disks 
+      # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true
       storage_devices:
         - title: root
