@@ -111,3 +111,5 @@
     httpforwards:
       - server_name: "{{ domain_name }}"
         forwarded_domains: '"{{ domain_name }}"'
+
+    base_pubkeys_enable: False
