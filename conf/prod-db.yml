@@ -1,6 +1,7 @@
 ---
 
-- hosts: wundertools-prod-db
+- hosts: prod-db
+  user: root
   roles:
    - { role: base, tags: [ 'base' ] }
    - { role: papertrail, tags: [ 'papertrail' ] }
@@ -16,13 +17,14 @@
 
   tasks:
 
+  vars_files:
+  - prod-vars.yml
 
   vars:
     ## Base ##
 
     # /var/log on it's own partition
     partition_var_log: False
-    partition_var_lib_mysql: False
     # On Upcloud we usually get /dev/vdb for logs, but this may vary so you can define the disk here
     #var_log_disk: /dev/vdb
 
@@ -37,15 +39,15 @@
     ## Backups ##
 
     backup_db_name:
-      - example1
-      - example2
+      - drupal
+
     backup_location: /nfs-files/backups
 
     ## DB server ##
 
     memory_db: 4096 # In MB
 
-    partition_var_lib_mysql: True
+    partition_var_lib_mysql: False
     var_lib_mysql_disk: /dev/vdd
 
     # Additional mysql configs available
@@ -64,30 +66,7 @@
 
 
     ## Drupal DB ##
-
-    databases:
-      - name: example1
-        user: example1user
-        host: localhost
-        # defined in prod-vars.yml
-        pass: "{{ drupal_db1_password }}"
-        hosts:
-          - "127.0.0.1"
-          - "::1"
-          - "localhost"
-          - "{{ front1_ip }}"
-          - "{{ front2_ip }}"
-      - name: example2
-        user: example2user
-        host: localhost
-        # defined in prod-vars.yml
-        pass: "{{ drupal_db2_password }}"
-        hosts:
-          - "127.0.0.1"
-          - "::1"
-          - "localhost"
-          - "{{ front1_ip }}"
-          - "{{ front2_ip }}"
+    # Defined in production.yml
 
 
     ## Solr ##
@@ -99,7 +78,7 @@
 
     ## Nfs server ##
 
-    partition_nfs_share: True
+    partition_nfs_share: False
     nfs_share_disk: /dev/vdc
 
     nfs_exports:
@@ -109,7 +88,7 @@
 
     ## Monit ##
     monit_enabled: True
-    monit_alert_email_service_name: "wundertools db {{ ansible_nodename }}"
+    monit_alert_email_service_name: "{{ project_name }} db {{ ansible_nodename }}"
     monit_alert_email_from: "alert@wundertools.com"
     monit_alert_email_to: alert@wundertools.com
     monit_allow:
