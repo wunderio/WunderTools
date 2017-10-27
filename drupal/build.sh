@@ -221,7 +221,7 @@ class Maker:
                 os.makedirs(self.make_cache_dir)
 
             # Only create cache tar if cache is not disabled
-            if not build_sh_disable_cache
+            if not build_sh_disable_cache:
                 with closing(tarfile.open(packaged_build, "w:gz")) as tar:
                     tar.add(self.temp_build_dir, arcname=self.temp_build_dir_name)
 
