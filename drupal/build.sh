@@ -194,8 +194,9 @@ class Maker:
 			if not os.path.isdir(self.make_cache_dir):
 				os.makedirs(self.make_cache_dir)
 
-			with tarfile.open(packaged_build, "w:gz") as tar:
-				tar.add(self.temp_build_dir, arcname=self.temp_build_dir_name)
+      if not build_sh_disable_cache:
+		     with tarfile.open(packaged_build, "w:gz") as tar:
+		       tar.add(self.temp_build_dir, arcname=self.temp_build_dir_name)
 
 		# with open(self.temp_build_dir + "/buildhash", "w") as f:
 		# 	f.write(self.makefile_hash)
