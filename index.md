@@ -18,9 +18,11 @@
 
 
 ## Requirements
-- Vagrant
-- Virtualbox or VMWare Fusion
-- Ansible
+- Vagrant 1.9.2 or later
+- Virtualbox (recommended) or VMWare Fusion
+  - Virtualbox version 5.1.24 introduced a NFS bug so recommended version is 5.1.22
+- Ansible 2.0 or later
+  - provision.sh will run ansible by default inside virtualenv, so for that ansible is not needed
 
 ### Optional
 - To speed things up you might want to use vagrant-cachier
