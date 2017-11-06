@@ -1,6 +1,6 @@
 ---
-
-- hosts: wundertools-prod-lb
+- hosts: prod-lb
+  user: root
   roles:
    - { role: base, tags: [ 'base' ] }
    - { role: papertrail, tags: [ 'papertrail' ] }
@@ -12,7 +12,8 @@
    - { role: newrelic-infra, tags: [ 'newrelic-infra' ] }
    - { role: newrelic-sysmon, tags: [ 'newrelic-sysmon' ] }
 
-  tasks:
+  vars_files:
+  - prod-vars.yml
 
   vars:
 
@@ -20,7 +21,6 @@
 
     # Additional blockdevices are now partitioned by upcloud-disk role
     partition_var_log: False
-    partition_var_lib_mysql: False
 
     # We want to manage our server access with public key authentication server
     #base_pubkeys_enable: True
@@ -50,13 +50,13 @@
       memory: 1G
       # Basic configuration for error pages
       #error_header_cache_control: "no-cache, max-age: 0, must-revalidate"
-      error_header_x_site_name: "insert_sitename"
-      error_header_x_sitetitle: "insert_site_title"
+      error_header_x_site_name: "{{ project_name }}"
+      error_header_x_sitetitle: "{{ project_name }}"
       error_header_x_ua: "insert_GA_code"
       # It's possible to define custom error page template with
       #custom_error_template:
       # you can also set the control_key
-      #control_key: your-secret-control-key
+      control_key: "{{ varnish_control_key }}"
       probe_resource_url: "_ping.php"
       acl_internal:
         - ip: 84.20.132.177
@@ -93,19 +93,6 @@
     # There is more customization options for hashes, cookies etc. see ansible/playbook/roles/varnish/templates/default.vcl.j2 for reference
 
     ## Nginx ##
-
-    # Apps I want to run on this server
-    apps:
-      - server_name: "www.{{ domain1_name }}"
-        server_aliases: "{{ domain1_name }}"
-        server_forwards: "{{ domain1_name }}"  # we redirect to www subdomain
-        http_port: 8080
-        docroot: /var/www/prod1/drupal/current
-      - server_name: "www.{{ domain2_name }}"
-        server_aliases: "{{ domain2_name }}"
-        server_forwards: "{{ domain2_name }}"  # we redirect to www subdomain
-        http_port: 8080
-        docroot: /var/www/prod2/drupal/current/web # This is D8 site!
 
     # You can also define aliases with app_dir_aliases, see ansible/playbook/roles/nginx/templates/all_apps.conf.j2
 
@@ -177,7 +164,7 @@
 
     ## Monit ##
     monit_enabled: True
-    monit_alert_email_service_name: "wundertools lb {{ ansible_nodename }}"
+    monit_alert_email_service_name: "{{ project_name }} lb {{ ansible_nodename }}"
     monit_alert_email_from: "alert@wundertools.com"
     monit_alert_email_to: alert@wundertools.com
     monit_allow:

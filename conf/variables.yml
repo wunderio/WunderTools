@@ -1,5 +1,7 @@
 ---
 
+project_name: Wundertools
+
 innodb_buffer_pool_size: "{{ memory_db }}"
 
 php_memory_limit: 256 # In MB "256MB ought to be enough for anyone." -Bill Gates
@@ -24,21 +26,62 @@ partition_var_lib_mysql: False
 php_package: "php71u"
 
 drush_use_launcher: True
+php_env_vars_include_db: True
+
 # Variables to create/update UpCloud Servers
-#upcloud_server_hostname_base_domain: client-name.wunder.io
-#upcloud_project_name: Client-Name
+upcloud_project_name: "{{ project_name }}"
 #upcloud_server_admin_ssh_keys:
-#  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCzZ7G1ahGyc0aasaEdGLWVn+JI8Z3aLL4ph7QXkKa7KW/FJ7QIxKYFRz964vNwSOjsLdmaeUJxzYiX40zzKKdbrETvmMBCy4c9zK8YoSmrxVoGu4iZM0NGZzZAkQLGxhjr2CRsVLufT4EXPd3sMk6MYdQIYJ6/10OBdkzaaWkFqNZfoZN/dT0Qr3qLwu758ZS+YiI1mFtErt4WyYFAVHCf96gp4eY1Cv2obu3gJEfqnPyXq/F7h9Po31eF6lDtgSP1YLFxgNOBdEYuwljPz4TRBuXV5bKP5QGhoxeqJtPXun8JLcQES8afTF1ePSOVB8udZ0hFDRAI6D0vDWq2dmvEthsrWpsro3Fy54ZtcXnIx3K0wPM7QYz1U35yKfqeBvSkiqSUKifLismlGNE2BXJ/Swuwlf3R69vWe1OI6TvsUMRGO4qLskNM2pfBT7vLcjQU53E8ZiCDDgUalzKvapatcVUYw6GsAig/j/RNO8UV/ppIsW6AAYZvO6ZDxaFf4qevW6NxXFkJj7cwZS8+Gsd6jan0BfqCFmqnNG2PDBCFI++TF6qHhdRyM/4uLsm/h5uvH2oQ8zNupX+bgVfljJZMpyNqykBbXdJ18//e3eusENOAP/YOn1LnkNHQtdfGm9UmvfkYbGHzJONYwz8a6X0cpwljb6q640o8YUn1XG7bSQ== peeter@Voyager-2
-#  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC8gOdvYe12yaVQGMZXgn0qcd7vxMZhj1wsBTDFP/HnwdnbywbV/jt//yGex51cTkfqoP3YlkdgUfQeKJws4j7rxu04gx6uRBIlRcR+7wdcFgksFs4EFumTpZOSOwKybHVIbeIubLi76+mhB9L2JXD4f+TtkL0WJtvBDsCavGLHbru2JafS3K/6b97sU2vpmA/mDREKDpnuVxcMXsXlY0THgoxx70L7SjYsWMzRYiJc+FWzMqyi1yribhEUuUT4ch6B7DiBuPfWFQUlA2KkGbihsw+Kmyrw0e36z1MOEWAhroczt8zKjawWeYQ4qTwQRrjM8b+C2yfFgBpUqFAhAM0Lb9dh8V3xfui30zik2eW2LTQ4JtD2xNUflA+NvG2+fcB7w3ub+QNXI3zp+Joto627oB3j4Nao+s/XHOd0T8idHVrbfhoRK8UE4r6nKI8b5b7JrzaDipE1CjS2TsIixaj9a/VxYMtNE2A9JPGHsXlIPpi++GaW+rz4DZoqkArfsFE= onni.hakala@wunder.io
 
 # These are the specifications for servers in this project
 upcloud_server_spec_list:
-  - group: production
+  - group: prod-front
     # This can be used to add these machines into multiple groups
     secondary_groups:
+      - prod
+    members:
+      - { name: 1, state: present }
+      - { name: 2, state: present }
+    settings:
+      plan: 4xCPU-4GB
+      zone: de-fra1
+      # Allows ansible to reboot the machine when making changes to the disks
+      allow_reboot_on_resize: true
+      storage_devices:
+        - title: root
+          os: CentOS 7.0
+          size: 50
+        - title: logs
+          size: 10
+          mount:
+            path: /var/log
+            fstype: ext4
+            opts: defaults,noatime
+  - group: prod-lb
+    secondary_groups:
+      - prod
       - firewall_web
     members:
-      - { name: web1, state: present }
+      - { name: 1, state: present }
+    settings:
+      plan: 4xCPU-4GB
+      zone: de-fra1
+      # Allows ansible to reboot the machine when making changes to the disks
+      allow_reboot_on_resize: true
+      storage_devices:
+        - title: root
+          os: CentOS 7.0
+          size: 50
+        - title: logs
+          size: 10
+          mount:
+            path: /var/log
+            fstype: ext4
+            opts: defaults,noatime
+  - group: prod-db
+    secondary_groups:
+      - prod
+    members:
+      - { name: 1, state: present }
     settings:
       plan: 6xCPU-8GB
       zone: de-fra1
@@ -47,14 +90,20 @@ upcloud_server_spec_list:
       storage_devices:
         - title: root
           os: CentOS 7.0
-          size: 200
-          backup_rule: { interval: daily, time: '0430', retention: 14 }
+          size: 50
         - title: logs
           size: 10
           mount:
             path: /var/log
             fstype: ext4
             opts: defaults,noatime
+        - title: nfs
+          size: 100
+          mount:
+            path: /nfs-files
+            fstype: ext4
+            opts: defaults,noatime
+          backup_rule: { interval: daily, time: '0330', retention: 7 }
         - title: database
           size: 30
           mount:
@@ -63,16 +112,6 @@ upcloud_server_spec_list:
             # Options for mysql performance
             # These are the same as Mozilla is using for their mysql servers: https://bugzilla.mozilla.org/show_bug.cgi?id=874039
             opts: defaults,noatime,data=writeback,barrier=0,dioread_nolock
-          backup_rule: { interval: daily, time: '0430', retention: 14 }
-        # Swap is recommended for system stability and when it's a partition it can be excluded from backups
-        # Upcloud minimum partition is 10gb
-        - title: swap
-          size: 10
-          mount:
-            path: none
-            fstype: swap
-            state: present
-            opts: sw
   - group: stage
     # This can be used to add these machines into multiple groups
     secondary_groups:
@@ -88,7 +127,27 @@ upcloud_server_spec_list:
         - title: root
           size: 50
           os: CentOS 7.0
-          backup_rule: { interval: daily, time: '0430', retention: 14 }
+        - title: logs
+          size: 10
+          mount:
+            path: /var/log
+            fstype: ext4
+            opts: noatime
+  - group: dev
+    # This can be used to add these machines into multiple groups
+    secondary_groups:
+      - firewall_web
+    members:
+      - { name: web1, state: present }
+    settings:
+      plan: 2xCPU-2GB
+      zone: de-fra1
+      # Allows ansible to reboot the machine when making changes to the disks
+      allow_reboot_on_resize: true
+      storage_devices:
+        - title: root
+          size: 50
+          os: CentOS 7.0
         - title: logs
           size: 10
           mount:

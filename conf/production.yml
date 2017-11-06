@@ -9,39 +9,57 @@
   user: root
   tasks: [ ]
 
-# Setup firewalls using upcloud api
+# Setup firewalls and using upcloud api
 - include: upcloud.yml
 
-- include: prod-lb.yml
-- include: prod-db.yml
-- include: prod-front.yml
-
-- hosts: prod
-  become: false
-  become_method: sudo
+- name: Common
+  hosts: prod
   user: root
 
   vars_files:
-  - prod-vars.yml
+    - prod-vars.yml
 
   vars:
     ## Internal / helper vars ##
     # Production specific
+    database:
+      - name: drupal
+        user: drupal
+        # defined in prod-vars.yml
+        pass: "{{ drupal_db_password }}"
+        host: "{{ db_ip }}"
+        hosts:
+          - "127.0.0.1"
+          - "::1"
+          - "localhost"
+          - "{{ front1_ip }}"
+          - "{{ front2_ip }}"
 
-    # Use internal network ip's of machines
-    db_ip: "{{ groups['wundertools-prod-db'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | first }}"
-    lb_ip: "{{ groups['wundertools-prod-lb'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | first }}"
-    front1_ip: "{{ groups['wundertools-prod-front'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | first }}"
-    front2_ip: "{{ groups['wundertools-prod-front'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | last }}"
 
-    # This server hosts multiple domains
-    domain1_name: example1.com
-    domain2_name: example2.com
+  tasks:
+    - name: Set internal ip addresses
+      set_fact:
+        db_ip: "{{ groups['prod-db'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | first }}"
+        lb_ip: "{{ groups['prod-lb'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | first }}"
+        front1_ip: "{{ groups['prod-front'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | first }}"
+        front2_ip: "{{ groups['prod-front'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | list | last }}"
+      tags: ['common']
 
-    # This is D8 web root with atomic builds
-    # This variable is used for nginx and cronjobs
-    drupal_web_root: "/var/www/{{ domain1_name }}/current/web"
+    - name: Set common facts
+      set_fact:
+        domain1_name: "wundertools.prod.wunder.io"
+        domain2_name: "wunderools.com"
+        wkv_site_env: "prod"
+        databases: "{{ database }}"
+        varnish_control_key: "{{ default | to_uuid }}"
+      tags: ['common']
 
-    ## Base ##
+    # this need to be separate as we are using another fact here
+    - name: Set drupal web root
+      set_fact:
+        drupal_web_root: "/var/www/{{ domain1_name }}/current/web"
+      tags: ['common']
 
-    wkv_site_env: prod
+- include: prod-lb.yml
+- include: prod-db.yml
+- include: prod-front.yml

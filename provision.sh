@@ -77,7 +77,6 @@ self_update() {
   # Do this for everything else than local vagrant provisioning
   if [ "$ENVIRONMENT" != "vagrant" ] && [ "$wundersecrets_remote" != "" ]; then
     # Set defaults for WunderSecrets
-    export wundersecrets_path=$ROOT/secrets
     export wundersecrets_branch=${wundersecrets_branch-master}
 
     # Clone and update virtual environment secrets
@@ -108,6 +107,7 @@ else
   GITBRANCH=$wundertools_branch
 fi
 
+export wundersecrets_path=$ROOT/secrets
 
 self_update
 
@@ -219,7 +219,7 @@ if [ $FIRST_RUN ]; then
   fi
 else
   if [ $ANSIBLE_TAGS ]; then
-    ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --tags "$ANSIBLE_TAGS"
+    ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --tags "common,$ANSIBLE_TAGS"
   elif [ $ANSIBLE_SKIP_TAGS ]; then
     ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --skip-tags "$ANSIBLE_SKIP_TAGS"
   else

@@ -1,6 +1,7 @@
 ---
 
-- hosts: wundertools-prod-front
+- hosts: prod-front
+  user: root
   roles:
    - { role: base, tags: [ 'base' ] }
    - { role: papertrail, tags: [ 'papertrail' ] }
@@ -16,7 +17,8 @@
    - { role: newrelic-sysmon, tags: [ 'newrelic-sysmon' ] }
    - { role: newrelic-infra, tags: [ 'newrelic-infra' ] }
 
-
+  vars_files:
+  - prod-vars.yml
 
   tasks:
     # Disable email from cron
@@ -38,7 +40,7 @@
         state: "present"
         user: nginx
       tags: ['cron']
-      when: ansible_eth0.ipv4.address == groups['wundertools-prod-front'][0] and drupal_web_root is defined
+      when: ansible_eth0.ipv4.address == groups['prod-front'][0] and drupal_web_root is defined
     - name: "Run drupal cronjob with nginx user at odd minutes"
       cron:
         name: "Run Drupal cronjobs with drush"
@@ -47,17 +49,19 @@
         state: "present"
         user: nginx
       tags: ['cron']
-      when: ansible_eth0.ipv4.address == groups['wundertools-prod-front'][1] and drupal_web_root is defined
+      when: ansible_eth0.ipv4.address == groups['prod-front'][0] and drupal_web_root is defined
 
   vars:
 
     # Additional blockdevices are now partitioned by upcloud-disk role
     partition_var_log: False
 
-    memory_app: 1024 # In MB should be atleast 4x php_memory_limit
+    memory_app: 4096 # In MB should be atleast 4x php_memory_limit
 
 
     ## Nginx ##
+
+    nginx_disable_content_security_policy: True
 
     # Apps I want to run on this server
     apps:
@@ -128,7 +132,7 @@
 
     ## Monit ##
     monit_enabled: True
-    monit_alert_email_service_name: "wundertools front {{ ansible_nodename }}"
+    monit_alert_email_service_name: "{{ project_name }} front {{ ansible_nodename }}"
     monit_alert_email_from: "alert@wundertools.com"
     monit_alert_email_to: alert@wundertools.com
     monit_allow:
@@ -162,5 +166,6 @@
     ## Newrelic ##
     newrelic_enabled: True
     # newrelic_license_key defined in prod_vars.yml
-    newrelic_appname: "Exampleapp"
+    newrelic_appname: "{{ project_name }}"
+
 
