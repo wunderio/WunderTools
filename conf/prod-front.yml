@@ -53,9 +53,6 @@
 
   vars:
 
-    # Additional blockdevices are now partitioned by upcloud-disk role
-    partition_var_log: False
-
     memory_app: 4096 # In MB should be atleast 4x php_memory_limit
 
 
@@ -152,6 +149,7 @@
     papertrail_conf: "/etc/log_files.yml"
     papertrail_logs:
       - /var/log/secure
+      - /var/log/maillog
 
     # papertrail host and port defined in prod-vars.yml
 
@@ -165,6 +163,7 @@
 
     ## Newrelic ##
     newrelic_enabled: True
+    newrelic_infra_enabled: True
     # newrelic_license_key defined in prod_vars.yml
     newrelic_appname: "{{ project_name }}"
 

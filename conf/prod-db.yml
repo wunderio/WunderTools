@@ -23,18 +23,8 @@
   vars:
     ## Base ##
 
-    # /var/log on it's own partition
-    partition_var_log: False
-    # On Upcloud we usually get /dev/vdb for logs, but this may vary so you can define the disk here
-    #var_log_disk: /dev/vdb
-
-    # We want to manage our server access with public key authentication server
-    #base_pubkeys_enable: True
-    # key server is configured in prod-vars.yml
-
     # On default we disable iptables but we want option to keep it on for customer-servers without external firewall
     #disable_iptables: True
-
 
     ## Backups ##
 
@@ -46,9 +36,6 @@
     ## DB server ##
 
     memory_db: 4096 # In MB
-
-    partition_var_lib_mysql: False
-    var_lib_mysql_disk: /dev/vdd
 
     # Additional mysql configs available
     #max_connections: 500
@@ -63,7 +50,6 @@
     #max_allowed_packet: 128M
 
     #innodb_buffer_pool_size configured in variables.yml based on memory_db
-
 
     ## Drupal DB ##
     # Defined in production.yml
@@ -89,8 +75,8 @@
     ## Monit ##
     monit_enabled: True
     monit_alert_email_service_name: "{{ project_name }} db {{ ansible_nodename }}"
-    monit_alert_email_from: "alert@wundertools.com"
-    monit_alert_email_to: alert@wundertools.com
+    monit_alert_email_from: "{{ support_email }}"
+    monit_alert_email_to: "{{ support_email }}"
     monit_allow:
       - localhost
       - user:password

@@ -2,6 +2,8 @@
 
 project_name: Wundertools
 
+support_email: support@wundertools.com
+
 innodb_buffer_pool_size: "{{ memory_db }}"
 
 php_memory_limit: 256 # In MB "256MB ought to be enough for anyone." -Bill Gates
@@ -32,6 +34,8 @@ php_env_vars_include_db: True
 upcloud_project_name: "{{ project_name }}"
 #upcloud_server_admin_ssh_keys:
 
+upcloud_zone: de-fra1
+
 # These are the specifications for servers in this project
 upcloud_server_spec_list:
   - group: prod-front
@@ -43,7 +47,7 @@ upcloud_server_spec_list:
       - { name: 2, state: present }
     settings:
       plan: 4xCPU-4GB
-      zone: de-fra1
+      zone: "{{ upcloud_zone }}"
       # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true
       storage_devices:
@@ -64,7 +68,7 @@ upcloud_server_spec_list:
       - { name: 1, state: present }
     settings:
       plan: 4xCPU-4GB
-      zone: de-fra1
+      zone: "{{ upcloud_zone }}"
       # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true
       storage_devices:
@@ -84,7 +88,7 @@ upcloud_server_spec_list:
       - { name: 1, state: present }
     settings:
       plan: 6xCPU-8GB
-      zone: de-fra1
+      zone: "{{ upcloud_zone }}"
       # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true
       storage_devices:
@@ -120,7 +124,7 @@ upcloud_server_spec_list:
       - { name: web1, state: present }
     settings:
       plan: 2xCPU-2GB
-      zone: de-fra1
+      zone: "{{ upcloud_zone }}"
       # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true
       storage_devices:
@@ -141,7 +145,7 @@ upcloud_server_spec_list:
       - { name: web1, state: present }
     settings:
       plan: 2xCPU-2GB
-      zone: de-fra1
+      zone: "{{ upcloud_zone }}"
       # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true
       storage_devices:

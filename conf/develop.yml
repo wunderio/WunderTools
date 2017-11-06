@@ -2,7 +2,7 @@
 
 # Example of absolute minimum server setup.
 
-- hosts: wundertools-dev
+- hosts: dev
   become: false
   become_method: sudo
   user: root

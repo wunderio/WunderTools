@@ -4,21 +4,25 @@
 - include: upcloud.yml
 
 # Example of standard single server setup without production services (monitoring, logging etc.)
-- hosts: wundertools-stage
+- hosts: stage
   become: false
   become_method: sudo
   user: root
   roles:
    - { role: base, tags: [ 'base' ] }
+   - { role: papertrail, tags: [ 'papertrail' ] }
    - { role: varnish, tags: [ 'varnish' ] }
    - { role: dbserver, tags: [ 'dbserver' ] }
    - { role: drupal-db, tags: [ 'drupal-db' ] }
    - { role: certbot, tags: [ 'certbot' ] }
    - { role: sslterminator, tags: [ 'sslterminator' ] }
+   - { role: monit, tags: [ 'monit' ] }
    - { role: nginx, tags: [ 'nginx' ] }
    - { role: php-fpm, tags: [ 'php-fpm' ] }
    - { role: drush, tags: [ 'drush' ] }
    - { role: drupal-log, tags: [ 'drupal-log' ] }
+   - { role: newrelic-infra, tags: [ 'newrelic-infra' ] }
+   - { role: newrelic-sysmon, tags: [ 'newrelic-sysmon' ] }
 
   vars_files:
   - stage-vars.yml
@@ -110,6 +114,7 @@
       - server_name: "{{ domain_name }}"
         ssl_certificate: "/etc/letsencrypt/live/{{ domain_name }}/fullchain.pem"
         ssl_certificate_key: "/etc/letsencrypt/live/{{ domain_name }}/privkey.pem"
+        use_dhparam: True
         backends:
           - 127.0.0.1:8081 # Pass it to local varnish
 
@@ -128,3 +133,43 @@
           - "127.0.0.1"
           - "::1"
           - "localhost"
+
+    ## Monit ##
+    monit_enabled: True
+    monit_alert_email_service_name: "{{ project_name }} db {{ ansible_nodename }}"
+    monit_alert_email_from: "{{ support_email }}"
+    monit_alert_email_to: "{{ support_email }}"
+    monit_allow:
+      - localhost
+      - user:password
+
+    monit_check_sshd: True
+    monit_check_remote_syslog: True
+    monit_check_cron: True
+    monit_check_mysql: True
+    monit_check_nginx: True
+    monit_check_memcached: True
+    monit_check_php_fpm: True
+
+
+    # Which ever you are using
+    #monit_check_solr: True
+    monit_check_elasticsearch: True
+
+    ## Papertrail ##
+    papertrail_enabled: True
+    papertrail_remote_syslog2_version: "0.16"
+    papertrail_conf: "/etc/log_files.yml"
+    papertrail_logs:
+      - /var/log/secure
+      - /var/log/maillog
+
+    # Define additional papertrail logs from nginx (from nginx role)
+    nginx_papertrail_follow:
+      - /var/log/nginx/http-*error.log
+
+    php_fpm_papertrail_follow:
+      - /var/log/php-fpm/www-error.log
+
+    newrelic_enabled: True
+    newrelic_infra_enabled: True

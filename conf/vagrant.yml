@@ -50,6 +50,8 @@
     wkv_site_env: local
     base_pubkeys_enable: False
 
+    varnish_control_key: something-randomly-generated
+
     nginx_disable_content_security_policy: True
 
     # How to assign memory for each role and set the correct
@@ -68,7 +70,7 @@
             val: 0
 
     # letsencrypt variables are also used by selfencrypt
-    letsencrypt_email: support@example.com
+    letsencrypt_email: "{{ support_email }}"
     letsencrypt_domains:
       - "{{ domain_name }}"
 
@@ -85,7 +87,7 @@
       port: 8081
       memory: 512M
       probe_resource_url: "_ping.php"
-      control_key: "{{ 'vagrant' | to_uuid }}"
+      control_key: "{{ varnish_control_key }}"
       acl_internal:
         - ip: 127.0.0.1
       acl_purge:
@@ -107,12 +109,24 @@
         ssl_certificate_key: ssl/certificate.key
         backends:
           - 127.0.0.1:8081
+        extra_proxy_locations:
+          - location: "/mailhog"
+            definition: |
+              rewrite /mailhog/(.*) /$1 break;
+              proxy_pass http://0.0.0.0:8025;
+              chunked_transfer_encoding on;
+              proxy_hide_header X-Frame-Options;
+              add_header Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'; connect-src ws: https:;" always;
+              proxy_set_header X-NginX-Proxy true;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection "upgrade";
+              proxy_http_version 1.1;
+              proxy_redirect off;
+              proxy_buffering off;
 
     httpforwards:
       - server_name: "{{ domain_name }}"
         forwarded_domains: '"{{ domain_name }}"'
-
-    php_env_vars_include_db: True
 
     # Set a low heap allocation for Elasticsearch on vagrant.
     elasticsearch_heap_size: 200m

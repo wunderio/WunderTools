@@ -2,10 +2,8 @@
 #
 # Note this file must be encrypted with ansible-vault!
 
-base_pubkeys_auth: username:password
-base_pubkeys_host: key.server.tld
-base_pubkeys_url: https://{{ base_pubkeys_host }}/auth?hostname={{ ansible_nodename }}
-base_addhost_url: https://{{ base_pubkeys_host }}/auth/add_server?hostname={{ ansible_nodename }}
+drupal_db_password: somethingrandom
+varnish_control_key: something-else-random
 
 
 
