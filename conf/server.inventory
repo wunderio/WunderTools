@@ -1,18 +1,12 @@
 [dev]
-10.10.10.1
 
 [stage]
-10.10.10.2
 
 [prod-db]
-10.10.10.3
 
 [prod-lb]
-10.10.10.4
 
 [prod-front]
-10.10.10.5
-10.10.10.6
 
 # Add all groups here which need http/https ports to be open in UpCloud firewall
 [firewall_web:children]

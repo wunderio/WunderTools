@@ -1,6 +1,6 @@
 ---
 
-# Setup firewalls using upcloud api
+# Setup servers and firewalls using upcloud api
 - include: upcloud.yml
 
 # Example of standard single server setup without production services (monitoring, logging etc.)
@@ -58,9 +58,6 @@
     # This is used in cronjob and varnish and nginx configs
     drupal_web_root: "/var/www/{{ domain_name }}/current/web"
 
-    partition_var_log: False
-    partition_var_lib_mysql: False
-
     # How to assign memory for each role and set the correct
     # memory_app and memory_db define how much total system memory is allocated to each.
     # On dedicated DB server memory_db should max be around 80% of total memory and would ideally fit the whole db + some more.
@@ -101,6 +98,13 @@
     varnish:
       port: 8081
       memory: 512M
+      control_key: "{{ varnish_control_key }}"
+      acl_internal:
+        - ip: 127.0.0.1
+      acl_purge:
+        - ip: 127.0.0.1
+      acl_upstream_proxy:
+        - ip: 127.0.0.1
       directors:
         - name: example
           host: "{{ domain_name }}"
@@ -136,7 +140,7 @@
 
     ## Monit ##
     monit_enabled: True
-    monit_alert_email_service_name: "{{ project_name }} db {{ ansible_nodename }}"
+    monit_alert_email_service_name: "{{ project_name }} stage {{ ansible_nodename }}"
     monit_alert_email_from: "{{ support_email }}"
     monit_alert_email_to: "{{ support_email }}"
     monit_allow:
@@ -150,7 +154,7 @@
     monit_check_nginx: True
     monit_check_memcached: True
     monit_check_php_fpm: True
-
+    monit_check_varnish: True
 
     # Which ever you are using
     #monit_check_solr: True
