@@ -198,6 +198,11 @@ if [ ! $SKIP_REQUIREMENTS ] ; then
   fi
 fi
 
+# Install ansible-galaxy roles
+if [ -f $ROOT/conf/requirements.yml ]; then
+  ansible-galaxy install -r $ROOT/conf/requirements.yml
+fi
+
 # Setup&Use WunderSecrets if the additional config file exists
 if [ -f $wundersecrets_path/ansible.yml ]; then
   WUNDER_SECRETS="--extra-vars=@$wundersecrets_path/ansible.yml"
