@@ -53,7 +53,7 @@
         }
     },
     "scripts": {
-        "post-install-cmd": [
+        "drupal-scaffold": [
             "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"]
     }
 }
