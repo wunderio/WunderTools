@@ -26,14 +26,14 @@
         <exclude name="Drupal.Commenting.FunctionComment" />
         <exclude name="Drupal.Commenting.InlineComment" />
         <exclude name="Drupal.Array.Array" />
-
+        <exclude name="Drupal.Files.TxtFileLineLength" />
         <exclude name="PEAR.Commenting.ClassComment" />
     </rule>
 
     <rule ref="Drupal.Files.LineLength">
         <properties>
             <!-- Be a bit more tolerant when it comes to line lengths -->
-            <property name="lineLimit" value="100"/>
+            <property name="lineLimit" value="110"/>
         </properties>
     </rule>
 
