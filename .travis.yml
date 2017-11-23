@@ -28,9 +28,10 @@ before_install:
   - sudo pip install yamllint
 
 install:
+  - composer global require drush/drush-launcher hirak/prestissimo drupal/coder
+
   - cd $TRAVIS_BUILD_DIR/drupal
   - composer install -n --ignore-platform-reqs
-  - composer global require drush/drush-launcher
 
   # Build frontend code, adjust these commands to your code.
   # - cd $TRAVIS_BUILD_DIR/drupal/web/themes/custom/*
@@ -39,7 +40,6 @@ install:
   # - npm run gulp
 
   # Install phpcs with Drupal rules.
-  - composer global require drupal/coder
   - phpcs --config-set installed_paths ~/.composer/vendor/drupal/coder/coder_sniffer
 
 script:
