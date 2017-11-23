@@ -217,8 +217,7 @@ fi
 
 if [ $FIRST_RUN ]; then
   if [ -z $MYSQL_ROOT_PASS ]; then
-    echo "Mysql root password missing. You need to provide password using -m flag."
-    exit 1
+    ansible-playbook $EXTRA_OPTS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS"  -e "first_run=True" --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
   else
     ansible-playbook $EXTRA_OPTS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS"  -e "change_db_root_password=True mariadb_root_password=$MYSQL_ROOT_PASS first_run=True" --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
   fi

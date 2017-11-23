@@ -59,19 +59,18 @@
     ## Nginx ##
 
     nginx_disable_content_security_policy: True
+    nginx_real_ip: "{{ lb_ip }}"
 
     # Apps I want to run on this server
     apps:
-      - server_name: "www.{{ domain1_name }}"
-        server_aliases: "{{ domain1_name }}"
-        server_forwards: "{{ domain1_name }}"  # we redirect to www subdomain
+      - server_name: "{{ domain1_name }}"
         http_port: 8080
         docroot: "{{ drupal_web_root }}"
-      #- server_name: "www.{{ domain2_name }}"
-      #  server_aliases: "{{ domain2_name }}"
-      #  server_forwards: "{{ domain2_name }}"  # we redirect to www subdomain
-      #  http_port: 8080
-      #  docroot: /var/www/prod2/current/web # This is D8 site!
+      - server_name: "www.{{ domain2_name }}"
+        server_aliases: "{{ domain2_name }}"
+        server_forwards: "{{ domain2_name }}"  # we redirect to www subdomain
+        http_port: 8080
+        docroot: "{{ drupal_web_root }}"
 
     # You can also define aliases with app_dir_aliases, see ansible/playbook/roles/nginx/templates/all_apps.conf.j2
 
@@ -104,13 +103,6 @@
     #memcached_options: "-I 4M"
 
 
-    ## Drush ##
-
-    drush: {
-      version: "8.*",
-    }
-
-
     ## Drupal-log ##
 
     drupal_log_path: /var/log/drupal.log
@@ -126,12 +118,11 @@
 
     nfsserver: "{{ db_ip }}"
 
-
     ## Monit ##
     monit_enabled: True
     monit_alert_email_service_name: "{{ project_name }} front {{ ansible_nodename }}"
-    monit_alert_email_from: "alert@wundertools.com"
-    monit_alert_email_to: alert@wundertools.com
+    monit_alert_email_from: "{{ support_email }}"
+    monit_alert_email_to: "{{ support_email }}"
     monit_allow:
       - localhost
       - user:password
@@ -141,7 +132,6 @@
     monit_check_php_fpm: True
     monit_check_remote_syslog: True
     monit_check_cron: True
-
 
     ## Papertrail ##
     papertrail_enabled: True
@@ -156,7 +146,6 @@
     # Define additional papertrail logs from nginx (from nginx role)
     nginx_papertrail_follow:
       - /var/log/nginx/http-*error.log
-
 
     php_fpm_papertrail_follow:
       - /var/log/php-fpm/www-error.log
