@@ -78,7 +78,7 @@ vagrant ssh
 ```
 
 Now you're inside the guest vm created by vagrant in the last step.
-Got to the app's directory …
+Go to the app's directory …
 
 ```bash
 cd /vagrant/drupal
@@ -99,11 +99,15 @@ Stay tuned during the build process, as you'll have to answer some questions:
 * `You are about to DROP all tables in your 'drupal' database. Do you want to continue? (y/n):`
 **y**
 
-After that, your application should be server by the vm, and you should be able in your host system to **point your browser to the host name** you had set in step 3, e.g. 'intra.dev' and see the application being served.
+### 6. Verify the application is running
+
+After that, your application should be served by the vm, and you should be able in your host system to **point your browser to the host name** you had set in step 3, e.g. 'intra.dev' and see the application being served.
 
 Your can now `exit` out of your vm.
 
-### 6. Commit the created/changed files
+If you experience a problem, have a look at the "Common Problems" section at the end of this document.
+
+### 7. Commit the created/changed files
 
 The build process creates some files, a symlink and exports the Drupal configuration. **Commit those changes to git** and push to your remote origin.
 
@@ -113,7 +117,9 @@ Also consider to do fix permissions on Drupal's sites/default on your host syste
 chmod 755 drupal/web/sites/default
 ```
 
-### 7. Common Problems
+
+
+## C – Common Problems
 
 #### Host name serves no or wrong content
 
