@@ -70,7 +70,7 @@ If there is a server to sync from, you can get the dump by running (inside your 
 ./syncdb.sh
 ```
 By default, this will sync the database from production to your local VM.
-See `./syncdb.sh -h` for all the other options. Note: syncdb relies on drush aliases, so those need to be defined.
+See `./syncdb.sh -h` for all the other options. Note: syncdb relies on drush aliases, so those need to be defined (drush aliases are normally created by Wunder Care team when they create the server instances and should be under drupal/drush/ with a name matching the project_name defined in project.yml, e.g. project_name.aliases.drushrc.php).
 
 ### Verify the application is running
 
