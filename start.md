@@ -74,7 +74,7 @@ See `./syncdb.sh -h` for all the other options. Note: syncdb relies on drush ali
 
 ### Verify the application is running
 
-After that, your application should be served by the vm, and you should be able in your host system to **point your browser to the host name** you had set in step 3, e.g. 'intra.dev' and see the application being served.
+After that, your application should be served by the vm, and you should be able in your host system to **point your browser to the host name** you had set in step 3, e.g. 'intra.dev' and see the application being served. If you get an SSL certificate warning,try via http and port 8080 (which is bypassing varnish and directly connects to nginx on the VM).
 
 Your can now `exit` out of your vm.
 
@@ -203,6 +203,10 @@ chmod 755 drupal/web/sites/default
 
 
 ## C – Common Problems
+
+#### SSL sercificate warning
+
+If you get an SSL certificate warning,try via http and port 8080 (which is bypassing varnish and directly connects to nginx on the VM).
 
 #### Host name serves no or wrong content
 
