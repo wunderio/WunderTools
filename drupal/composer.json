@@ -25,6 +25,7 @@
         "webflo/drupal-finder": "^1.0.0",
         "webmozart/path-util": "^2.3",
         "drupal/config_installer": "~1.0",
+        "drupal/warden": "*",
         "drupal/simplei": "^1.0",
         "wunderio/drupal-ping": "^1.0"
     },
