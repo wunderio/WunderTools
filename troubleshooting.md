@@ -16,7 +16,7 @@ Make sure you have provisioned all environment variables.
 See previous question to ensure your environment variables are provisioned. This also seems to affect drush9.
 If your project is using drush-launcher that doesn't use global drushrc.php anymore. You need to have project specific drushrc.php in place that includes the global one.
 Create file called `drushrc.php` under `drupal/drush` with the following content:
-```
+```php
 <?php
 require '/etc/drush/drushrc.php'
 ```
@@ -68,18 +68,18 @@ Ensure you have your public key added to your github account.
 * #### My NFS does not work! ####
 If you have multiple projects and NFS shares in your host machine, check that **no share is inside another one**, because NFS definitely does not like that.
 
-* #### I'm on linux and I get mount.nfs: requested NFS version or transport protocol is not supported####
+* #### I'm on linux and I get mount.nfs: requested NFS version or transport protocol is not supported ####
 (Linux specific) NFS times out or produces the following error message: `mount.nfs: requested NFS version or transport protocol is not supported`:
 It could be that your OS has updated nfs-utils package to the latest upstream version which by default has UDP protocol support disabled. A quick fix is to edit `/etc/sysconfig/nfs` (Fedora) or `/etc/default/nfs-kernel-server` (Ubuntu) and add `--udp` to `RPCNFSDARGS` and then restart the NFS server.
 
-* #### I'm on OS X High Sierra and build.sh fails with missing files or too many levels of symlinks####
+* #### I'm on macOS High Sierra and build.sh fails with missing files or too many levels of symlinks ####
 There's a known issue with using APFS and NFS in High Sierra.  
 A workaround is to have a mounted HFS+ image with your files in it.  
   - Open Disk Utility
-  - File -> New Image -> Blank Image
+  - File -> New Image -> Blank Image...
   - Name it whatever, make sure the format is Mac OS Extended (Journaled)
   - It should then be found at /Volume/{name_of_volume}
   - Move your site files there
-  - Do a vagrant up in there and enjoy a working environment
+  - Do a `vagrant up` in there and enjoy a working environment
 
 It's marginally slower due to having an extra emulation layer due to it being a mounted image, but the only *other* option would be to resize your main partition, and create a new actual real partition with HFS+ for your sites.
