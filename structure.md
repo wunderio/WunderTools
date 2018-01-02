@@ -28,6 +28,9 @@ Ansible is used for provisioning both local and remote environments. Configurati
 
 Ansible playbooks and roles are defined in WunderMachina, but additional project specific roles can be defined under local_ansible_roles.
 
+You can also use roles from Ansible Galaxy by defining them in `conf/requirements.yml`. 
+See more info [here](http://docs.ansible.com/ansible/latest/galaxy.html#installing-multiple-roles-from-a-file)
+
 Provisioning a different environment can be done using provided provision.sh command. For example to provision a production environment you could simply run:
 ```./provision.sh production```
 
