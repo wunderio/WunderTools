@@ -252,20 +252,20 @@ Example sublime text project configuration (via Project->Edit Project):
 
 Using environment variables to pass environment specific configs and secrets is the recommended best practise.
 By default WKV_SITE_ENV variable is exposed as environment variable to php and by defining `php_env_vars_include_db: True` also database credentials and connection info will be included.
-To define any additional environment variables you can use `php_env_vars` variable like this in <env>.yml:
+To define any additional environment variables you can use `php_extra_env_vars` variable like this in <env>.yml:
 ```
-php_env_vars:
+php_extra_env_vars:
   - key: "your_variable"
     value: "value for the key"
 ```
-For sensitive info it is recommended to use ansible-vault files to store those values and only reference the variable when defining the `php_env_vars`
+For sensitive info it is recommended to use ansible-vault files to store those values and only reference the variable when defining the `php_extra_env_vars`
 For example in <env>-vars.yml (`ansible-vault edit --ask-vault-pass <env>-vars.yml`):
 ```
 secret_variable: "secret value"
 ```
 And then in <env>.yml:
 ```
-php_env_vars:
+php_extra_env_vars:
   - key: "secret_key"
     value: "{{ secret_variable }}"
 ```
