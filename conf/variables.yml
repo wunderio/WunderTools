@@ -31,7 +31,7 @@ drush: {
   version: "8.*",
 }
 
-drush_use_launcher: True
+drush_use_launcher: False
 php_env_vars_include_db: True
 
 # Variables to create/update UpCloud Servers
