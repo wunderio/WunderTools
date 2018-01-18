@@ -123,9 +123,6 @@
     monit_alert_email_service_name: "{{ project_name }} front {{ ansible_nodename }}"
     monit_alert_email_from: "{{ support_email }}"
     monit_alert_email_to: "{{ support_email }}"
-    monit_allow:
-      - localhost
-      - user:password
     monit_check_sshd: True
     monit_check_nginx: True
     monit_check_memcached: True
