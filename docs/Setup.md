@@ -41,3 +41,8 @@ git init
 * Rename `drupal/drush/wundertools.aliases.drushrc.php` to `drupal/drush/[PROJECT_NAME].aliases.drushrc.php` and 
 configure it to fit your setup. 
   - this file will be automatically symlinked from `~/.drush` when running vagrant up
+
+## Create new drupal installation
+
+* Run `./build.sh create` from inside the vagrant box from the `/vagrant/drupal/` folder
+* Add drupal scaffold files and relevant config export files to the repo
