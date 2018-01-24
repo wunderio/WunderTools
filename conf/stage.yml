@@ -11,11 +11,11 @@
   roles:
    - { role: base, tags: [ 'base' ] }
    - { role: papertrail, tags: [ 'papertrail' ] }
-   - { role: varnish, tags: [ 'varnish' ] }
    - { role: dbserver, tags: [ 'dbserver' ] }
    - { role: drupal-db, tags: [ 'drupal-db' ] }
    - { role: certbot, tags: [ 'certbot' ] }
    - { role: sslterminator, tags: [ 'sslterminator' ] }
+   - { role: varnish, tags: [ 'varnish' ] }
    - { role: monit, tags: [ 'monit' ] }
    - { role: nginx, tags: [ 'nginx' ] }
    - { role: php-fpm, tags: [ 'php-fpm' ] }
