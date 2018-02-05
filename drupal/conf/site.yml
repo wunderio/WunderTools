@@ -137,7 +137,7 @@ production:
           - builds
           - web/sites/default/files
       - make
-      #- shell: rsync -az -e ssh web www-admin@[front2_ip]:/var/www/[domain.tld]/
+      #- shell: rsync --delete -az -e ssh web www-admin@[front2_ip]:/var/www/[domain.tld]/
 
     update:
       - drush: updb -y
