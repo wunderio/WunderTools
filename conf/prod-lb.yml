@@ -34,7 +34,7 @@
     certbot_renewal_docroot: /var/www/letsencrypt-auto
     #certbot_commands: allows yo uto customize the command to run, see ansible/playbook/roles/certbot/defaults/main.yml
 
-    # We need to make sure not to leak sites ahead of launch 
+    # We need to make sure not to leak sites ahead of launch
     basicauth_enabled: True
     basicauth_credentials:
       - username: wunder
