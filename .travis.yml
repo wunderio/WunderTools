@@ -49,7 +49,7 @@ script:
 
   # Check coding standards
   - cd $TRAVIS_BUILD_DIR/drupal
-  - phpcs --standard=phpcs.xml
+  - phpcs --standard=phpcs.xml -s
 
   # Run a clean Drupal installation
   - cd $TRAVIS_BUILD_DIR/drupal/web
