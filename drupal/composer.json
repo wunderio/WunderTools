@@ -38,6 +38,9 @@
     "conflict": {
         "drupal/drupal": "*"
     },
+    "config": {
+        "discard-changes": true
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
