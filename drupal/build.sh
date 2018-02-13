@@ -191,6 +191,7 @@ class Maker:
         # Do not install dev packages on non-development environments
         if self.site_env != 'default' and self.site_env != 'local':
             params.append('--no-dev')
+            params.append('--no-interaction')
 
         self._composer([
             '-d=' + self.temp_build_dir,
