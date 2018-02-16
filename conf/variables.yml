@@ -28,10 +28,10 @@ partition_var_lib_mysql: False
 php_package: "php71u"
 
 drush: {
-  version: "8.*",
+  version: "9.*",
 }
 
-drush_use_launcher: False
+drush_use_launcher: True
 php_env_vars_include_db: True
 expose_php_vars_globally: True
 
