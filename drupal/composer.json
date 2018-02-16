@@ -32,8 +32,8 @@
     "require-dev": {
         "codeception/codeception": "^2.2",
         "codeception/visualception": "^0.9.0",
-        "guncha25/codecept-drupal-drush": "~0.3",
-        "guncha25/drupal-8-bootstrap": "0.3"
+        "guncha25/codecept-drupal-drush": "^0.5",
+        "guncha25/drupal-8-bootstrap": "^0.7"
     },
     "conflict": {
         "drupal/drupal": "*"
