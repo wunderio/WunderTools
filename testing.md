@@ -26,13 +26,13 @@ To get started, follow these steps:
 
     or run codecept directly and specify options as needed
 
-    `vendor/bin/codecept run -c web/codeception.yml --env test`
+    `vendor/bin/codecept run --env test`
 
 Writing tests
 ------------------
 To add your own tests, cd to web directory and
 
-    `../vendor/bin/codecept generate:cest acceptance MyFirstTestCest`
+    `../vendor/bin/codecept -c ../codeception.yml generate:cest acceptance MyFirstTestCest`
 
 
 There are four test suites available out of the box:
