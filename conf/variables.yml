@@ -33,6 +33,7 @@ drush: {
 
 drush_use_launcher: False
 php_env_vars_include_db: True
+expose_php_vars_globally: True
 
 # Variables to create/update UpCloud Servers
 upcloud_project_name: "{{ project_name }}"
