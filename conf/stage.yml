@@ -94,6 +94,8 @@
 
     create_docroot: True
 
+    deny_robots: true
+
     # This server also acts as a load balancer
     varnish:
       port: 8081
