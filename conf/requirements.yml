@@ -1,0 +1,5 @@
+# External Ansible roles can be defined here, they will be installed automatically when running provision.sh
+# Galaxy roles
+# - src: vkill.incron
+# Role from github
+# - src:  https://github.com/wtanaka/ansible-role-jq
