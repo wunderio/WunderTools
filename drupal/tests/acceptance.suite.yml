@@ -25,3 +25,10 @@ extensions:
     config:
         Codeception\Extension\Recorder:
           delete_successful: false
+env:
+    lando:
+        modules:
+            config:
+                WebDriver:
+                    host: chrome
+                    url: http://nginx

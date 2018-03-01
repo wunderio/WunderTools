@@ -1,5 +1,9 @@
 name: wunderlando
 recipe: drupal8
+
+compose:
+  - compose.yml
+
 config:
   webroot: web
   via: nginx
@@ -13,6 +17,12 @@ tooling:
     description: Execute build.sh
     cmd:
       - ./build.sh
+ codeception:
+    service: appserver
+    description: Run codeception
+    cmd:
+      - ./vendor/bin/codecept
+      - "--env=lando"
 
 services:  
   mailhog:
