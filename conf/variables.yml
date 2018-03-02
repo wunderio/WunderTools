@@ -51,7 +51,7 @@ upcloud_server_spec_list:
       - { name: 1, state: present }
       - { name: 2, state: present }
     settings:
-      plan: 4xCPU-4GB
+      plan: 4xCPU-8GB
       zone: "{{ upcloud_zone }}"
       # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true
@@ -72,7 +72,7 @@ upcloud_server_spec_list:
     members:
       - { name: 1, state: present }
     settings:
-      plan: 4xCPU-4GB
+      plan: 4xCPU-8GB
       zone: "{{ upcloud_zone }}"
       # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true
@@ -92,7 +92,7 @@ upcloud_server_spec_list:
     members:
       - { name: 1, state: present }
     settings:
-      plan: 6xCPU-8GB
+      plan: 6xCPU-16GB
       zone: "{{ upcloud_zone }}"
       # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true
@@ -128,7 +128,7 @@ upcloud_server_spec_list:
     members:
       - { name: web1, state: present }
     settings:
-      plan: 2xCPU-2GB
+      plan: 2xCPU-4GB
       zone: "{{ upcloud_zone }}"
       # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true
@@ -149,7 +149,7 @@ upcloud_server_spec_list:
     members:
       - { name: web1, state: present }
     settings:
-      plan: 2xCPU-2GB
+      plan: 2xCPU-4GB
       zone: "{{ upcloud_zone }}"
       # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true
