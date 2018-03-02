@@ -24,7 +24,7 @@ base_addhost_url: https://{{ base_pubkeys_host }}/auth/add_server?hostname={{ an
 partition_var_log: False
 partition_var_lib_mysql: False
 
-# PHP version to be used. Available options: php56u, php70u
+# PHP version to be used. Available options: php56u, php70u, php71u, php72u
 php_package: "php71u"
 
 drush: {
