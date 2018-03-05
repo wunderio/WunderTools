@@ -17,7 +17,7 @@ tooling:
     description: Execute build.sh
     cmd:
       - ./build.sh
- codeception:
+  codeception:
     service: appserver
     description: Run codeception
     cmd:
