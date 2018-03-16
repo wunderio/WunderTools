@@ -162,11 +162,12 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
   fi
 
   if [ ! -z $externaldrupal_remote ]; then
-    if [ ! -d "drupal/current" ]; then
+    if [ ! -d "drupal" ]; then
+      mkdir -p $ROOT/drupal
       if [ -z $externaldrupal_branch ]; then
         $externaldrupal_branch = 'master'
       fi
-      git clone -b $externaldrupal_branch $externaldrupal_remote $ROOT/drupal/current
+      git clone -b $externaldrupal_branch $externaldrupal_remote $ROOT/drupal
     fi
   fi
 fi
