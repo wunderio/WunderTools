@@ -162,7 +162,7 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
   fi
 
   if [ ! -z $externaldrupal_remote ]; then
-    if [ -z "externaldrupal_location" ]; then
+    if [ ! -z $externaldrupal_location ]; then
       DRUPALLOCATION=$externaldrupal_location
     else
       DRUPALLOCATION="drupal/current"
