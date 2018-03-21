@@ -144,7 +144,7 @@ production:
       - drush: cim -y
       - drush: entup -y
       - cleanup
-      - shell: chmod -R a-w current
+      - shell: chmod -R a-w web
       - shell: sudo systemctl restart nginx php-fpm varnish
       #- shell: sudo systemctl -H [front2_ip] restart php-fpm nginx
       #- shell: sudo systemctl -H [lb_ip] restart varnish

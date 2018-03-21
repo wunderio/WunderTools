@@ -188,15 +188,27 @@ class Maker:
 
         params = []
 
-        # Do not install dev packages on non-development environments
-        if self.site_env != 'default' and self.site_env != 'local':
+        # Check if environment allows installing of dev packages
+        if "allow_composer_dev" not in self.settings:
+            allow_dev = False
+        else:
+            allow_dev = self.settings['allow_composer_dev']
+
+        # By default Do not install dev packages on non-development environments
+	# Allow override to allow dev packages
+        if self.site_env != 'default' and self.site_env != 'local' and allow_dev != True:
             params.append('--no-dev')
             params.append('--no-interaction')
 
-        self._composer([
-            '-d=' + self.temp_build_dir,
-            'install'
-        ] + params)
+        if self.temp_build_dir_name == ".":
+            self._composer([
+                'install'
+            ] + params)
+        else:
+            self._composer([
+                '-d=' + self.temp_build_dir,
+                'install'
+            ] + params)
 
     def _drush_make(self):
         global build_sh_disable_cache
