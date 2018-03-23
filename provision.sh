@@ -177,24 +177,28 @@ if [ ! $SKIP_REQUIREMENTS ] ; then
       exit 1
   else
     # Install virtualenv
-    which -a virtualenv >> /dev/null
+    which -a pipenv >> /dev/null
     if [[ $? != 0 ]] ; then
-      pip install virtualenv
+      pip install pipenv
     fi
+    cd $ROOT/ansible
+    VENV=`pipenv --venv`
+
     # Create a virtualenv for this project and use it for ansible
-    if [ ! -f $ROOT/.virtualenv ]; then
-      virtualenv --python=python2.7 $ROOT/ansible/.virtualenv
+    if [ ! $VENV ]; then
+      pipenv --python=python2.7
+      VENV=`pipenv --venv`
     fi
 
-    # Use the virtualenv
-    source $ROOT/ansible/.virtualenv/bin/activate
 
     # Ensure ansible & ansible library versions with pip
-    if [ -f $ROOT/ansible/requirements.txt ]; then
-      pip install -r $ROOT/ansible/requirements.txt --upgrade
+    if [ -f $ROOT/ansible/Pipfile.lock ]; then
+      pipenv install 
     else
-      pip install ansible
+      pipenv install ansible
     fi
+    cd $ROOT
+    source $VENV/bin/activate
   fi
 fi
 
