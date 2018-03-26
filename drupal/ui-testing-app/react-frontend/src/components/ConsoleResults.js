@@ -3,7 +3,7 @@ import React from 'react';
 class ConsoleResults extends React.Component {
   render() {
     return (
-      <div className="col-12">
+      <div className="col-md-12">
         <div className="form-group">
           <label className="mt-5" htmlFor="console-results">{this.props.title}</label>
           <textarea

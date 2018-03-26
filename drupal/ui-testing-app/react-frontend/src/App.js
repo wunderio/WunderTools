@@ -105,14 +105,14 @@ class App extends React.Component {
         <Header title="Wundertools test runner App"/>
         <div className="container-fluid">
           <div className="row">
-            <div className="col-6">
+            <div className="col-md-6 col-sm-12">
               <TestTypesContainer
                 testTypes={this.state.testTypes}
                 tests={this.state.tests}
                 updateState={this.updateTestsState}/>
               <SubmitButton label="Run selected tests" runSelectedTests={this.runSelectedTests}/>
             </div>
-            <div className="col-6">
+            <div className="col-md-6 col-sm-12">
               <ConsoleResults
                 title="Console results"
                 consoleOutput={this.state.consoleOutput}
