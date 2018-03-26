@@ -9,7 +9,7 @@ class TestItem extends React.Component {
           <TestItemCheckbox
             test={this.props.test}
             allTests={this.props.allTests}
-            updateState={this.props.updateState}/>
+            updateTestsState={this.props.updateTestsState}/>
         </div>
       </div>
     )

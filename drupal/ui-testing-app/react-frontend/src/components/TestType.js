@@ -16,7 +16,7 @@ class TestType extends React.Component {
                     key={key}
                     test={this.props.tests[key]}
                     allTests={this.props.allTests}
-                    updateState={this.props.updateState}/>
+                    updateTestsState={this.props.updateTestsState}/>
                 )
               }
             </div>

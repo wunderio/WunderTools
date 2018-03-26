@@ -25,7 +25,7 @@ class TestTypesContainer extends React.Component {
                   testType={this.props.testTypes[key]}
                   tests={this.filterTestByType(this.props.tests, this.props.testTypes[key])}
                   allTests={this.props.tests}
-                  updateState={this.props.updateState}/>
+                  updateTestsState={this.props.updateTestsState}/>
               )
             }
           </div>

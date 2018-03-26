@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './components/Header';
 import TestTypesContainer from './components/TestTypesContainer';
-import SubmitButton from './components/SubmitButton';
+import ActionButtons from './components/ActionButtons';
 import ConsoleResults from './components/ConsoleResults';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -34,7 +34,7 @@ class App extends React.Component {
     if (typeof data !== 'object') return;
 
     const tests = {...this.state.tests};
-    Object.keys(data).map(key => {
+    Object.keys(data).forEach(key => {
       tests[data[key].id] = data[key];
       this.setState({tests});
     });
@@ -64,12 +64,20 @@ class App extends React.Component {
 
     this.resetConsoleOutputState(); // Clear state
 
-    selectedTests.map(test => {
+    selectedTests.forEach(test => {
       this.API_Call_RunTest(test).then(res => {
         const output = res.express ? res.express : res.stderr;
         this.addToConsoleOutputState(output);
       });
     });
+  };
+  resetSelectedTests = () => {
+    Object.keys(this.state.tests).forEach(key => {
+      const test = this.state.tests[key];
+      test.isChecked = false;
+      this.updateTestsState(key, test)
+    });
+    this.resetConsoleOutputState();
   };
 
   /**
@@ -109,8 +117,8 @@ class App extends React.Component {
               <TestTypesContainer
                 testTypes={this.state.testTypes}
                 tests={this.state.tests}
-                updateState={this.updateTestsState}/>
-              <SubmitButton label="Run selected tests" runSelectedTests={this.runSelectedTests}/>
+                updateTestsState={this.updateTestsState}/>
+              <ActionButtons runSelectedTests={this.runSelectedTests} resetSelectedTests={this.resetSelectedTests}/>
             </div>
             <div className="col-md-6 col-sm-12">
               <ConsoleResults

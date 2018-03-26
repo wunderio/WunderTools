@@ -10,7 +10,7 @@ class TestItemCheckbox extends React.Component {
       ...this.props.test,
       [event.currentTarget.name]: event.currentTarget.checked
     };
-    this.props.updateState(event.currentTarget.value, updatedTest);
+    this.props.updateTestsState(event.currentTarget.value, updatedTest);
   }
 
   render() {
@@ -23,7 +23,8 @@ class TestItemCheckbox extends React.Component {
           id={this.props.test.id}
           ref="isChecked"
           value={this.props.test.id}
-          onChange={this.handleChange}/>
+          onChange={this.handleChange}
+          checked={this.props.test.isChecked}/>
         <label className="form-check-label" htmlFor={this.props.test.id}>
           {this.props.test.name}
         </label>
