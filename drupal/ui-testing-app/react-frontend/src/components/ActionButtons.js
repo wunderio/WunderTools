@@ -8,6 +8,7 @@ class ActionButtons extends React.Component {
       <div>
         <div className="btn-group mr-2" role="group">
           <SubmitButton
+            disableSubmitButton={this.props.disableSubmitButton}
             label="Run selected tests"
             runSelectedTests={this.props.runSelectedTests}/>
         </div>

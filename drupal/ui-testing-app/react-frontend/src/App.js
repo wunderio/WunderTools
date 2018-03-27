@@ -57,10 +57,12 @@ class App extends React.Component {
     this.setState({consoleOutput: []})
   };
 
+  isAtLeastOneTestSelected = () => {
+    const testsSelected = Object.values(this.state.tests).filter(test => test.isChecked);
+    return testsSelected.length > 0;
+  };
   runSelectedTests = () => {
-    const selectedTests = Object.values(this.state.tests).filter(test =>
-      test.isChecked
-    );
+    const selectedTests = Object.values(this.state.tests).filter(test => test.isChecked );
 
     this.resetConsoleOutputState(); // Clear state
 
@@ -118,7 +120,10 @@ class App extends React.Component {
                 testTypes={this.state.testTypes}
                 tests={this.state.tests}
                 updateTestsState={this.updateTestsState}/>
-              <ActionButtons runSelectedTests={this.runSelectedTests} resetSelectedTests={this.resetSelectedTests}/>
+              <ActionButtons
+                disableSubmitButton={!this.isAtLeastOneTestSelected()}
+                runSelectedTests={this.runSelectedTests}
+                resetSelectedTests={this.resetSelectedTests}/>
             </div>
             <div className="col-md-6 col-sm-12">
               <ConsoleResults
