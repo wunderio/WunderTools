@@ -190,14 +190,12 @@ if [ ! $SKIP_REQUIREMENTS ] ; then
     else
       pipenv install ansible
     fi
-    cd $ROOT
-    source $VENV/bin/activate
   fi
 fi
 
 # Install ansible-galaxy roles
 if [ -f $ROOT/conf/requirements.yml ]; then
-  ansible-galaxy install -r $ROOT/conf/requirements.yml
+  pipenv run ansible-galaxy install -r $ROOT/conf/requirements.yml
 fi
 
 # Setup&Use WunderSecrets if the additional config file exists
@@ -214,16 +212,16 @@ fi
 
 if [ $FIRST_RUN ]; then
   if [ -z $MYSQL_ROOT_PASS ]; then
-    ansible-playbook $EXTRA_OPTS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS"  -e "first_run=True" --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
+    pipenv run ansible-playbook $EXTRA_OPTS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS"  -e "first_run=True" --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
   else
-    ansible-playbook $EXTRA_OPTS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS"  -e "change_db_root_password=True mariadb_root_password=$MYSQL_ROOT_PASS first_run=True" --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
+    pipenv run ansible-playbook $EXTRA_OPTS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS"  -e "change_db_root_password=True mariadb_root_password=$MYSQL_ROOT_PASS first_run=True" --vault-password-file=$VAULT_FILE $ANSIBLE_TAGS
   fi
 else
   if [ $ANSIBLE_TAGS ]; then
-    ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --tags "common,$ANSIBLE_TAGS"
+    pipenv run ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --tags "common,$ANSIBLE_TAGS"
   elif [ $ANSIBLE_SKIP_TAGS ]; then
-    ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --skip-tags "$ANSIBLE_SKIP_TAGS"
+    pipenv run ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE --skip-tags "$ANSIBLE_SKIP_TAGS"
   else
-   ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE
+   pipenv run ansible-playbook $EXTRA_OPTS $VAGRANT_CREDENTIALS $PLAYBOOKPATH $WUNDER_SECRETS -c ssh -i $INVENTORY -e "@$EXTRA_VARS" --vault-password-file=$VAULT_FILE
   fi
 fi
