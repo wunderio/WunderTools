@@ -184,13 +184,6 @@ if [ ! $SKIP_REQUIREMENTS ] ; then
     cd $ROOT/ansible
     VENV=`pipenv --venv`
 
-    # Create a virtualenv for this project and use it for ansible
-    if [ ! $VENV ]; then
-      pipenv --python=python2.7
-      VENV=`pipenv --venv`
-    fi
-
-
     # Ensure ansible & ansible library versions with pip
     if [ -f $ROOT/ansible/Pipfile.lock ]; then
       pipenv install 
