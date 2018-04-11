@@ -159,7 +159,7 @@ popd > /dev/null
 
 PLAYBOOKPATH=$ROOT/conf/$ENVIRONMENT.yml
 if [ "$ENVIRONMENT" == "vagrant" ]; then
-  INVENTORY=$ROOT/.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
+  INVENTORY=$ROOT/ansible/inventory.py
   VAGRANT_CREDENTIALS="--private-key=.vagrant/machines/default/virtualbox/private_key -u vagrant -e 'host_key_checking=False'"
 else
   INVENTORY=$ROOT/conf/server.inventory
