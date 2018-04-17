@@ -4,8 +4,10 @@ jobs:
     docker:
       - image: wunderio/circleci-builder
 
+    working_directory: ~/project/drupal
     steps:
-      - checkout
+      - checkout:
+          path: ~/project
 
       - run: phpcs --standard=phpcs.xml -s
 
