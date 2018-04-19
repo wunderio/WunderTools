@@ -2,6 +2,12 @@
 ##
 # This plabook configures Upcloud firewalls
 ##
+- name: Collect facts from machines
+  hosts: prod-lb:prod-front:prod-db
+  user: root
+  tasks: [ ]
+
+
 
 # Make sure that the upcloud credentials are set as env
 - hosts: localhost
