@@ -179,7 +179,7 @@ if [ ! $SKIP_REQUIREMENTS ] ; then
     # Install virtualenv
     which -a pipenv >> /dev/null
     if [[ $? != 0 ]] ; then
-      pip install pipenv
+      sudo pip install pipenv
     fi
     cd $ROOT/ansible
     VENV=`pipenv --venv`
