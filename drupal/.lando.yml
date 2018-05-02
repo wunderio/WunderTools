@@ -43,12 +43,16 @@ services:
           DB_HOST_DRUPAL: database
           DB_NAME_DRUPAL: drupal8
 
+  elasticsearch:
+    type: elasticsearch:5.5
+
 proxy:
   mailhog:
     - mail.lndo.site
+  elasticsearch:
+    - elasticsearch.lndo.site:9200
 
 events:
   # Clear caches after a database import
   post-db-import:
     - appserver: cd $LANDO_WEBROOT && drush cr -y
-
