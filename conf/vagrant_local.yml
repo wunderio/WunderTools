@@ -4,7 +4,7 @@ mem: 2000
 cpus: 2
 
 # By default we use DHCP to assign box ip, but you can define it explicitly here if needed
-ip: 192.168.10.178
+ip: 192.168.10.179
 
 box: "geerlingguy/centos7"
 
