@@ -8,11 +8,17 @@ if (file_exists(drush_server_home() . '/.vagrant.d')) {
   array_pop($path);
   $path[] = '.vagrant';
   $path = implode('/', $path);
-  $key = shell_exec('find ' . $path . ' -iname private_key');
-  if (!$key) {
-    $key = $home . '/.vagrant.d/insecure_private_key';
+  // Check that the folder actually exists.
+  if (file_exists($path)) {
+    $key = shell_exec('find ' . $path . ' -iname private_key');
+    if (!$key) {
+      $key = $home . '/.vagrant.d/insecure_private_key';
+    }
+    $key = rtrim($key);
   }
-  $key = rtrim($key);
+  else {
+    $key = "";
+  }
 
 } else {
   // .vagrant directory doesn't exist, just use empty key

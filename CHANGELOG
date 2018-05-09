@@ -1,3 +1,8 @@
+10
+Vagrant provisioning has been changed to run ansible_local so there is no need for host to have ansible installed at all.
+Make sure the provision.sh is updated to make it work with vagrant as there is no more vagrant provided ansible provisioner inventory.
+Instead we rely now on dynamic inventory extracting the data from vagrant ssh-config (see ansible/inventory.py)
+
 9
 (optional) WunderTools now supports having a custom repository for WunderTools
 and build.sh (only on GitHub for now). To use it, create a fork of WunderTools

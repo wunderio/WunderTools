@@ -24,15 +24,16 @@ base_addhost_url: https://{{ base_pubkeys_host }}/auth/add_server?hostname={{ an
 partition_var_log: False
 partition_var_lib_mysql: False
 
-# PHP version to be used. Available options: php56u, php70u
+# PHP version to be used. Available options: php56u, php70u, php71u, php72u
 php_package: "php71u"
 
 drush: {
-  version: "8.*",
+  version: "9.*",
 }
 
-drush_use_launcher: False
+drush_use_launcher: True
 php_env_vars_include_db: True
+expose_php_vars_globally: True
 
 # Variables to create/update UpCloud Servers
 upcloud_project_name: "{{ project_name }}"
@@ -50,7 +51,7 @@ upcloud_server_spec_list:
       - { name: 1, state: present }
       - { name: 2, state: present }
     settings:
-      plan: 4xCPU-4GB
+      plan: 4xCPU-8GB
       zone: "{{ upcloud_zone }}"
       # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true
@@ -71,7 +72,7 @@ upcloud_server_spec_list:
     members:
       - { name: 1, state: present }
     settings:
-      plan: 4xCPU-4GB
+      plan: 4xCPU-8GB
       zone: "{{ upcloud_zone }}"
       # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true
@@ -91,7 +92,7 @@ upcloud_server_spec_list:
     members:
       - { name: 1, state: present }
     settings:
-      plan: 6xCPU-8GB
+      plan: 6xCPU-16GB
       zone: "{{ upcloud_zone }}"
       # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true
@@ -127,7 +128,7 @@ upcloud_server_spec_list:
     members:
       - { name: web1, state: present }
     settings:
-      plan: 2xCPU-2GB
+      plan: 2xCPU-4GB
       zone: "{{ upcloud_zone }}"
       # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true
@@ -148,7 +149,7 @@ upcloud_server_spec_list:
     members:
       - { name: web1, state: present }
     settings:
-      plan: 2xCPU-2GB
+      plan: 2xCPU-4GB
       zone: "{{ upcloud_zone }}"
       # Allows ansible to reboot the machine when making changes to the disks
       allow_reboot_on_resize: true

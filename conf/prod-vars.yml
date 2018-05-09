@@ -3,11 +3,6 @@
 # Note this file must be encrypted with ansible-vault!
 
 
-papertrail_host: "logs.host.tld"
-papertrail_port: 12345
-
-newrelic_license_key: "your-own-newrelic-account-licence-key"
-
 drupal_db_password: "password_to_access_drupal_db1"
 varnish_control_key: something-random-secret
 

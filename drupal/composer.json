@@ -21,7 +21,7 @@
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/console": "^1.0.2",
         "drupal/core": "~8.4",
-        "drush/drush": "~8.0|^9.0.0-beta8",
+        "drush/drush": "~9.1",
         "webflo/drupal-finder": "^1.0.0",
         "webmozart/path-util": "^2.3",
         "drupal/config_installer": "~1.0",
@@ -32,11 +32,14 @@
     "require-dev": {
         "codeception/codeception": "^2.2",
         "codeception/visualception": "^0.9.0",
-        "guncha25/codecept-drupal-drush": "~0.3",
-        "guncha25/drupal-8-bootstrap": "0.3"
+        "guncha25/codecept-drupal-drush": "^0.5",
+        "guncha25/drupal-8-bootstrap": "^0.7"
     },
     "conflict": {
         "drupal/drupal": "*"
+    },
+    "config": {
+        "discard-changes": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

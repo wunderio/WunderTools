@@ -64,6 +64,7 @@
         http_port: 8080
         docroot: "{{ drupal_web_root }}"
 
+    deny_robots: true
     # This server also acts as a load balancer
     varnish:
       port: 80

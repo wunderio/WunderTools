@@ -6,9 +6,6 @@
   user: root
   tasks: [ ]
 
-# Setup firewalls and using upcloud api
-- include: upcloud.yml
-
 - name: Common
   hosts: prod
   user: root

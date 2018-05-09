@@ -45,13 +45,13 @@ default:
       - drush: entup -y
       - cleanup
       - shell:
-        - vendor/bin/codecept clean -c web/codeception.yml
-        - vendor/bin/codecept run -c web/codeception.yml
+        - vendor/bin/codecept clean
+        - vendor/bin/codecept run
 
     test:
       - shell:
-        - vendor/bin/codecept clean -c web/codeception.yml
-        - vendor/bin/codecept run -c web/codeception.yml
+        - vendor/bin/codecept clean
+        - vendor/bin/codecept run
 
 # Allow doing minimal builds first in Travis CI
 # These can then be deployed to servers
@@ -103,8 +103,8 @@ test:
       - shell: chmod -R a-w web
       - shell: sudo systemctl restart nginx php-fpm varnish
       - shell:
-        - vendor/bin/codecept clean -c web/codeception.yml
-        - vendor/bin/codecept run -c web/codeception.yml --env test
+        - vendor/bin/codecept clean
+        - vendor/bin/codecept run --env test
 
 
 # Production environment:
@@ -137,14 +137,14 @@ production:
           - builds
           - web/sites/default/files
       - make
-      #- shell: rsync -az -e ssh web www-admin@[front2_ip]:/var/www/[domain.tld]/
+      #- shell: rsync --delete -az -e ssh web www-admin@[front2_ip]:/var/www/[domain.tld]/
 
     update:
       - drush: updb -y
       - drush: cim -y
       - drush: entup -y
       - cleanup
-      - shell: chmod -R a-w current
+      - shell: chmod -R a-w web
       - shell: sudo systemctl restart nginx php-fpm varnish
       #- shell: sudo systemctl -H [front2_ip] restart php-fpm nginx
       #- shell: sudo systemctl -H [lb_ip] restart varnish

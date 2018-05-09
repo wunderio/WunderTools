@@ -1,8 +1,4 @@
 ---
-
-# Setup servers and firewalls using upcloud api
-- include: upcloud.yml
-
 # Example of standard single server setup without production services (monitoring, logging etc.)
 - hosts: stage
   become: false
@@ -93,6 +89,8 @@
         docroot: "{{ drupal_web_root }}"
 
     create_docroot: True
+
+    deny_robots: true
 
     # This server also acts as a load balancer
     varnish:
