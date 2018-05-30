@@ -26,7 +26,7 @@
    # ansible/playbook/roles/solr to local_ansible_roles/{project]_solr and do the modifications there (under files/)
    # - { role: solr, tags: [ 'solr' ] }
    # Of course Elasticsearch as search backend is more modern
-   - { role: elasticsearch, tags: [ 'elasticsearch' ] }
+   # - { role: elasticsearch, tags: [ 'elasticsearch' ] }
    # Devtools, uncomment to enable xdebug and blackfire
    # To use blackfire you need to define blackfire keys and tokens (see ansible/playbook/roles/devtools/defaults/main.yml for reference)
    # You can get those keys and tokens from https://blackfire.io/docs/up-and-running/installation
@@ -45,7 +45,7 @@
     - cron: name="check dirs" minute="0" hour="5,2" job="ls -alh > /dev/null"
 
   vars:
-    domain_name: tre3main.dev
+    domain_name: local.wundertools.com
 
     wkv_site_env: local
     base_pubkeys_enable: False
