@@ -1,6 +1,6 @@
 project:
-  name: wundertools
-  file_sync_url: https://www.example1.com
+  name: Tampere3
+  file_sync_url:
 ansible:
   remote: git@github.com:wunderio/WunderMachina.git
   branch: master

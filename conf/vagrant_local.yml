@@ -1,10 +1,10 @@
-name: wundertools
-hostname: local.wundertools.com
+name: tre3main
+hostname: tre3main.dev
 mem: 2000
 cpus: 2
 
 # By default we use DHCP to assign box ip, but you can define it explicitly here if needed
-ip: 192.168.10.178
+#ip: 192.168.10.178
 
 box: "geerlingguy/centos7"
 
@@ -13,7 +13,7 @@ box: "geerlingguy/centos7"
 #box_version: 1.2.0
 
 # optional host aliases
-aliases: local.alias.wundertools.com local.alias2.wundertools.com docs.local.wundertools.com
+aliases: mainsite.tampere.dev
 
 # Uncomment to enable ssh-agent forwarding to vagrant box
 # Enables you to use your host keys from inside the box to access remotes
