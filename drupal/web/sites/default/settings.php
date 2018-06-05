@@ -20,6 +20,19 @@ $databases['default']['default'] = [
   'driver' => 'mysql',
 ];
 
+// Load database credentials from Lando.
+if (getenv('LANDO_INFO')) {
+  $lando_info = json_decode(getenv('LANDO_INFO'), TRUE);
+  $databases['default']['default'] = [
+    'driver' => 'mysql',
+    'database' => $lando_info['database']['creds']['database'],
+    'username' => $lando_info['database']['creds']['user'],
+    'password' => $lando_info['database']['creds']['password'],
+    'host' => $lando_info['database']['internal_connection']['host'],
+    'port' => $lando_info['database']['internal_connection']['port'],
+  ];
+}
+
 // CHANGE THIS.
 $settings['hash_salt'] = 'some-hash-salt-please-change-this';
 
