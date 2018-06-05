@@ -28,6 +28,8 @@
           - "localhost"
           - "{{ front1_ip }}"
           - "{{ front2_ip }}"
+          #- "{{ front3_ip }}"
+          # ...
 
 
   tasks:
@@ -35,8 +37,15 @@
       set_fact:
         db_ip: "{{ groups['prod-db'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | first }}"
         lb_ip: "{{ groups['prod-lb'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | first }}"
-        front1_ip: "{{ groups['prod-front'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | first }}"
-        front2_ip: "{{ groups['prod-front'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | list | last }}"
+        front_ips:  "{{ groups['prod-front'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | list }}"
+      tags: ['common']
+
+    - name: Set front ips
+      set_fact:
+        front1_ip: "{{ front_ips[0] }}"
+        front2_ip: "{{ front_ips[1] }}"
+        #front3_ip: "{{ front_ips[2] }}"
+        # ...
       tags: ['common']
 
     - name: Set common facts
