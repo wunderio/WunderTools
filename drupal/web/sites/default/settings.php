@@ -37,7 +37,7 @@ if (getenv('LANDO_INFO')) {
     'port' => $lando_info['database']['internal_connection']['port'],
   ];
 }
-else if (getenv('KONTENA_STACK_NAME')) {
+elseif (getenv('KONTENA_STACK_NAME')) {
   /*
    * If running on Kontena, use the environment variables provided in kontena.yml
    */
