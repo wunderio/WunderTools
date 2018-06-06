@@ -37,7 +37,7 @@
       set_fact:
         db_ip: "{{ groups['prod-db'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | first }}"
         lb_ip: "{{ groups['prod-lb'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | first }}"
-        front_ips:  "{{ groups['prod-front'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | list }}"
+        front_ips: "{{ groups['prod-front'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | list }}"
       tags: ['common']
 
     - name: Set front ips
