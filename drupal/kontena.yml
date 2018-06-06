@@ -74,6 +74,8 @@ services:
       - {{ loadbalancer }}
     volumes:
       - drupal_files:/var/www/html/web/sites/default/files
+    affinity:
+      - "service==drupal"
   drupal:
     image: images.kontena.io/wunder/{{ docker-image-prefix }}-drupal:{{ docker-image-version }}
     build:
@@ -88,7 +90,7 @@ services:
       DB_HOST: db
     secrets:
       - secret: ${STACK}-mysql-password
-        name: DB_PASS
+        name: DB_PASSWORD
         type: env
       - secret: ${STACK}-hash-salt
         name: HASH_SALT
@@ -108,6 +110,14 @@ services:
       - secret: ${STACK}-mysql-password
         name: MYSQL_PASSWORD
         type: env
+    deploy:
+      wait_for_port: 3306
+    health_check:
+      protocol: tcp
+      port: 3306
+      interval: 10
+      initial_delay: 10
+      timeout: 2
 volumes:
   drupal_files:
     external:

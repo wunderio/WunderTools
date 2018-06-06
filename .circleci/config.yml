@@ -30,6 +30,7 @@ jobs:
       - restore_cache:
           keys:
             - v1-yarn-{{ checksum "yarn.lock" }}
+            - v1-yarn-
 
       - run: yarn install
 
@@ -52,7 +53,7 @@ jobs:
       - run: kontena volume create --driver local --scope stack "${STACK_NAME}_files" || kontena volume show "${STACK_NAME}_files"
 
       # Create or update the stack for the current branch.
-      - run: kontena stack install --name $STACK_NAME || kontena stack upgrade $STACK_NAME
+      - run: kontena stack install --name $STACK_NAME || kontena stack upgrade --force $STACK_NAME
 
       # Run drush commands within the deployed environment.
       - run: |
@@ -63,9 +64,12 @@ jobs:
             kontena service exec $STACK_NAME/drupal -- drush updatedb -n
             test -d config/sync && kontena service exec $STACK_NAME/drupal -- drush config-import -n
             kontena service exec $STACK_NAME/drupal -- drush entity-updates -n
-          else
+          elif [ -d config/sync ]
+          then
             # Install drupal if needed, alternatively you could import a database dump.
             kontena service exec $STACK_NAME/drupal -- drush site-install -n config_installer
+          else
+            echo "No configuration found. Please export your configuration first."
           fi
 
       - run: |
