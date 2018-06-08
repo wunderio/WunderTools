@@ -1,0 +1,20 @@
+# Ignore file for the nginx container.
+**/*.md
+**/CHANGELOG*
+**/README*
+**/LICENSE*
+kontena.yml
+.circleci/*
+phpcs.xml
+**/*.sql
+**/*.gz
+**/*.zip
+**/node_modules
+**/.git
+**/*.php
+**/*.module
+**/*.install
+**/*.yml
+core/**/tests
+modules/contrib/**/tests
+sites/**/files

@@ -20,8 +20,13 @@ $databases['default']['default'] = [
   'driver' => 'mysql',
 ];
 
-// Load database credentials from Lando.
+// CHANGE THIS.
+$settings['hash_salt'] = 'some-hash-salt-please-change-this';
+
 if (getenv('LANDO_INFO')) {
+  /*
+   * Load database credentials from Lando.
+   */
   $lando_info = json_decode(getenv('LANDO_INFO'), TRUE);
   $databases['default']['default'] = [
     'driver' => 'mysql',
@@ -32,9 +37,23 @@ if (getenv('LANDO_INFO')) {
     'port' => $lando_info['database']['internal_connection']['port'],
   ];
 }
+elseif (getenv('KONTENA_STACK_NAME')) {
+  /*
+   * If running on Kontena, use the environment variables provided in kontena.yml
+   */
+  $databases['default']['default'] = [
+    'database' => getenv('DB_NAME'),
+    'username' => getenv('DB_USER'),
+    'password' => getenv('DB_PASSWORD'),
+    'host' => getenv('DB_HOST'),
+    'port' => '3306',
+    'driver' => 'mysql',
+    'prefix' => '',
+    'collation' => 'utf8mb4_general_ci',
+  ];
 
-// CHANGE THIS.
-$settings['hash_salt'] = 'some-hash-salt-please-change-this';
+  $settings['hash_salt'] = getenv('HASH_SALT');
+}
 
 if ((isset($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) == "on")
   || (isset($_SERVER["HTTP_X_FORWARDED_PROTO"]) && $_SERVER["HTTP_X_FORWARDED_PROTO"] == "https")
