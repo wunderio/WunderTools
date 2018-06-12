@@ -27,7 +27,8 @@
         "drupal/config_installer": "~1.0",
         "drupal/warden": "*",
         "drupal/simplei": "^1.0",
-        "wunderio/drupal-ping": "^1.0"
+        "wunderio/drupal-ping": "^1.0",
+        "drupal/imagemagick": "^2.3"
     },
     "require-dev": {
         "codeception/codeception": "^2.2",
