@@ -77,7 +77,7 @@ There's a known issue with using APFS and NFS in High Sierra.
 A workaround is to have a mounted HFS+ image with your files in it.  
   - Open Disk Utility
   - File -> New Image -> Blank Image...
-  - Name it whatever, make sure the format is Mac OS Extended (Journaled)
+  - Name it whatever. Make sure the format is Mac OS Extended (Journaled) and that the size of the image is big enough.
   - It should then be found at /Volume/{name_of_volume}
   - Move your site files there
   - Do a `vagrant up` in there and enjoy a working environment
