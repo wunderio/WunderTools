@@ -1,4 +1,6 @@
 #!/bin/bash
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 VAULT_FILE=$WT_ANSIBLE_VAULT_FILE
 MYSQL_ROOT_PASS=
