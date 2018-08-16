@@ -6,5 +6,5 @@
 drupal_db_password: "password_to_access_drupal_db1"
 varnish_control_key: something-random-secret
 
-external_smtp_sasl_password_maps: 'whateversecretstheexternalsmtpservicerequires'
+external_smtp_sasl_password_maps: 'static:SMTP_Injection:whateversecretstheexternalsmtpservicerequires'
 
