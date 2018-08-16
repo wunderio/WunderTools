@@ -57,7 +57,7 @@ upcloud_server_spec_list:
       allow_reboot_on_resize: true
       storage_devices:
         - title: root
-          os: CentOS 7.5
+          os: CentOS 7.0
           size: 50
         - title: logs
           size: 10
@@ -78,7 +78,7 @@ upcloud_server_spec_list:
       allow_reboot_on_resize: true
       storage_devices:
         - title: root
-          os: CentOS 7.5
+          os: CentOS 7.0
           size: 50
         - title: logs
           size: 10
@@ -98,7 +98,7 @@ upcloud_server_spec_list:
       allow_reboot_on_resize: true
       storage_devices:
         - title: root
-          os: CentOS 7.5
+          os: CentOS 7.0
           size: 50
         - title: logs
           size: 10
@@ -135,7 +135,7 @@ upcloud_server_spec_list:
       storage_devices:
         - title: root
           size: 50
-          os: CentOS 7.5
+          os: CentOS 7.0
         - title: logs
           size: 10
           mount:
@@ -156,7 +156,7 @@ upcloud_server_spec_list:
       storage_devices:
         - title: root
           size: 50
-          os: CentOS 7.5
+          os: CentOS 7.0
         - title: logs
           size: 10
           mount:
