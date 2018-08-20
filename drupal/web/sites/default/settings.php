@@ -79,10 +79,16 @@ if (!empty($_SERVER['SERVER_ADDR'])) {
   header('X-Webserver: ' . end($pcs));
 }
 
+$settings['memcache']['servers'] = ['127.0.0.1:11211' => 'default'];
+
 $env = getenv('WKV_SITE_ENV');
 switch ($env) {
   case 'production':
     $settings['simple_environment_indicator'] = '#d4000f Production';
+    $settings['memcache']['servers'] = array(
+      '[front1_internal_ip]:11211' => 'default',
+      '[front2_internal_ip]]:11211' => 'default'
+    );
     break;
 
   case 'dev':
@@ -103,6 +109,39 @@ switch ($env) {
 $config_directories = array(
   CONFIG_SYNC_DIRECTORY => '../sync',
 );
+
+if (class_exists('Memcached')) {
+  /**
+   * Memcache configuration.
+   */
+  $settings['memcache']['extension'] = 'Memcached';
+  $settings['memcache']['bins'] = ['default' => 'default'];
+  $settings['memcache']['key_prefix'] = '';
+  #$settings['cache']['default'] = 'cache.backend.memcache';
+  $settings['cache']['bins']['render'] = 'cache.backend.memcache';
+  $settings['cache']['bins']['dynamic_page_cache'] = 'cache.backend.memcache';
+  $settings['cache']['bins']['bootstrap'] = 'cache.backend.memcache';
+  $settings['cache']['bins']['config'] = 'cache.backend.memcache';
+  $settings['cache']['bins']['discovery'] = 'cache.backend.memcache';
+
+  // Enable stampede protection.
+  $settings['memcache']['stampede_protection'] = TRUE;
+
+  // High performance - no hook_boot(), no hook_exit(), ignores Drupal IP
+  // blacklists.
+  $conf['page_cache_invoke_hooks'] = FALSE;
+  $conf['page_cache_without_database'] = TRUE;
+
+  // Memcached PECL Extension Support.
+  // Adds Memcache binary protocol and no-delay features (experimental).
+  $settings['memcache']['options'] = [
+    \Memcached::OPT_COMPRESSION => FALSE,
+    \Memcached::OPT_DISTRIBUTION => \Memcached::DISTRIBUTION_CONSISTENT,
+    \Memcached::OPT_BINARY_PROTOCOL => TRUE,
+    \Memcached::OPT_TCP_NODELAY => TRUE,
+  ];
+}
+
 
 /**
  * Access control for update.php script.
