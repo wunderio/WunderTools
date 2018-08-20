@@ -83,11 +83,11 @@ $settings['memcache']['servers'] = ['127.0.0.1:11211' => 'default'];
 
 $env = getenv('WKV_SITE_ENV');
 switch ($env) {
-  case 'production':
+  case 'prod':
     $settings['simple_environment_indicator'] = '#d4000f Production';
     $settings['memcache']['servers'] = array(
       '[front1_internal_ip]:11211' => 'default',
-      '[front2_internal_ip]]:11211' => 'default'
+      '[front2_internal_ip]:11211' => 'default'
     );
     break;
 
