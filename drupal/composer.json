@@ -27,6 +27,7 @@
         "drupal/config_installer": "~1.0",
         "drupal/warden": "*",
         "drupal/simplei": "^1.0",
+        "drupal/memcache": "^2.0@alpha",
         "wunderio/drupal-ping": "^1.0"
     },
     "require-dev": {
