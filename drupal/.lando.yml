@@ -34,6 +34,11 @@ services:
     extras:
       - "apt-get update -y"
       - "apt-get install python-yaml -y"
+      # wkhtmltopdf setup
+      # - "[ -f /usr/bin/wkhtmltopdf ] || ( apt-get update -y && apt-get install xvfb )"
+      # - "[ -f /usr/bin/wkhtmltopdf ] || ( wget -nc https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.jessie_amd64.deb -P /tmp )"
+      # - "[ -e /usr/bin/wkhtmltopdf ] || ( dpkg -i /tmp/wkhtmltox_0.12.5-1.jessie_amd64.deb )"
+      # - "[ -f /usr/bin/wkhtmltopdf ] || ( ln -s /usr/local/bin/wkhtmltopdf /usr/bin/wkhtmltopdf )"
     overrides:
       services:
         environment:
