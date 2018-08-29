@@ -118,3 +118,9 @@ You should only bother with the following:
 
 XDebug tools are installed via the devtools role. Everything should work out
 of the box for PHPStorm. PHP script e.g. drush debugging should also work.
+
+### Lando debugging
+
+XDebug can be enabled by uncommeting `xdebug: true` in the .lando.yml file. After `lando rebuild` port 9000 is used for XDebug.
+
+Note: Make sure port 9000 is not used in your OS for anything else. You can see all ports in use for example with `lsof -i -n -P`. For example php-fpm might be using port 9000 if you have it running.
