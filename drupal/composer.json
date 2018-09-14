@@ -28,6 +28,7 @@
         "drupal/warden": "*",
         "drupal/simplei": "^1.0",
         "drupal/memcache": "^2.0@alpha",
+        "drupal/imagemagick": "^2.3",
         "wunderio/drupal-ping": "^1.0"
     },
     "require-dev": {
