@@ -6,7 +6,9 @@
 # other site definitions.
 default:
 
-  aliases: local
+  aliases: 
+    - local
+    - lando
 
   drupal_version: d8
 
