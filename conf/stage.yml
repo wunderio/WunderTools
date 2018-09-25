@@ -44,6 +44,13 @@
       tags: ['cron']
       when: drupal_web_root is defined
 
+    # Example how to add a ssh key for 3rd party developer
+    # NOTE: Never add 3rd party developers to key.wunder.io!
+    #- name: Add 3rd party public key
+    #  authorized_key:
+    #    user: www-admin
+    #    key: "ssh-rsa theuserspublickeycomeshere developer@somecompany.tld"
+
   vars:
     wkv_site_env: stage
 
