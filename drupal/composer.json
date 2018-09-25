@@ -32,10 +32,7 @@
         "wunderio/drupal-ping": "^1.0"
     },
     "require-dev": {
-        "codeception/codeception": "^2.2",
-        "codeception/visualception": "^0.9.0",
-        "guncha25/codecept-drupal-drush": "^0.5",
-        "guncha25/drupal-8-bootstrap": "^0.7"
+        "guncha25/drupal-codeception": "^8"
     },
     "conflict": {
         "drupal/drupal": "*"

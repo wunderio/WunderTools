@@ -21,8 +21,7 @@ tooling:
     service: appserver
     description: Run codeception
     cmd:
-      - ./vendor/bin/codecept
-      - "--env=lando"
+    - ./vendor/bin/codecept
 
 services:  
   mailhog:
