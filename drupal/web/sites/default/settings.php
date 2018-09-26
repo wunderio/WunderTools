@@ -100,6 +100,7 @@ switch ($env) {
     break;
 
   case 'local':
+  case 'lando':
     $settings['simple_environment_indicator'] = '#88b700 Local';
     break;
 }
