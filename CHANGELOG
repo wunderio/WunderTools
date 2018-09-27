@@ -1,3 +1,6 @@
+11
+Local ssl cert path has been updated. For vagrant to work ssl_certificate path need to be changed into ssl/certificate.crt in conf/vagrant.yml
+
 10
 Vagrant provisioning has been changed to run ansible_local so there is no need for host to have ansible installed at all.
 Make sure the provision.sh is updated to make it work with vagrant as there is no more vagrant provided ansible provisioner inventory.
