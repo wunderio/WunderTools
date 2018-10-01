@@ -8,7 +8,7 @@ class_name: AcceptanceTester
 modules:
     enabled:
         - WebDriver:
-            url: https://wundertools.lndo.site
+            url: %SITE_URL%
             browser: chrome
             restart: true
             host: chrome

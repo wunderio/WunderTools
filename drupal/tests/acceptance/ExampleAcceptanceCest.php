@@ -7,7 +7,7 @@ class ExampleAcceptanceCest {
    */
   public function exampleAcceptanceTest(AcceptanceTester $i) {
     $i->amOnPage('/');
-    $i->loginAs('authenticated');
+    $i->loginWithRole('authenticated');
   }
 
 }

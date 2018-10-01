@@ -46,6 +46,7 @@ services:
           DB_USER_DRUPAL: drupal8
           DB_HOST_DRUPAL: database
           DB_NAME_DRUPAL: drupal8
+          SITE_URL: 'https://nginx'
 
   # Optional. Uncomment the following lines if Elasticsearch is required.
   # elasticsearch:
