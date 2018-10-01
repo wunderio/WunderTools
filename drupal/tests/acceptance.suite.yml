@@ -8,27 +8,25 @@ class_name: AcceptanceTester
 modules:
     enabled:
         - WebDriver:
-            url: https://local.wundertools.com
+            url: %SITE_URL%
             browser: chrome
             restart: true
+            host: chrome
+            window_size: 1000x2000
         - \Helper\Acceptance
         - DrupalBootstrap
-#    Not required in default setup
-#    config:
-#        DrupalBootstrap:
-#          drupal_root: '/vagrant/drupal/web'
-#          site_path: 'sites/default'
+        - DrupalUser:
+            cleanup_entities:
+            - 'file'
+        - DrupalEntity
+        - DrupalWatchdog:
+            level: 'ERROR'
+            channels:
+              php: 'WARNING'
+        - DrupalDrush
 extensions:
     enabled:
-        - Codeception\Extension\RunFailed
         - Codeception\Extension\Recorder
     config:
         Codeception\Extension\Recorder:
-          delete_successful: false
-env:
-    lando:
-        modules:
-            config:
-                WebDriver:
-                    host: chrome
-                    url: http://nginx
+          delete_successful: true

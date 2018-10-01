@@ -12,6 +12,9 @@ settings:
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
+params:
+  - tests/_envs/parameters.yml # load params from configuration
+  - env # try to load params from environment vars
 modules:
     config:
         Db:

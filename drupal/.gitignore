@@ -13,6 +13,9 @@ web/_ping.php
 # Ignore test logs
 /tests/_log
 
+# Ignore test generated code
+/tests/_support/_generated
+
 # Ignore sensitive information
 /web/sites/*/settings.local.php
 

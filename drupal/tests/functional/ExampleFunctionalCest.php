@@ -1,11 +1,11 @@
 <?php
 
-class ExampleAcceptanceCest {
+class ExampleFunctionalCest {
 
   /**
    * @param \FunctionalTester $I
    */
-  public function exampleAcceptanceTest(FunctionalTester $I) {
+  public function exampleFunctionalTest(FunctionalTester $I) {
     $I->amOnPage('/');
     $I->seeResponseCodeIs(200);
   }

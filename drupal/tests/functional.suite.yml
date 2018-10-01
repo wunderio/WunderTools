@@ -11,8 +11,14 @@ modules:
         - \Helper\Functional
         - Asserts
         - PhpBrowser:
-            url: http://local.wundertools.com
-        - DrupalBootstrap
-    config:
-        DrupalBootstrap:
-          nginx_url: 'https://local.wundertools.com:8080'
+            url: %SITE_URL%
+        - DrupalUser:
+            driver: 'PhpBrowser'
+            cleanup_entities:
+            - 'file'
+        - DrupalEntity
+        - DrupalWatchdog:
+            level: 'ERROR'
+            channels:
+              php: 'WARNING'
+        - DrupalDrush
