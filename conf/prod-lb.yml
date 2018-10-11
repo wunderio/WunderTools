@@ -135,6 +135,9 @@
 
     # Define additional Content-Security-Policy headers
     nginx_content_security: "; connect-src wss: https:"
+
+    # Drupal already enforces SAMEORIGIN
+    nginx_disable_default_xframe_options: True
     # or disable them completely
     #nginx_disable_content_security_policy: True
     # Also affects sslterminator
