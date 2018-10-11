@@ -116,7 +116,7 @@ $config_directories = array(
  */
 if (!drupal_installation_attempted() && extension_loaded('memcached') && class_exists('Memcached')) {
   // Define memcache settings only if memcache module enabled.
-  if (class_exists(MemcacheBackendFactory::class)) {
+  if (strpos(file_get_contents(getcwd().'/../sync/core.extension.yml'), 'memcache') !== false) {
     $settings['memcache']['extension'] = 'Memcached';
     $settings['memcache']['bins'] = ['default' => 'default'];
     $settings['memcache']['key_prefix'] = '';
