@@ -14,10 +14,14 @@
   connection: local
   become: false
   tags: ['upcloud']
-  vars:
-    - upcloud_api_user: "{{ lookup('env', 'UPCLOUD_API_USER') }}"
-    - upcloud_api_passwd: "{{ lookup('env', 'UPCLOUD_API_PASSWD') }}"
   tasks:
+    - name: Set API credentials
+      set_fact:
+        upcloud_api_user: "{{ lookup('env', 'UPCLOUD_API_USER') }}"
+        upcloud_api_passwd: "{{ lookup('env', 'UPCLOUD_API_PASSWD') }}"
+        cloudflare_api_user: "{{ lookup('env', 'CLOUDFLARE_API_USER') }}"
+        cloudflare_api_passwd: "{{ lookup('env', 'CLOUDFLARE_API_PASSWD') }}"
+
     - name: Ensure that UPCLOUD_API_USER is present
       fail:
         msg: "You must set UPCLOUD_API_USER env in your local machine"
@@ -48,6 +52,20 @@
         - "{{ upcloud_created_instances.results }}"
       when: upcloud_created_instances is defined and item['item'] | json_query( '[*].group' ) | length == 1 and item.invocation is defined
       tags: ['create', 'ini-config']
+
+    - name: Add DNS records to cloudflare
+      cloudflare_dns:
+        zone: wunder.io
+        record: "{{ item['server']['hostname'] }}"
+        type: A
+        value: "{{ item['public_ip'] }}"
+        account_email: "{{ cloudflare_api_user }}"
+        account_api_token: "{{ cloudflare_api_passwd }}"
+      with_items:
+        - "{{ upcloud_created_instances.results }}"
+      tags: ['dns', 'cloudflare']
+      when: cloudflare_api_user is defined
+
 
     - name: Update UpCloud Secondary Groups to server.inventory file
       ini_file:
