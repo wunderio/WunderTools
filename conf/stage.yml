@@ -1,4 +1,15 @@
 ---
+
+# Make sure that the upcloud credentials are set as env
+- hosts: all
+  connection: local
+  become: false
+  tasks:
+    - set_fact:
+        cloudflare_api_user: "{{ lookup('env', 'CLOUDFLARE_API_USER') }}"
+        cloudflare_api_passwd: "{{ lookup('env', 'CLOUDFLARE_API_PASSWD') }}"
+      tags: ['common', 'dns']
+
 # Example of standard single server setup without production services (monitoring, logging etc.)
 - hosts: stage
   become: false
@@ -50,6 +61,18 @@
     #  authorized_key:
     #    user: www-admin
     #    key: "ssh-rsa theuserspublickeycomeshere developer@somecompany.tld"
+
+
+    - name: "Add DNS records to cloudflare"
+      cloudflare_dns:
+        zone: example.com
+        record: stage
+        type: A
+        value: "{{ ansible_default_ipv4.address }}"
+        account_email: "{{ cloudflare_api_user }}"
+        account_api_token: "{{ cloudflare_api_passwd }}"
+      register: record
+      tags: ['dns']
 
   vars:
     wkv_site_env: stage
