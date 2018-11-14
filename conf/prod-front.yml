@@ -49,7 +49,7 @@
         state: "present"
         user: nginx
       tags: ['cron']
-      when: ansible_eth0.ipv4.address == groups['prod-front'][0] and drupal_web_root is defined
+      when: ansible_eth0.ipv4.address == groups['prod-front'][1] and drupal_web_root is defined
 
   vars:
 
