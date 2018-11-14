@@ -43,6 +43,7 @@ default:
           - builds
       - make
       - drush: updb -y
+      - drush: cr
       - drush: cim -y
       - cleanup
       - shell:
@@ -98,6 +99,7 @@ test:
 
     update:
       - drush: updb -y
+      - drush: cr
       - drush: cim -y
       - cleanup
       - shell: chmod -R a-w web
@@ -141,6 +143,7 @@ production:
 
     update:
       - drush: updb -y
+      - drush: cr
       - drush: cim -y
       - cleanup
       - shell: chmod -R a-w web
