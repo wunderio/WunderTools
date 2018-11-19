@@ -21,7 +21,7 @@
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/console": "^1.0.2",
         "drupal/core": "~8.4",
-        "drush/drush": "~9.1",
+        "drush/drush": "^9.0.0",
         "webflo/drupal-finder": "^1.0.0",
         "webmozart/path-util": "^2.3",
         "drupal/config_installer": "~1.0",
@@ -29,7 +29,8 @@
         "drupal/simplei": "^1.0",
         "drupal/memcache": "^2.0@alpha",
         "drupal/imagemagick": "^2.3",
-        "wunderio/drupal-ping": "^1.0"
+        "wunderio/drupal-ping": "^1.0",
+        "machbarmacher/gdpr-dump": "dev-master"
     },
     "require-dev": {
         "guncha25/drupal-codeception": "^8"
