@@ -63,6 +63,6 @@
         drupal_web_root: "/var/www/{{ domain1_name }}/current/web"
       tags: ['common']
 
-- include: prod-lb.yml
-- include: prod-db.yml
-- include: prod-front.yml
+- import_playbook: prod-lb.yml
+- import_playbook: prod-db.yml
+- import_playbook: prod-front.yml
