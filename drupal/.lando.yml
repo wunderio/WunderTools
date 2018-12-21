@@ -63,3 +63,8 @@ events:
   # Clear caches after a database import
   post-db-import:
     - appserver: cd $LANDO_WEBROOT && drush cr -y
+  # Enable Drush aliases.
+    post-start:
+    - appserver: mkdir -p $LANDO_MOUNT/.drush/site-aliases
+    - appserver: ln -sf /app/drush/wundertools.aliases.drushrc.php $LANDO_MOUNT/.drush/site-aliases/wundertools.aliases.drushrc.php
+    
