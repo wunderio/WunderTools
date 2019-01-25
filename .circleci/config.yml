@@ -9,12 +9,14 @@ workflows:
     jobs:
       - silta/drupal-validate:
           name: validate
+          drupal-root: drupal
           post-validation:
             - run: echo "You can add additional validation here!"
 
       - silta/drupal-build:
           name: build
           context: global_nonprod
+          drupal-root: drupal
           codebase-build:
             - silta/drupal-composer-install
             - silta/yarn-install
@@ -22,6 +24,7 @@ workflows:
       - silta/drupal-deploy:
           name: deploy
           context: global_nonprod
+          drupal-root: drupal
           requires:
             - build
           filters:
@@ -31,6 +34,7 @@ workflows:
       - silta/drupal-deploy:
           name: deploy
           context: global_nonprod
+          drupal-root: drupal
           requires:
             - build
           silta_config: silta/silta.yml,silta/silta-prod.yml
