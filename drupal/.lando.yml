@@ -8,7 +8,7 @@ config:
   webroot: web
   via: nginx
   php: '7.1'
-  database: mariadb:10.1
+  database: mariadb:10.2
   #xdebug: true
 
 tooling:
@@ -23,12 +23,12 @@ tooling:
     cmd:
     - ./vendor/bin/codecept
 
-services:  
+services:
   mailhog:
     type: mailhog
     hogfrom:
       - appserver
-  
+
   appserver:
     extras:
       - "apt-get update -y"
@@ -67,4 +67,3 @@ events:
   post-start:
     - appserver: mkdir -p $LANDO_MOUNT/.drush/site-aliases
     - appserver: ln -sf /app/drush/wundertools.aliases.drushrc.php $LANDO_MOUNT/.drush/site-aliases/wundertools.aliases.drushrc.php
-    
