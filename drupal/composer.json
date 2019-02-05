@@ -30,7 +30,8 @@
         "drupal/memcache": "^2.0@alpha",
         "drupal/imagemagick": "^2.3",
         "wunderio/drupal-ping": "^1.0",
-        "machbarmacher/gdpr-dump": "dev-master"
+        "machbarmacher/gdpr-dump": "dev-master",
+        "zaporylie/composer-drupal-optimizations": "^1.0"
     },
     "require-dev": {
         "guncha25/drupal-codeception": "^8"
