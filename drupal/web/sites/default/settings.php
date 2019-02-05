@@ -37,35 +37,6 @@ if (getenv('LANDO_INFO')) {
     'port' => $lando_info['database']['internal_connection']['port'],
   ];
 }
-elseif (getenv('DB_NAME')) {
-  /*
-   * If running on Kubernetes, use the environment variables provided by the helm chart.
-   */
-  $databases['default']['default'] = [
-    'database' => getenv('DB_NAME'),
-    'username' => getenv('DB_USER'),
-    'password' => getenv('DB_PASS'),
-    'host' => getenv('DB_HOST'),
-    'port' => '3306',
-    'driver' => 'mysql',
-    'prefix' => '',
-    'collation' => 'utf8mb4_general_ci',
-  ];
-
-  $settings['hash_salt'] = getenv('HASH_SALT');
-
-  /**
-   * Generated twig files should not be on shared storage.
-   */
-  $settings['php_storage']['twig']['directory'] = '/tmp';
-
-  /**
-   * If a volume has been set for private files, tell Drupal about it.
-   */
-  if (getenv('PRIVATE_FILES_PATH')) {
-    $settings['file_private_path'] = getenv('PRIVATE_FILES_PATH');
-  }
-}
 
 if ((isset($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) == "on")
   || (isset($_SERVER["HTTP_X_FORWARDED_PROTO"]) && $_SERVER["HTTP_X_FORWARDED_PROTO"] == "https")
@@ -173,4 +144,11 @@ $settings['container_yamls'][] = __DIR__ . '/services.yml';
  */
 if (file_exists(__DIR__ . '/settings.local.php')) {
   include __DIR__ . '/settings.local.php';
+}
+
+/**
+ * Silta cluster configuration overrides.
+ */
+if (getenv('SILTA_CLUSTER') && file_exists($app_root . '/' . $site_path . '/settings.silta.php')) {
+  include $app_root . '/' . $site_path . '/settings.silta.php';
 }
