@@ -274,3 +274,8 @@ When those environment variables are in place they can be used in settings.php u
 ```
 $secret_variable = getenv("secret_key");
 ```
+
+For more generic environment variables you can also define them in `environment_variables` the same way as with `php_extra_env_vars`. This is included in the base role, so it will be available even on servers not requiring php -role. This can be used for example in NodeJs applications where you can access the environment variables using `process.env`:
+```
+let secret_variable = process.env.secret_key
+```
