@@ -1,5 +1,5 @@
 {
-    "name": "Wundertools Drupal 8",
+    "name": "wunderio/wundertools",
     "description": "Wundertools Drupal 8 Composer Project Template",
     "type": "project",
     "license": "GPL-2.0+",
