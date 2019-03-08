@@ -111,6 +111,7 @@
       - address: 94.237.27.124
       - address: 94.237.33.88
       - address: 83.136.248.231
+      - address: 194.89.156.118
 
     # Apps I want to run on this server
     apps:
