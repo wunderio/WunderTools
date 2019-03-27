@@ -1,9 +1,6 @@
 name: wunderlando
 recipe: drupal8
 
-compose:
-  - compose.yml
-
 config:
   webroot: web
   via: nginx
@@ -30,16 +27,18 @@ services:
       - appserver
 
   appserver:
-    extras:
-      - "apt-get update -y"
-      - "apt-get install python-yaml -y"
+    build:
+      # Perform composer install.
+      - composer install
+      # build_as_root:
+      # - "apt-get update -y"
+      # - "apt-get install python-yaml -y"
       # wkhtmltopdf setup
       # - "[ -f /usr/bin/wkhtmltopdf ] || ( apt-get update -y && apt-get install xvfb -y)"
       # - "[ -f /usr/bin/wkhtmltopdf ] || ( wget -nc https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.jessie_amd64.deb -P /tmp )"
       # - "[ -e /usr/bin/wkhtmltopdf ] || ( dpkg -i /tmp/wkhtmltox_0.12.5-1.jessie_amd64.deb )"
       # - "[ -f /usr/bin/wkhtmltopdf ] || ( ln -s /usr/local/bin/wkhtmltopdf /usr/bin/wkhtmltopdf )"
     overrides:
-      services:
         environment:
           WKV_SITE_ENV: lando
           DB_PASS_DRUPAL: drupal8
@@ -47,6 +46,18 @@ services:
           DB_HOST_DRUPAL: database
           DB_NAME_DRUPAL: drupal8
           SITE_URL: 'https://nginx'
+          HASH_SALT: notsosecurehash
+  # Optional. Uncomment the following lines to enable chrome service.
+  # chrome:
+  #   type: compose
+  #   services:
+  #     image: selenium/standalone-chrome
+  #     user: root
+  #     ports:
+  #       - "4444:4444"
+  #     volumes:
+  #       - /dev/shm:/dev/shm
+  #     command: /opt/bin/entry_point.sh
 
   # Optional. Uncomment the following lines if Elasticsearch is required.
   # elasticsearch:
