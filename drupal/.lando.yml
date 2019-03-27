@@ -39,14 +39,14 @@ services:
       # - "[ -e /usr/bin/wkhtmltopdf ] || ( dpkg -i /tmp/wkhtmltox_0.12.5-1.jessie_amd64.deb )"
       # - "[ -f /usr/bin/wkhtmltopdf ] || ( ln -s /usr/local/bin/wkhtmltopdf /usr/bin/wkhtmltopdf )"
     overrides:
-        environment:
-          WKV_SITE_ENV: lando
-          DB_PASS_DRUPAL: drupal8
-          DB_USER_DRUPAL: drupal8
-          DB_HOST_DRUPAL: database
-          DB_NAME_DRUPAL: drupal8
-          SITE_URL: 'https://nginx'
-          HASH_SALT: notsosecurehash
+      environment:
+        WKV_SITE_ENV: lando
+        DB_PASS_DRUPAL: drupal8
+        DB_USER_DRUPAL: drupal8
+        DB_HOST_DRUPAL: database
+        DB_NAME_DRUPAL: drupal8
+        SITE_URL: 'https://nginx'
+        HASH_SALT: notsosecurehash
   # Optional. Uncomment the following lines to enable chrome service.
   # chrome:
   #   type: compose
