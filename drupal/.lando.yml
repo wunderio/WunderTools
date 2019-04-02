@@ -30,9 +30,13 @@ services:
     build:
       # Perform composer install.
       - composer install
-      # build_as_root:
-      # - "apt-get update -y"
-      # - "apt-get install python-yaml -y"
+    build_as_root:
+      # Temporary hack to get a Debian package to install
+      # https://unix.stackexchange.com/a/508948
+      - echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/jessie-backports.list
+      - sed -i '/deb http:\/\/deb.debian.org\/debian jessie-updates main/d' /etc/apt/sources.list
+      - apt-get -o Acquire::Check-Valid-Until=false update
+      - apt-get install python-yaml -y
       # wkhtmltopdf setup
       # - "[ -f /usr/bin/wkhtmltopdf ] || ( apt-get update -y && apt-get install xvfb -y)"
       # - "[ -f /usr/bin/wkhtmltopdf ] || ( wget -nc https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.jessie_amd64.deb -P /tmp )"
