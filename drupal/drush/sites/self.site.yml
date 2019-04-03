@@ -1,0 +1,51 @@
+# Docs at https://github.com/drush-ops/drush/blob/master/examples/example.site.yml
+
+dev:
+  host: dev.wundertools.com
+  options:
+    command-specific:
+      sql-sync:
+        no-cache: true
+  paths:
+    dump-dir: /home/www-admin
+  root: /var/www/dev.wundertools.com/web
+  uri: 'https://dev.wundertools.com'
+  user: www-admin
+
+local:
+  host: local.wundertools.com
+  options:
+    env: vagrant
+    parent: '@parent'
+    site: wundertools
+  paths:
+    files: /vagrant/drupal/files
+    dump-dir: /home/vagrant
+  root: /vagrant/drupal/web
+  user: vagrant
+  ssh:
+    options: '-i '
+
+prod:
+  host: wundertools.com
+  options:
+    command-specific:
+      sql-sync:
+        no-cache: true
+  paths:
+    dump-dir: /home/www-admin
+  root: /var/www/wundertools.com/web
+  uri: 'https://wundertools.com'
+  user: www-admin
+
+stage:
+  host: stage.wundertools.com
+  options:
+    command-specific:
+      sql-sync:
+        no-cache: true
+  paths:
+    dump-dir: /home/www-admin
+  root: /var/www/stage.wundertools.com/web
+  uri: 'https://stage.wundertools.com'
+  user: www-admin
