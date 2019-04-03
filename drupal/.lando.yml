@@ -30,6 +30,9 @@ services:
     build:
       # Perform composer install.
       - composer install
+      # Enable Drush aliases.
+      - chmod +x /app/scripts/drush/aliases.sh
+      - /app/scripts/drush/aliases.sh
       # build_as_root:
       # - "apt-get update -y"
       # - "apt-get install python-yaml -y"
@@ -74,7 +77,3 @@ events:
   # Clear caches after a database import
   post-db-import:
     - appserver: cd $LANDO_WEBROOT && drush cr -y
-  # Enable Drush aliases.
-  post-start:
-    - appserver: mkdir -p $LANDO_MOUNT/.drush/site-aliases
-    - appserver: ln -sf /app/drush/wundertools.aliases.drushrc.php $LANDO_MOUNT/.drush/site-aliases/wundertools.aliases.drushrc.php

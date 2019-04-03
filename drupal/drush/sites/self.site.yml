@@ -1,0 +1,20 @@
+# Edit or remove this file as needed.
+# Docs at https://github.com/drush-ops/drush/blob/master/examples/example.site.yml
+
+local:
+  paths:
+    files: /app/web/sites/default/files
+  root: /app/web
+#  uri: 'https://wunderlando.lndo.site/'
+
+#prod:
+#  host: prod.domain.com
+#  user: www-admin
+#  root: /path/to/drupal
+#  uri: http://www.example.com
+#
+#stage:
+#  host: stage.domain.com
+#  user: www-admin
+#  root: /path/to/drupal
+#  uri: http://stage.example.com
