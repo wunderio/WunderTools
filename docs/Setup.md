@@ -38,9 +38,7 @@ git init
 ## Configure Drupal build
 
 * Edit `drupal/conf/site.yml`, remove things you don't need and add stuff you want in your project.
-* Rename `drupal/drush/wundertools.aliases.drushrc.php` to `drupal/drush/[PROJECT_NAME].aliases.drushrc.php` and 
-configure it to fit your setup. 
-  - this file will be automatically symlinked from `~/.drush` when running vagrant up
+* Configure `drupal/drush/sites/self.site.yml` to fit your setup. This file will be automatically symlinked from `~/.drush` when running vagrant up.
 
 ## Create new drupal installation
 
