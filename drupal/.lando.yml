@@ -30,9 +30,9 @@ services:
     build:
       # Perform composer install.
       - composer install
-      # build_as_root:
-      # - "apt-get update -y"
-      # - "apt-get install python-yaml -y"
+    build_as_root:
+      - "apt-get update -y"
+      - "apt-get install python-yaml -y"
       # wkhtmltopdf setup
       # - "[ -f /usr/bin/wkhtmltopdf ] || ( apt-get update -y && apt-get install xvfb -y)"
       # - "[ -f /usr/bin/wkhtmltopdf ] || ( wget -nc https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.jessie_amd64.deb -P /tmp )"
