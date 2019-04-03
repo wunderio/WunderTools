@@ -27,11 +27,11 @@ popd > /dev/null
 # Parse project config
 PROJECTCONF=$ROOT/conf/project.yml
 eval $(parse_yaml $PROJECTCONF)
-ALIASFILE=${project_name}.aliases.drushrc.php
-ALIASTARGET=$HOME/.drush/$ALIASFILE
+ALIASFILE=self.site.yml
+ALIASTARGET=$HOME/.drush/sites/$ALIASFILE
 
 if [ -z "$drush_alias_path" ]; then
-  ALIASPATH=$ROOT/drupal/conf/$ALIASFILE
+  ALIASPATH=$ROOT/drupal/drush/sites/$ALIASFILE
 else
   ALIASPATH=$ROOT/${drush_alias_path}/$ALIASFILE
 fi
