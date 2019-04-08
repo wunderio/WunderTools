@@ -22,13 +22,7 @@ git init
 
 ## Configure WunderTools
 
-* Edit `conf/vagrant.yml` and change `domain_name` variable to match your local domain.
-* Edit `conf/vagrant_local.yml` and change:
-  - `name` to the name of your project
-  - `hostname` to a good hostname for your local environment (preferably replace *www* part of your production domain 
- with *local*)
-  - `ip` to something that no other project in your company uses (increment the value by one and commit the new ip 
- address to WunderTools repository)
+* Edit `drupal/.lando.yml` and change `name: wunderlando` to match your project's name.
 
 * Edit `conf/project.yml` and change the variables to something that makes sense for your project.
   - Minimally `project:name` to the name of your project
@@ -44,5 +38,5 @@ configure it to fit your setup.
 
 ## Create new drupal installation
 
-* Run `./build.sh create` from inside the vagrant box from the `/vagrant/drupal/` folder
+* Run `lando build.sh create` from the `drupal` folder
 * Add drupal scaffold files and relevant config export files to the repo

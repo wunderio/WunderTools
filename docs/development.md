@@ -1,13 +1,12 @@
 Development instructions
 ========================
 
-Clone the git repo and build the vagrant machine by running
+After cloning the repository, all you need for a functional environment is the following: 
 
-vagrant up
-
-Once the machine is built and provisioned you can login with
-
-vagrant ssh
+```
+cd drupal
+lando start
+```
 
 Git flow instructions
 ---------------------
