@@ -3,7 +3,6 @@
 [Information Architecture](information_architecture.md)
 [Theme](theme.md)
 [Modules](modules.md)
-[Features](features.md)
 [Views](views.md)
 [Hacks](hacks.md)
 [Continuous integration](continuous-integration.md)
