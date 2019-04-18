@@ -3,10 +3,33 @@ version: 2.1
 orbs:
   silta: silta/silta@0.1
 
+jobs:
+  validate-lando:
+    executor: silta/silta
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: |
+         sudo apt-get update
+         sudo apt-get install iptables apt-transport-https ca-certificates curl gnupg2 software-properties-common
+         curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+         sudo add-apt-repository \
+           "deb [arch=amd64] https://download.docker.com/linux/debian \
+           $(lsb_release -cs) \
+           stable"
+         sudo apt-get update
+         sudo apt-get install docker-ce docker-ce-cli containerd.io
+
+         wget https://github.com/lando/lando/releases/download/v3.0.0-rc.14/lando-v3.0.0-rc.14.deb
+         sudo dpkg -i lando-v3.0.0-rc.14.deb
+         lando start
+
 workflows:
   version: 2
   commit:
     jobs:
+      - validate-lando
+
       - silta/drupal-validate:
           name: validate
           drupal-root: drupal
