@@ -14,4 +14,4 @@ nginx_workers: "{{ ansible_processor_vcpus }}" # This should be equal to core co
 
 
 # PHP version to be used. Available options: php56u, php70u
-php_package: "php56u"
+php_package: "php72u"
