@@ -5,7 +5,7 @@ env_file:
   - .env
 
 config:
-  webroot: drupal/web
+  webroot: web
   via: nginx
   php: 7.2
   database: mariadb:10.2
@@ -15,11 +15,11 @@ tooling:
   syncdb:
     service: appserver
     description: Import Database
-    cmd: cd /app/drupal && ./scripts/syncdb.sh
+    cmd: ./scripts/syncdb.sh
   build.sh:
     service: appserver
     description: Execute build.sh
-    cmd: cd /app/drupal && ./build.sh
+    cmd: ./build.sh
   drush:
     service: appserver
     cmd: /app/drupal/vendor/bin/drush --root=/app/drupal/web
@@ -29,11 +29,8 @@ tooling:
 
 services:
   appserver:
-    build_as_root:
-      - "apt-get update -y"
-      - "apt-get install python-yaml -y"
     build:
-      - cd drupal && ./build.sh build
+      - composer install
   mailhog:
     type: mailhog
     hogfrom:
