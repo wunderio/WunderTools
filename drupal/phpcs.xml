@@ -4,8 +4,8 @@
 
     <description>Drupal coding standard</description>
 
-    <file>web/themes/custom</file>
-    <file>web/modules/custom</file>
+    <file>web/sites/all/themes/custom</file>
+    <file>web/sites/all/modules/custom</file>
     <file>web/sites/default</file>
 
     <!-- exclude some Drupal files that contain issues -->
