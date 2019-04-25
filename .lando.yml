@@ -1,8 +1,11 @@
 name: wundertools
 recipe: drupal7
 
+env_file:
+  - .env
+  
 config:
-  webroot: web
+  webroot: drupal/web
   via: nginx
   php: 7.2
   database: mariadb:10.2
@@ -16,7 +19,7 @@ tooling:
   build.sh:
     service: appserver
     description: Execute build.sh
-    cmd: ./drupal/build.sh
+    cmd: cd drupal && ./build.sh
   drush:
     service: appserver
     cmd: /app/vendor/bin/drush --root=/app/web
@@ -30,7 +33,7 @@ services:
       - "apt-get update -y"
       - "apt-get install python-yaml -y"
     build:
-      - ./drupal/build.sh build
+      - cd drupal && ./build.sh build
   mailhog:
     type: mailhog
     hogfrom:
