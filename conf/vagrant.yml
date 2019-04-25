@@ -75,7 +75,7 @@
       # For drupal 7
       - server_name: "{{ domain_name }}"
         http_port: 8080
-        docroot: /vagrant/drupal/current
+        docroot: /vagrant/drupal/web
       # For drupal 8 use
       # docroot: /vagrant/drupal/current/web
 
