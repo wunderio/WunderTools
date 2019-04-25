@@ -1,89 +1,138 @@
 ---
-# Example site.yml
-
 # The default environment is our local development environment.
 # Note that the the default site is used as a base for all sites, so whatever you define here are inherited to
-# other site definitions.
+# other site definitions!
 default:
-
-  # An alias or aliases for the site, this could also be:
-  # aliases:
-  #   - vagrant
-  #   - mylocalbox
   aliases:
     - vagrant
     - local
 
-  # The drush make file to use
-  makefile: conf/site.make
-
-  # Directory used to build the site
-  temporary: _build
-
-  make_cache: .make_cache
-
-  # The final produced Drupal installation
-  final: current
-
-  # Directory which will house all the previous builds
-  previous: builds
+  # It's D7, but build.sh doesn't support D7 composer builds.
+  drupal_version: d8
 
   # Installation profile to use
-  profile: wk
+  profile: wundertools
 
   # Site name given at installation phase
-  site: Wundersite
+  site: Wundertools
 
-  # In development environments we usually want to use symlinks, note the settings.php linking
+  # Symlink settings file for vagrant
   link:
-    - files: sites/default/files
-    - code/modules/custom: sites/all/modules/custom
-    - code/themes/custom: sites/all/themes/custom
-    - code/modules/features: sites/all/modules/features
-    - code/profiles/wk: profiles/wk
-    - conf/vagrant.settings.php: sites/default/settings.php
-    - conf/_ping.php: _ping.php
+    - conf/vagrant.settings.php: web/sites/default/files/settings.local.php
 
-# Test environment:
-test:
-
-  aliases: stage
-
-  # Test environment only symlinks files
-  link:
-    - files: sites/default/files
-
-  # Other files are copied, again note the settings.php, in our test enviroment we want to use another settings file.
-  link:
-    - files: sites/default/files
-
-  copy:
-    - code/modules/custom: sites/all/modules/custom
-    - code/themes/custom: sites/all/themes/custom
-    - code/profiles/wk: profiles/wk
-    - conf/test.settings.php: sites/default/settings.php
-    - conf/_ping.php: _ping.php
-
-  # We can provide local commands or override global ones.
+  # These commands will be used in all environments unless they are overridden.
   local_commands:
+    # Set up a new build
+    build:
+      - shell: chmod -R a+w web
+      - make
+      - shell: chmod -R a-w web
 
-    # Running command ./build.sh hello test will print Hello world!
-    hello:
-      - shell: echo "Hello world!"
+    # Run any build updates.
+    update:
+      - drush: updb -y
+      - cleanup
+      - drush: cc all
 
-# Production environment:
-production:
+    # Fresh start for Composer build.
+    reset:
+      - verify: "Warning: this will remove any files that are not part of the repository (including files folder). Do you want to continue? (yes/no): "
+      - shell: git clean -ffXd
 
-  aliases: prod
+lando:
+  # Allow development modules to be installed.
+  allow_composer_dev: true
 
-  # Prod environment only symlinks files
+  # Symlink files folder. This is generic location for both dev and stage environments.
   link:
-    - files: sites/default/files
+    - files: web/sites/default/files
 
-  # Other files are copied, note settings.php
+# Development environment
+dev:
+  # Allow development modules to be installed.
+  allow_composer_dev: true
+
+  # Symlink files folder. This is generic location for both dev and stage environments.
+  link:
+    - /var/www/wundertools.dev.wunder.io/files: web/sites/default/files
+
+  # Settings file and radioactivity are copied. Settings file also is placed on a generic location on both dev and stage environments.
   copy:
-    - code/modules/custom: sites/all/modules/custom
-    - code/themes/custom: sites/all/themes/custom
-    - code/profiles/wk: profiles/wk
-    - conf/prod.settings.php: sites/default/settings.php
-    - conf/_ping.php: _ping.php
+    - conf/dev.settings.php: web/sites/default/settings.local.php
+
+  # Staging server specific build commands.
+  local_commands:
+    # Run any build updates.
+    update:
+      - drush: updb -y
+      - cleanup
+      - drush: cc all
+      - shell: sudo systemctl reload nginx && sudo systemctl restart php-fpm memcached varnish
+
+# Staging environment:
+stage:
+  aliases:
+    - test
+
+  # Allow development modules to be installed.
+  allow_composer_dev: true
+
+  # Symlink files folder. This is generic location for both dev and stage environments.
+  link:
+    - /var/www/wundertools.stage.wunder.io/files: web/sites/default/files
+
+  # Settings file and radioactivity are copied. Settings file also is placed on a generic location on both dev and stage environments.
+  copy:
+    - conf/stage.settings.php: web/sites/default/settings.local.php
+
+  # Staging server specific build commands.
+  local_commands:
+    # Set up a new build and rsync it to front2.
+    build:
+      - shell: chmod -R a+w web
+      - backup:
+          ignore:
+            - sites/default/files
+            - builds
+      - make
+      - shell: chmod -R a-w web
+
+    # Run any build updates.
+    update:
+      - drush: updb -y
+      - cleanup
+      - drush: cc all
+      - shell: sudo systemctl reload nginx && sudo systemctl restart php-fpm memcached varnish
+
+# Production environment
+production:
+  aliases:
+    - prod
+
+  # Symlink files folder from NFS share.
+  link:
+    - /var/www/www.wundertools.fi/files: web/sites/default/files
+    - /var/www/www.wundertools.fi/private: web/sites/default/private
+
+  # Copy settings file.
+  copy:
+    - /var/www/www.wundertools.fi/prod.settings.php: web/sites/default/settings.local.php
+
+  # Production specific commands.
+  local_commands:
+    # Set up a new build and rsync it to front2.
+    build:
+      - shell: chmod -R a+w web
+      - backup:
+          ignore:
+            - sites/default/files
+            - builds
+      - make
+      - shell: chmod -R a-w web
+
+    # Run any build updates.
+    update:
+      - drush: updb -y
+      - cleanup
+      - drush: cc all
+      - shell: sudo systemctl reload nginx && sudo systemctl reload php-fpm && sudo systemctl restart memcached

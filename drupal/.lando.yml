@@ -1,0 +1,50 @@
+name: yrittajat
+recipe: drupal7
+
+config:
+  webroot: web
+  via: nginx
+  php: '7.2'
+  database: mariadb:10.2
+  xdebug: false
+#  drush: global:8.1.12
+
+tooling:
+  build.sh:
+    service: appserver
+    description: Execute build.sh
+    cmd: ./build.sh
+  drush:
+    service: appserver
+    cmd: drush --root=/app/web
+
+services:
+#  cache:
+#    type: memcached:1.5
+#    mem: 128
+#    portforward: 11221
+
+    #  mailhog:
+  #    type: mailhog
+#    hogfrom:
+  #      - appserver
+
+  appserver:
+    extras:
+      - "apt-get update -y"
+      - "apt-get install python-yaml -y"
+    run_as_root:
+      - "docker-php-ext-install sockets"
+      - "docker-php-ext-enable sockets"
+    overrides:
+      environment:
+        WKV_SITE_ENV: lando
+        DB_PASS_DRUPAL: drupal7
+        DB_USER_DRUPAL: drupal7
+        DB_HOST_DRUPAL: database
+        DB_NAME_DRUPAL: drupal7
+        VARNISH_CONTROL_KEY: this-is-not-a-secure-key
+
+        #proxy:
+        #  mailhog_mailhog:
+        #    - mail.yrittajat.lndo.site
