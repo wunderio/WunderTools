@@ -4,10 +4,9 @@ recipe: drupal7
 config:
   webroot: web
   via: nginx
-  php: '7.2'
+  php: 7.2
   database: mariadb:10.2
   xdebug: false
-#  drush: global:8.1.12
 
 tooling:
   build.sh:
@@ -16,35 +15,32 @@ tooling:
     cmd: ./build.sh
   drush:
     service: appserver
-    cmd: drush --root=/app/web
+    cmd: /app/vendor/bin/drush --root=/app/web
+  npm:
+    description: Runs npm commands
+    service: node
 
 services:
-#  cache:
-#    type: memcached:1.5
-#    mem: 128
-#    portforward: 11221
-
-    #  mailhog:
-  #    type: mailhog
-#    hogfrom:
-  #      - appserver
-
   appserver:
-    extras:
+    build_as_root:
       - "apt-get update -y"
       - "apt-get install python-yaml -y"
-    run_as_root:
-      - "docker-php-ext-install sockets"
-      - "docker-php-ext-enable sockets"
-    overrides:
-      environment:
-        WKV_SITE_ENV: lando
-        DB_PASS_DRUPAL: drupal7
-        DB_USER_DRUPAL: drupal7
-        DB_HOST_DRUPAL: database
-        DB_NAME_DRUPAL: drupal7
-        VARNISH_CONTROL_KEY: this-is-not-a-secure-key
+    build:
+      - build.sh build
+  mailhog:
+    type: mailhog
+    hogfrom:
+      - appserver
+  node:
+    type: node
+    build:
+      - npm install
 
-        #proxy:
-        #  mailhog_mailhog:
-        #    - mail.yrittajat.lndo.site
+proxy:
+  mailhog:
+    - mail.wundertools.lndo.site
+
+events:
+  # Clear caches after a database import
+  post-db-import:
+    - appserver: cd $LANDO_WEBROOT && drush cc all
