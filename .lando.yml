@@ -1,8 +1,11 @@
 name: wundertools
 recipe: drupal7
 
+env_file:
+  - .env
+
 config:
-  webroot: web
+  webroot: drupal/web
   via: nginx
   php: 7.2
   database: mariadb:10.2
@@ -12,14 +15,14 @@ tooling:
   syncdb:
     service: appserver
     description: Import Database
-    cmd: ./scripts/syncdb.sh
+    cmd: cd /app/drupal && ./scripts/syncdb.sh
   build.sh:
     service: appserver
     description: Execute build.sh
-    cmd: ./build.sh
+    cmd: cd /app/drupal && ./build.sh
   drush:
     service: appserver
-    cmd: /app/vendor/bin/drush --root=/app/web
+    cmd: /app/drupal/vendor/bin/drush --root=/app/drupal/web
   npm:
     description: Runs npm commands
     service: node
@@ -30,7 +33,7 @@ services:
       - "apt-get update -y"
       - "apt-get install python-yaml -y"
     build:
-      - build.sh build
+      - cd drupal && ./build.sh build
   mailhog:
     type: mailhog
     hogfrom:
@@ -47,4 +50,4 @@ proxy:
 events:
   # Clear caches after a database import
   post-db-import:
-    - appserver: cd $LANDO_WEBROOT && drush cc all
+    - appserver: drush cc all
