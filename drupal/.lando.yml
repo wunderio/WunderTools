@@ -9,6 +9,10 @@ config:
   xdebug: false
 
 tooling:
+  syncdb:
+    service: appserver
+    description: Import Database
+    cmd: ./scripts/syncdb.sh
   build.sh:
     service: appserver
     description: Execute build.sh

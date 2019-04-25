@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Production server
-prod_server=prod-front-1.yrittajat.hel.upc.wunder.io
+prod_server=prod-front-1.wundertools.hel.upc.wunder.io
 
 # We are using yesterday's backup
 if [ "$(uname)" == "Darwin" ]; then
