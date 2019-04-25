@@ -3,7 +3,7 @@ recipe: drupal7
 
 env_file:
   - .env
-  
+
 config:
   webroot: drupal/web
   via: nginx
@@ -15,11 +15,11 @@ tooling:
   syncdb:
     service: appserver
     description: Import Database
-    cmd: ./drupal/scripts/syncdb.sh
+    cmd: cd /app/drupal && ./scripts/syncdb.sh
   build.sh:
     service: appserver
     description: Execute build.sh
-    cmd: cd drupal && ./build.sh
+    cmd: cd /app/drupal && ./build.sh
   drush:
     service: appserver
     cmd: /app/vendor/bin/drush --root=/app/web
