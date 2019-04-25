@@ -22,7 +22,7 @@ tooling:
     cmd: cd /app/drupal && ./build.sh
   drush:
     service: appserver
-    cmd: /app/vendor/bin/drush --root=/app/web
+    cmd: /app/vendor/bin/drush --root=/app/drupal/web
   npm:
     description: Runs npm commands
     service: node
@@ -50,4 +50,4 @@ proxy:
 events:
   # Clear caches after a database import
   post-db-import:
-    - appserver: cd $LANDO_WEBROOT && lando drush cc all
+    - appserver: drush cc all
