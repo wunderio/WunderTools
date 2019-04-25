@@ -7,6 +7,7 @@
 3. Convert `.make` file into raw composerfile: `drush make-convert [project]/drupal/conf/site.make --format=composer > [project]/drupal/raw-composer.json`. If the project doesn't have a `.make` file, create one: `drush generate-makefile site.make`
 4. Copy-paste project specific blocks (`require`, `patches` etc.) from the generated `raw-composer.json` to the `composer.json` copied from WunderTools
 5. Clean up and edit composer.json to be suitable for the project
+    * change the project name and description
     * depending on the project state, it might be a good idea to define strict module versions instead of just major version to prevent breaking things during the conversion
     * define needed repositories (all that say "Enter correct project name and version number")
     * define correct module version where it says "null"
@@ -58,9 +59,10 @@
         },
     ```
 6. Site.yml and commands.yml changes
-    * copy site.yml from wundertools
-    * if there are project specific things in commands.yml or site.yml, move them to the new site.yml
-    * remove [project]/drupal/conf/commands.yml and site.yml
+    * rename site.yml to something like site.yml_bak
+    * copy site.yml from wundertools into [project]/drupal/conf
+    * if there are project specific things in commands.yml or site.yml_bak, move them to the new site.yml
+    * remove commands.yml and site.yml_bak
 7. Build the project
     * start lando: `lando start`
     * build: `lando build.sh build`
