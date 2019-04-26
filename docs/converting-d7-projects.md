@@ -36,6 +36,15 @@ After running the script, you will need the following manual steps (and maybe mo
           appserver_nginx:
             - domain1.lndo.site
             - domain2.lndo.site
+        domain1_db:
+          type: mariadb:10.2
+          config:
+            confd: config
+        domain2_db:
+          type: mariadb:10.2
+          config:
+            confd: config
+        ```
 
 4. Install [Lando](https://docs.devwithlando.io/) (and [Docker if using Linux](https://docs.devwithlando.io/installation/linux.html))
 
@@ -47,9 +56,17 @@ After running the script, you will need the following manual steps (and maybe mo
 
 ## Possible obstacles
 
-### Drupal module compatibility with newer PHP version
 * HTML Purifier
     * http://htmlpurifier.org/releases/htmlpurifier-4.8.0.tar.gz
-    * `[UnexpectedValueException]
-      internal corruption of phar "/app/web/sites/all/libraries/htmlpurifier/5312b6822fe047eef6dbaac17a8ed9a5.gz" (__HALT_COMPILER(); not found)`
+    ```
+    [UnexpectedValueException]
+    internal corruption of phar "/app/web/sites/all/libraries/htmlpurifier/5312b6822fe047eef6dbaac17a8ed9a5.gz" (__HALT_COMPILER(); not found)
+    ```
     * solution: update to latest version
+* Webform
+    ```
+    - Installation request for drupal/webform_rules 1.6 -> satisfiable by drupal/webform_rules[1.6.0].
+    - Can only install one of: drupal/webform[4.17.0, 3.x-dev].
+    - drupal/webform_rules 1.6.0 requires drupal/webform ^3 -> satisfiable by drupal/webform[3.x-dev].
+    - Installation request for drupal/webform 4.17 -> satisfiable by drupal/webform[4.17.0].
+    ```
