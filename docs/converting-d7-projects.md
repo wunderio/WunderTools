@@ -60,11 +60,14 @@
           "web/sites/all/themes/contrib/{$name}/": ["type:drupal-theme"]
         },
     ```
-6. Site.yml and commands.yml changes
+6. Changes on [project]/drupal/conf
     * rename site.yml to something like site.yml_bak
     * copy site.yml from wundertools into [project]/drupal/conf
     * if there are project specific things in commands.yml or site.yml_bak, move them to the new site.yml
     * remove commands.yml and site.yml_bak
+    * note: if you have some other files under conf, move them to correct directories.
+        * for [project]/drupal/conf/sites.php needs to be moved under [project]/drupal/web/sites
+        * take a look at site.yml and commands.yml
 7. Build the project
     * start lando: `lando start` (note: this tries to build the project - be cautious of any errors)
 8. Import database and update db
