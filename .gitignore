@@ -1,9 +1,6 @@
 # Generic ones
 .DS_Store
 .vagrant
-drupal/current
-drupal/builds
-drupal/.make_cache
 .idea
 ansible
 local.*
