@@ -73,7 +73,9 @@ rmdir drupal/code/modules
 git mv drupal/code/themes/custom drupal/web/sites/all/themes/custom
 rmdir drupal/code/themes
 
-git mv drupal/code/libraries drupal/web/sites/all/libraries
+if [ -d drupal/code/libraries ] ; then
+  git mv drupal/code/libraries drupal/web/sites/all/libraries
+fi
 if find drupal/web/sites/all/libraries | grep -q ".zip" ; then
   printf "\e[33mThe following libraries have zip files, you might need to unpack them.\e[0m\n"
   find drupal/web/sites/all/libraries | grep ".zip"
