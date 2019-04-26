@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
 echo "This script will convert your Drupal 7 project to be compatible with composer, lando and Silta."
 echo "Make sure you are in the git root of your project."
