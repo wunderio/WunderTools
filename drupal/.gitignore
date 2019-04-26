@@ -14,6 +14,7 @@
 # Ignore Drupal 7 core files.
 /web/*
 !/web/*/
+!/web/.dockerignore
 /web/includes/
 /web/misc/
 /web/modules/
