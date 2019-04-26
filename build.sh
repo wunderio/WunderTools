@@ -28,8 +28,13 @@ popd > /dev/null
 PROJECTCONF=$ROOT/conf/project.yml
 eval $(parse_yaml $PROJECTCONF)
 ALIASFILE=${project_name}.aliases.drushrc.php
-ALIASPATH=$ROOT/drupal/conf/$ALIASFILE
 ALIASTARGET=$HOME/.drush/$ALIASFILE
+
+if [ -z "$drush_alias_path" ]; then
+  ALIASPATH=$ROOT/drupal/conf/$ALIASFILE
+else
+  ALIASPATH=$ROOT/${drush_alias_path}/$ALIASFILE
+fi
 
 if [ -z "$wundertools_branch" ]; then
   GITBRANCH="master"
@@ -38,38 +43,42 @@ else
 fi
 
 if [ -z "$wundertools_repository" ]; then
-  WUNDERTOOLSREPOSITORY="wunderkraut/WunderTools"
+  WUNDERTOOLSREPOSITORY="wunderio/WunderTools"
 else
   WUNDERTOOLSREPOSITORY=$wundertools_repository
 fi
 
 
-VERSIONFILE=$ROOT/VERSION
-CHANGELOG=$ROOT/CHANGELOG
-CHANGELOGURL="https://raw.githubusercontent.com/$WUNDERTOOLSREPOSITORY/$GITBRANCH/CHANGELOG"
-
-if [ -f $VERSIONFILE ]; then
-  typeset -i CURRENT_VERSION=$(<$VERSIONFILE)
+if [ "$CI" = true ]; then
+  echo "You're using CI=$CI. This means that automatic updates for this script are skipped..."
 else
-  CURRENT_VERSION=0
-fi
+  VERSIONFILE=$ROOT/VERSION
+  CHANGELOG=$ROOT/CHANGELOG
+  CHANGELOGURL="https://raw.githubusercontent.com/$WUNDERTOOLSREPOSITORY/$GITBRANCH/CHANGELOG"
 
-if [ "$CURRENT_VERSION" -ne "$VERSION" ]; then
-  echo -e "\033[0;31mBuild.sh version has been updated.\033[0m Make sure your project complies with the changes outlined in the CHANGELOG since version $CURRENT_VERSION"
-  while read -p "I have updated everything ([y]es / [n]o / show [c]hangelog)? " -n 1 -r && [[ $REPLY =~ ^[Cc]$ ]]; do
-    echo $CHANGELOGURL
-    if [ ! -f $CHANGELOG ]; then
-      curl -s -o $CHANGELOG $CHANGELOGURL
-    fi
-    sed -e '/^'$CURRENT_VERSION'$/,$d' $CHANGELOG
-  done
-  echo
-  if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo $VERSION > $VERSIONFILE
-    echo "Current version updated, make sure to commit all the changes before continuing."
+  if [ -f $VERSIONFILE ]; then
+    typeset -i CURRENT_VERSION=$(<$VERSIONFILE)
   else
-    echo "Please update everything to comply with the latest version before continuing!"
-    exit 0
+    CURRENT_VERSION=0
+  fi
+
+  if [ "$CURRENT_VERSION" -ne "$VERSION" ]; then
+    echo -e "\033[0;31mBuild.sh version has been updated.\033[0m Make sure your project complies with the changes outlined in the CHANGELOG since version $CURRENT_VERSION"
+    while read -p "I have updated everything ([y]es / [n]o / show [c]hangelog)? " -n 1 -r && [[ $REPLY =~ ^[Cc]$ ]]; do
+      echo $CHANGELOGURL
+      if [ ! -f $CHANGELOG ]; then
+        curl -s -o $CHANGELOG $CHANGELOGURL
+      fi
+      sed -e '/^'$CURRENT_VERSION'$/,$d' $CHANGELOG
+    done
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      echo $VERSION > $VERSIONFILE
+      echo "Current version updated, make sure to commit all the changes before continuing."
+    else
+      echo "Please update everything to comply with the latest version before continuing!"
+      exit 0
+    fi
   fi
 fi
 
@@ -135,7 +144,7 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
   # If it is enabled in project.yml - get & update drupal/build.sh
   if $buildsh_enabled; then
     if [ -z "$buildsh_repository" ]; then
-      BUILDSHREPOSITORY="wunderkraut/build.sh"
+      BUILDSHREPOSITORY="wunderio/build.sh"
     else
       BUILDSHREPOSITORY=$buildsh_repository
     fi
@@ -153,11 +162,17 @@ elif [[ $1 == "up" || $1 == "provision" ]]; then
   fi
 
   if [ ! -z $externaldrupal_remote ]; then
-    if [ ! -d "drupal/current" ]; then
+    if [ ! -z $externaldrupal_location ]; then
+      DRUPALLOCATION=$externaldrupal_location
+    else
+      DRUPALLOCATION="drupal/current"
+    fi
+    if [ ! -d $DRUPALLOCATION ]; then
+      mkdir -p $ROOT/$DRUPALLOCATION
       if [ -z $externaldrupal_branch ]; then
         $externaldrupal_branch = 'master'
       fi
-      git clone -b $externaldrupal_branch $externaldrupal_remote $ROOT/drupal/current
+      git clone -b $externaldrupal_branch $externaldrupal_remote $ROOT/$DRUPALLOCATION
     fi
   fi
 fi
