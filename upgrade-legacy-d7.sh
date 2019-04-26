@@ -57,7 +57,9 @@ mv drupal/composer.json drupal/base-composer.json
 
 # Move drush aliases
 mkdir -p drupal/drush
-git mv `find drupal/conf | grep drushrc` drupal/drush/
+if find drupal/conf | grep -q drushrc ; then
+  git mv `find drupal/conf | grep drushrc` drupal/drush/
+fi
 
 # Move custom code to the right place
 git mv drupal/code/modules/custom drupal/web/sites/all/modules/custom
