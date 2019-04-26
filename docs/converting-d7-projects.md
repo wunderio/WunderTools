@@ -6,6 +6,7 @@
 2. Copy `composer.json` from [WunderTools](https://github.com/wunderio/WunderTools/tree/drupal7/) project and use it as a base
 3. Convert `.make` file into raw composerfile: `drush make-convert [project]/drupal/conf/site.make --format=composer > [project]/drupal/raw-composer.json`. If the project doesn't have a `.make` file, create one: `drush generate-makefile site.make`
 4. Copy-paste project specific blocks (`require`, `patches` etc.) from the generated `raw-composer.json` to the `composer.json` copied from WunderTools
+    * also make sure you don't have duplicates, for example "devel" in both require and require-dev
 5. Clean up and edit composer.json to be suitable for the project
     * change the project name and description
     * depending on the project state, it might be a good idea to define strict module versions instead of just major version to prevent breaking things during the conversion
@@ -65,8 +66,7 @@
     * if there are project specific things in commands.yml or site.yml_bak, move them to the new site.yml
     * remove commands.yml and site.yml_bak
 7. Build the project
-    * start lando: `lando start`
-    * build: `lando build.sh build`
+    * start lando: `lando start` (note: this tries to build the project - be cautious of any errors)
 8. Import database and update db
     * import db: `lando db-import [dumpname].sql`
     * run updb: `lando drush updb`
@@ -121,3 +121,8 @@
 ## Possible obstacles
 
 ### Drupal module compatibility with newer PHP version
+* HTML Purifier
+    * http://htmlpurifier.org/releases/htmlpurifier-4.8.0.tar.gz
+    * `[UnexpectedValueException]
+      internal corruption of phar "/app/web/sites/all/libraries/htmlpurifier/5312b6822fe047eef6dbaac17a8ed9a5.gz" (__HALT_COMPILER(); not found)`
+    * solution: update to latest version
