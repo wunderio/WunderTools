@@ -1,7 +1,10 @@
 # Converting Drupal 7 WunderTools projects to use Composer
 
-## Workflow
+## Prologue
+This is still a work in progress. If converting projects according to this documentation, try and do the steps in a sensible order. Also note there are some extra steps for multisites.
+Many of the steps are or will be automated. Feel free to update the documentation.
 
+## Manual steps (read "These will be automated" too before starting)
 1. Install [Lando](https://docs.devwithlando.io/) (and [Docker if using Linux](https://docs.devwithlando.io/installation/linux.html))
 2. Copy `composer.json` from [WunderTools](https://github.com/wunderio/WunderTools/tree/drupal7/) project and use it as a base
 3. Convert `.make` file into raw composerfile: `drush make-convert [project]/drupal/conf/site.make --format=composer > [project]/drupal/raw-composer.json`. If the project doesn't have a `.make` file, create one: `drush generate-makefile site.make`
