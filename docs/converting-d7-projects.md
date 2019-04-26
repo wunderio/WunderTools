@@ -84,31 +84,30 @@
     wundersecrets:
       remote: git@github.com:wunderio/WunderSecrets.git
     ```
-3. Make sure both build.sh files are of the latest versions
+3. Make sure build.sh is of the latest version
     * WunderTools repo: https://github.com/wunderio/WunderTools
-    * [project]/build.sh
     * [project]/drupal/build.sh
-4. Create lando.settings.php
-    * [project]/drupal/conf/lando.settings.php
-    * get the file from an existing project (Novita for example) and see that it's good for your project (compare with vagrant.settings.php etc.)
-5. Move patches directory to Drupal root and edit patches path on composer.json
-    * structure: 
-        * old: [project]/drupal/code/patches
-        * new: [project]/drupal/patches
-    * replace '../code/patches' with 'patches' on composer.json
-6. Create .lando.yml on Drupal root
-    * you should have [project]/drupal/.lando.yml
-    * get the file from an existing project and see that it's good for your project
-    * make sure PHP version is supported (http://php.net/supported-versions.php)
-    * make sure the syntax is compatible with the Lando version (https://docs.devwithlando.io/guides/updating-to-rc2.html)
-7. Create [project]/drupal/web directory and sub directories so that you have:
+4. Create [project]/drupal/web directory and sub directories so that you have:
     * [project]/drupal/web/sites/all
-    * [project]/drupal/web/sites/default
-8. Move files from [project]/code to [project]/drupal/web
+    * [project]/drupal/web/sites/default (not necessarily needed for multisites)
+5. Move files from [project]/code to [project]/drupal/web
     * [project]/drupal/code/profiles -> [project]/drupal/web/profiles
     * [project]/drupal/code/modules -> [project]/drupal/web/sites/all/modules
     * [project]/drupal/code/themes/custom -> [project]/drupal/web/sites/all/themes/custom
     * Check that there's nothing under [project]/drupal/code and remove the directory
+6. Copy settings files from WunderTools repository
+    * [project]/drupal/conf/lando.settings.php
+    * get the file from an existing project (Novita for example) and see that it's good for your project (compare with vagrant.settings.php etc.)
+7. Move patches directory to Drupal root and edit patches path on composer.json
+    * structure: 
+        * old: [project]/drupal/code/patches
+        * new: [project]/drupal/patches
+    * replace '../code/patches' with 'patches' on composer.json
+8. Create .lando.yml on Drupal root
+    * you should have [project]/drupal/.lando.yml
+    * get the file from an existing project and see that it's good for your project
+    * make sure PHP version is supported (http://php.net/supported-versions.php)
+    * make sure the syntax is compatible with the Lando version (https://docs.devwithlando.io/guides/updating-to-rc2.html)
 9. Add files from drupal-project
     * repo: https://github.com/drupal-composer/drupal-project/tree/7.x
     * you should have:
