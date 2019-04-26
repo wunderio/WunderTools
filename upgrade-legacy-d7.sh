@@ -37,18 +37,22 @@ curl -s https://raw.githubusercontent.com/drupal-composer/drupal-project/7.x/dru
 mkdir -p drupal/web/sites/default
 curl -s https://raw.githubusercontent.com/wunderio/WunderTools/drupal7/drupal/web/sites/default/settings.php > drupal/web/sites/default/settings.php
 curl -s https://raw.githubusercontent.com/wunderio/WunderTools/drupal7/drupal/web/sites/default/settings.lando.php | sed "s/wundertools/$PROJECT_NAME/" > drupal/web/sites/default/settings.lando.php
-curl -s https://raw.githubusercontent.com/wunderio/WunderTools/drupal7/drupal/web/sites/default/settings.silta.php > drupal/web/sites/default/settings.silta.php
 curl -s https://raw.githubusercontent.com/wunderio/WunderTools/drupal7/drupal/.env > drupal/.env
 
 # Add silta files
-mkdir -p drupal/silta
-curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/nginx.Dockerfile > drupal/silta/nginx.Dockerfile
-curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/php.Dockerfile > drupal/silta/php.Dockerfile
-curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/shell.Dockerfile > drupal/silta/shell.Dockerfile
-curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/silta.yml > drupal/silta/silta.yml
-curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/silta-prod.yml > drupal/silta/silta-prod.yml
-curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/.dockerignore > drupal/.dockerignore
-curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/web/.dockerignore > drupal/web/.dockerignore
+if [[ -z "${SKIP_SILTA_FILES:-}" ]] ; then
+  mkdir -p drupal/silta
+  curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/nginx.Dockerfile > drupal/silta/nginx.Dockerfile
+  curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/php.Dockerfile > drupal/silta/php.Dockerfile
+  curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/shell.Dockerfile > drupal/silta/shell.Dockerfile
+  curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/silta.yml > drupal/silta/silta.yml
+  curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/silta-prod.yml > drupal/silta/silta-prod.yml
+  curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/.dockerignore > drupal/.dockerignore
+  curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/web/.dockerignore > drupal/web/.dockerignore
+  curl -s https://raw.githubusercontent.com/wunderio/WunderTools/drupal7/drupal/web/sites/default/settings.silta.php > drupal/web/sites/default/settings.silta.php
+else
+  echo "Skipping silta files"
+fi
 
 # Run composer install so we have the scaffolding in place.
 composer install --working-dir=drupal --no-suggest --ignore-platform-reqs
