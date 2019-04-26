@@ -12,18 +12,6 @@ $conf['simple_environment_indicator'] = 'DarkGreen Lando';
 $conf['stage_file_proxy_origin'] = 'https://www.wundertools.fi';
 $conf['stage_file_proxy_hotlink'] = TRUE;
 
-// SOLR.
-$conf['search_api_solr_overrides'] = array(
-  'solr' => array(
-    'name' => 'Solr Server (Overridden)',
-    'options' => array(
-      'host' => 'localhost',
-      'port' => 8983,
-      'path' => '/solr',
-    ),
-  ),
-);
-
 /*
  * Load database credentials from Lando.
  */
