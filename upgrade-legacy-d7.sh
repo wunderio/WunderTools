@@ -142,3 +142,6 @@ echo json_encode($baseComposerJson);
 if ! composer validate --working-dir=drupal ; then
   printf "\e[33mThe generated composer.json has issues, please fix the errors above.\e[0m\n"
 fi
+
+printf "\e[32mThis script completed and has done what it can. Now the manual work begins.\e[0m\n"
+echo "See https://github.com/wunderio/WunderTools/blob/drupal7/docs/converting-d7-projects.md for instructions"
