@@ -14,6 +14,7 @@
     * there might be module versions that have * in them - those need to be corrected
     * [version].x format is not supported, so if there are specific revisions of a module, the version can be replaced with [version].0 for example
     * add "/web/profiles/[profile]" under "preserve-paths"
+    * if a multisite, add the subsites under "preserve-paths" instead of "web/sites/default"
     * make sure you have the following:
     ```
       "conflict": {
@@ -72,8 +73,15 @@
 
 
 ## These will be automated (remove from this documentation when done):
-1. Create drush directory on drupal root and move drush aliases file there so that you have `[project]/drupal/drush/[project].aliases.drushrc.php`
-2. Edit [project]/conf/project.yml
+1. Download files from WunderTools repository. You should have the following:
+    * [project]/drupal/drush/policy.drush.inc
+    * [project]/drupal/scripts/composer/ScriptHandler.php
+    * [project]/drupal/scripts/syncdb.sh
+    * [project]/drupal/.gitignore
+    * [project]/drupal/builds/.gitkeep
+    * [project]/.gitignore
+2. Create drush directory on drupal root and move drush aliases file there so that you have `[project]/drupal/drush/[project].aliases.drushrc.php`
+3. Edit [project]/conf/project.yml
     * Add drush alias path
     ```
     drush:
@@ -84,45 +92,31 @@
     wundersecrets:
       remote: git@github.com:wunderio/WunderSecrets.git
     ```
-3. Make sure build.sh is of the latest version
+4. Make sure build.sh is of the latest version
     * WunderTools repo: https://github.com/wunderio/WunderTools
     * [project]/drupal/build.sh
-4. Create [project]/drupal/web directory and sub directories so that you have:
+5. Create [project]/drupal/web directory and sub directories so that you have:
     * [project]/drupal/web/sites/all
     * [project]/drupal/web/sites/default (not necessarily needed for multisites)
-5. Move files from [project]/code to [project]/drupal/web
+6. Move files from [project]/code to [project]/drupal/web
     * [project]/drupal/code/profiles -> [project]/drupal/web/profiles
     * [project]/drupal/code/modules -> [project]/drupal/web/sites/all/modules
     * [project]/drupal/code/themes/custom -> [project]/drupal/web/sites/all/themes/custom
     * Check that there's nothing under [project]/drupal/code and remove the directory
-6. Copy settings files from WunderTools repository
-    * [project]/drupal/conf/lando.settings.php
-    * get the file from an existing project (Novita for example) and see that it's good for your project (compare with vagrant.settings.php etc.)
-7. Move patches directory to Drupal root and edit patches path on composer.json
+7. Copy settings files from WunderTools repository
+    * [project]/drupal/web/sites/default/settings.lando.php
+    * [project]/drupal/web/sites/default/settings.php
+    * [project]/drupal/web/sites/default/settings.silta.php
+    * NOTE: for multisite projects you need to put those into subsite specific directories.
+    * edit the files to work with your project
+8. Move patches directory to Drupal root and edit patches path on composer.json
     * structure: 
-        * old: [project]/drupal/code/patches
+        * old: [project]/drupal/code/patches (might be something else too depending on the project)
         * new: [project]/drupal/patches
     * replace '../code/patches' with 'patches' on composer.json
-8. Create .lando.yml on Drupal root
-    * you should have [project]/drupal/.lando.yml
-    * get the file from an existing project and see that it's good for your project
+9. Create .lando.yml on Drupal root
+    * download the file from WunderTools repository into [project]/drupal/.lando.yml
     * make sure PHP version is supported (http://php.net/supported-versions.php)
-    * make sure the syntax is compatible with the Lando version (https://docs.devwithlando.io/guides/updating-to-rc2.html)
-9. Add files from drupal-project
-    * repo: https://github.com/drupal-composer/drupal-project/tree/7.x
-    * you should have:
-        * [project]/drupal/drush/policy.drush.inc
-        * [project]/drupal/scripts/composer/ScriptHandler.php
-        * [project]/drupal/.gitignore
-        * [project]/drupal/phpunit.xml.dist
-10. Edit project .gitignore
-    * edit [project]/.gitignore to adapt to the new directory structure
-11. Add settings files to project repo
-    * [project]/drupal/web/sites/default/settings.php (copy from some other project like Nivos)
-    * [project]/drupal/web/sites/default/settings.silta.php (copy from some other project like Nivos)
-    * [project]/drupal/web/sites/default/settings.local.php (= [project]/drupal/conf/lando.settings.php)
-        * build.sh doesn't work yet, so this is a temporary solution
-
 
 ## Possible obstacles
 
