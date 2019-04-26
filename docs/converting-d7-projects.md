@@ -117,6 +117,14 @@
 9. Create .lando.yml on Drupal root
     * download the file from WunderTools repository into [project]/drupal/.lando.yml
     * make sure PHP version is supported (http://php.net/supported-versions.php)
+    * for multisite, add the following:
+    ```
+    proxy:
+      appserver:
+        - domain1.lndo.site
+        - domain2.lndo.site
+    ```
+
 
 ## Possible obstacles
 
