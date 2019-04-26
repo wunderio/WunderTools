@@ -2,22 +2,16 @@
 
 ## Specific module commit of module
 
-Define a new package in your `repositories{}` block, and then add that into your `require{}` block.
+Modify your `require{}` block so that it looks like this, long and short hand git commit hashes are supported.
+
+  ```
+  "drupal/module": "branch-dev#5670922dea05fffb6506a6cd5d53546b9fae8df9",
+  ```  
+
+eg.
 
 ```
-{
-  "type": "package",
-  "package": {
-    "name": "drupal/nodequeue",
-    "version": "7.0",
-    "type": "drupal-module",
-    "source": {
-      "url": "https://git.drupal.org/project/nodequeue.git",
-      "type": "git",
-      "reference": "afd0d258dc5e47533da568523eaf986e50f3f34b"
-    }
-  }
-}
+"drupal/bootstrap": "3.x-dev#5670922dea05fffb6506a6cd5d53546b9fae8df9",
 ```  
 
 Note, version can be anything you want, as long as you specify the same version in your `require{}` block. In this example we've used an arbitrary 7.0 version which is absurdly high to make sure we differentiate our specific versions in our `require{}` block. This might make it easier to find these kind of packages.
