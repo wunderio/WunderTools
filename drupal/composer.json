@@ -10,87 +10,20 @@
     {
         "type": "git",
         "url": "https://github.com/wunderio/drupal-ping"
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "wunderio/colorbox",
-        "version": "1.6.4",
-        "type": "drupal-library",
-        "dist": {
-          "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip",
-          "type": "zip"
-        }
-      }
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "wunderio/ckeditor",
-        "version": "4.10.1",
-        "type": "drupal-library",
-        "dist": {
-          "url": "https://download.cksource.com/CKEditor/CKEditor/CKEditor%204.10.1/ckeditor_4.10.1_full.zip",
-          "type": "zip"
-        }
-      }
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "ckeditor-plugin/lineutils",
-        "version": "4.10.1",
-        "type": "ckeditor-plugin",
-        "require": {
-          "composer/installers": "~1.0"
-        },
-        "dist": {
-          "url": "https://download.ckeditor.com/lineutils/releases/lineutils_4.10.1.zip",
-          "type": "zip"
-        }
-      }
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "drupal/nodequeue",
-        "version": "7.0",
-        "type": "drupal-module",
-        "source": {
-          "url": "https://git.drupal.org/project/nodequeue.git",
-          "type": "git",
-          "reference": "afd0d258dc5e47533da568523eaf986e50f3f34b"
-        }
-      }
     }
   ],
   "require": {
-    "wunderio/colorbox": "1.6.4",
-    "wunderio/ckeditor": "4.10.1",
-    "ckeditor-plugin/lineutils": "4.10.1",
     "composer/installers": "^1.2",
     "composer/semver": "^1.4",
     "cweagans/composer-patches": "^1.6",
-    "wunderio/drupal-ping": "7.x-dev",
     "drupal-composer/preserve-paths": "^0.1",
     "oomphinc/composer-installers-extender": "^1.1",
     "symfony/filesystem": "~2.7|^3",
     "webflo/drupal-finder": "^1.0.0",
-    "drupal/admin_menu": "3.0-rc6",
-    "drupal/admin_views": "1.6",
-    "drupal/adminimal_admin_menu": "1.5",
-    "drupal/adminimal_theme": "1.21",
-    "drupal/ckeditor": "1.18",
-    "drupal/ctools": "1.15",
+    "wunderio/drupal-ping": "7.x-dev",
+    "drush/drush": "~8.0",
     "drupal/drupal": "7.66",
-    "drupal/elysia_cron": "2.6",
-    "drupal/entity": "1.9",
-    "drupal/rules": "2.12",
-    "drupal/varnish": "1.9",
-    "drupal/views": "3.21",
-    "drupal/warden": "1.0-rc2",
-    "drupal/webform": "4.19",
-    "drush/drush": "~8.0"
+    "drupal/warden": "1.0"
   },
   "require-dev": {
     "drupal/registry_rebuild": "2.5",
@@ -139,17 +72,12 @@
       "web/profiles/{$name}/": ["type:drupal-profile"],
       "web/sites/all/drush/{$name}/": ["type:drupal-drush"],
       "web/sites/all/libraries/{$name}/": ["type:drupal-library"],
-      "web/sites/all/libraries/ckeditor/plugins/{$name}": ["type:ckeditor-plugin"],
       "web/sites/all/modules/contrib/{$name}/": ["type:drupal-module"],
       "web/sites/all/themes/contrib/{$name}/": ["type:drupal-theme"]
     },
     "patches": {
-      "drupal/entity": {
-        "Enter drupal/entity patch #1203018 description here": "https://www.drupal.org/files/memory-timeout-with-entity-tokens-and-token-module-1203018-32.patch"
-      }
     },
     "preserve-paths": [
-      "web/profiles/wk",
       "web/sites/all/drush",
       "web/sites/all/libraries",
       "web/sites/all/modules/contrib",
