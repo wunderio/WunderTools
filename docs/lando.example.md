@@ -6,7 +6,7 @@ Add these into your .lando.yml proxy and make sure that drupal/web/sites/site.ph
 
 ```
 proxy:
-  appserver:
+  appserver_nginx:
     - domain.lndo.site
     - domain2.lndo.site
 ```
