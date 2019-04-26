@@ -26,8 +26,8 @@ curl -s https://raw.githubusercontent.com/wunderio/WunderTools/drupal7/drupal/co
 curl -s https://raw.githubusercontent.com/wunderio/WunderTools/drupal7/drupal/.lando.yml | sed "s/wundertools/$PROJECT_NAME/" > drupal/.lando.yml
 
 # Download the base composer file.
-curl -s https://raw.githubusercontent.com/drupal-composer/drupal-project/7.x/composer.json > drupal/composer.json
-curl -s https://raw.githubusercontent.com/drupal-composer/drupal-project/7.x/.gitignore > drupal/.gitignore
+curl -s https://raw.githubusercontent.com/wunderio/WunderTools/drupal7/drupal/composer.json > drupal/composer.json
+curl -s https://raw.githubusercontent.com/wunderio/WunderTools/drupal7/drupal/.gitignore > drupal/.gitignore
 mkdir -p drupal/scripts/composer
 curl -s https://raw.githubusercontent.com/drupal-composer/drupal-project/7.x/scripts/composer/ScriptHandler.php > drupal/scripts/composer/ScriptHandler.php
 mkdir -p drupal/drush
@@ -83,8 +83,13 @@ php -r '
 $baseComposerJson = json_decode(file_get_contents("drupal/base-composer.json"), true);
 $generatedComposerJson = json_decode(file_get_contents("/tmp/raw-composer.json"), true);
 
-$baseComposerJson["require"] = $generatedComposerJson["require"];
-$baseComposerJson["extra"]["patches"] = $generatedComposerJson["extra"]["patches"];
+// Merge required packages.
+$baseComposerJson["require"] += $generatedComposerJson["require"];
+
+// Add patches if there are any.
+if (isset($generatedComposerJson["extra"]["patches"])) {
+  $baseComposerJson["extra"]["patches"] = $generatedComposerJson["extra"]["patches"];
+}
 
 // Mark dev modules as dev dependencies.
 if (isset($baseComposerJson["require"]["drupal/devel"])) {
