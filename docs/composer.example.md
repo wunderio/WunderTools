@@ -4,15 +4,15 @@
 
 Modify your `require{}` block so that it looks like this, long and short hand git commit hashes are supported.
 
-  ```
-  "drupal/module": "branch-dev#5670922dea05fffb6506a6cd5d53546b9fae8df9",
-  ```  
+```
+"drupal/module": "branch-dev#5670922dea05fffb6506a6cd5d53546b9fae8df9",
+```  
 
 eg.
 
 ```
 "drupal/bootstrap": "3.x-dev#5670922dea05fffb6506a6cd5d53546b9fae8df9",
-```  
+```
 
 Note, version can be anything you want, as long as you specify the same version in your `require{}` block. In this example we've used an arbitrary 7.0 version which is absurdly high to make sure we differentiate our specific versions in our `require{}` block. This might make it easier to find these kind of packages.
 
