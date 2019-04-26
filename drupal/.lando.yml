@@ -22,7 +22,7 @@ tooling:
     cmd: ./build.sh
   drush:
     service: appserver
-    cmd: /app/drupal/vendor/bin/drush --root=/app/drupal/web
+    cmd: /app/vendor/bin/drush --root=/app/web
   npm:
     description: Runs npm commands
     service: node
