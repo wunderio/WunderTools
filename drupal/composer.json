@@ -27,8 +27,8 @@
   },
   "require-dev": {
     "drupal/registry_rebuild": "2.5",
-    "drupal/stage_file_proxy": "1.8",
-    "drupal/devel": "1.4"
+    "drupal/stage_file_proxy": "1.9",
+    "drupal/devel": "1.7"
   },
   "conflict": {
     "drupal/core": "8.*"
