@@ -33,6 +33,13 @@ curl -s https://raw.githubusercontent.com/drupal-composer/drupal-project/7.x/scr
 mkdir -p drupal/drush
 curl -s https://raw.githubusercontent.com/drupal-composer/drupal-project/7.x/drush/policy.drush.inc > drupal/drush/policy.drush.inc
 
+# Add the various settings and env files.
+mkdir -p drupal/web/sites/default
+curl -s https://raw.githubusercontent.com/wunderio/WunderTools/drupal7/drupal/web/sites/default/settings.php > drupal/web/sites/default/settings.php
+curl -s https://raw.githubusercontent.com/wunderio/WunderTools/drupal7/drupal/web/sites/default/settings.lando.php | sed "s/wundertools/$PROJECT_NAME/" > drupal/web/sites/default/settings.lando.php
+curl -s https://raw.githubusercontent.com/wunderio/WunderTools/drupal7/drupal/web/sites/default/settings.silta.php > drupal/web/sites/default/settings.silta.php
+curl -s https://raw.githubusercontent.com/wunderio/WunderTools/drupal7/drupal/.env > drupal/.env
+
 # Run composer install so we have the scaffolding in place.
 composer install --working-dir=drupal --no-suggest --ignore-platform-reqs
 rm drupal/composer.lock
