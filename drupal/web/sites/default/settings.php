@@ -65,8 +65,8 @@ $settings['update_free_access'] = FALSE;
 /**
  * Silta cluster configuration overrides.
  */
-if (getenv('SILTA_CLUSTER') && file_exists($app_root . '/' . $site_path . '/settings.silta.php')) {
-  include $app_root . '/' . $site_path . '/settings.silta.php';
+if (getenv('SILTA_CLUSTER') && file_exists(__DIR__ . '/settings.silta.php')) {
+  include __DIR__ . '/settings.silta.php';
 }
 
 /**
