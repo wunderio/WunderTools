@@ -19,7 +19,7 @@ workflows:
           codebase-build:
             - run: sudo apt-get install python-yaml
             - run: ./build.sh build
-            - silta/yarn-install
+            # Add any frontend build step here.
           context: global_nonprod
           filters:
             branches:
