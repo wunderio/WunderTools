@@ -18,7 +18,7 @@ workflows:
           drupal-root: drupal
           codebase-build:
             - run: sudo apt-get install python-yaml
-            - run: ./build.sh build
+            - run: ./build.sh build && rm -f web/sites/default/settings.local.php
             # Add any frontend build step here.
           context: global_nonprod
           filters:
