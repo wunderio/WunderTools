@@ -78,6 +78,7 @@
     "patches": {
     },
     "preserve-paths": [
+      "web/.dockerignore",
       "web/sites/all/drush",
       "web/sites/all/libraries",
       "web/sites/all/modules/contrib",
