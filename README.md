@@ -2,9 +2,7 @@
 
 Reference setup with Ansible & Vagrant for Drupal 8 projects. For Drupal 7 support, see the [Drupal 7 branch](https://github.com/wunderio/WunderTools/tree/drupal7).
 
-[![Build Status](https://travis-ci.org/wunderio/WunderMachina.svg)](https://travis-ci.org/wunderio/WunderMachina)
-[![Build Status](https://travis-ci.org/wunderio/WunderTools.svg)](https://travis-ci.org/wunderio/WunderTools)
-
+[![CircleCI](https://circleci.com/gh/wunderio/WunderTools.svg?style=svg)](https://circleci.com/gh/wunderio/WunderTools)
 
 ## Requirements
 - Install [Vagrant](https://www.vagrantup.com/downloads.html) 1.9.2 or greater
