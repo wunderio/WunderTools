@@ -53,10 +53,10 @@ $env = getenv('WKV_SITE_ENV');
 switch ($env) {
   case 'prod':
     $settings['simple_environment_indicator'] = '#d4000f Production';
-    $settings['memcache']['servers'] = array(
+    $settings['memcache']['servers'] = [
       '[front1_internal_ip]:11211' => 'default',
-      '[front2_internal_ip]:11211' => 'default'
-    );
+      '[front2_internal_ip]:11211' => 'default',
+    ];
     break;
 
   case 'dev':
@@ -75,9 +75,9 @@ switch ($env) {
 /**
  * Location of the site configuration files.
  */
-$config_directories = array(
+$config_directories = [
   CONFIG_SYNC_DIRECTORY => '../sync',
-);
+];
 
 /**
  * Memcache configuration.

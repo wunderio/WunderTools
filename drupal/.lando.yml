@@ -60,15 +60,30 @@ services:
   #     command: /opt/bin/entry_point.sh
 
   # Optional. Uncomment the following lines if Elasticsearch is required.
-  # elasticsearch:
-  #   type: elasticsearch:5.5
-
+  #elasticsearch:
+  #  type: elasticsearch:7
+  #  portforward: true
+  #  mem: 1026m
+    # Install `analysis-icu` plugin after ES service boots up.
+  #  run_as_root:
+  #    - elasticsearch-plugin install analysis-icu
+  #kibana:
+  #  services:
+  #    command: /docker-entrypoint.sh kibana
+  #    depends_on:
+  #      - elasticsearch
+  #    image: blacktop/kibana:7
+  #    ports:
+  #      - "5601"
+  #  type: compose
 proxy:
   mailhog:
     - mail.lndo.site
-  # Optional. Uncomment the following lines if Elasticsearch is required.
-  # elasticsearch:
-  #   - elasticsearch.lndo.site:9200
+  # Uncomment the following lines if Elasticsearch & Kibana is required.
+  #elasticsearch:
+  #  - 'es.lndo.site:9200'
+  #kibana:
+  #  - 'kibana.lndo.site:5601'
 
 events:
   # Clear caches after a database import
@@ -78,3 +93,6 @@ events:
   post-start:
     - appserver: mkdir -p $LANDO_MOUNT/.drush/site-aliases
     - appserver: ln -sf /app/drush/wundertools.aliases.drushrc.php $LANDO_MOUNT/.drush/site-aliases/wundertools.aliases.drushrc.php
+
+# Lando version at the time of creation of .lando.yml.
+version: v3.0.0-rc.18
