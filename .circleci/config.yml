@@ -18,7 +18,8 @@ workflows:
           drupal-root: drupal
           codebase-build:
             - silta/drupal-composer-install
-            - silta/npm-install-build
+            - silta/npm-install-build:
+                path: . # Adjust to the location of your package.json
           context: global_nonprod
           filters:
             branches:
