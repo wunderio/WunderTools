@@ -4,3 +4,8 @@
 # See https://github.com/wunderio/charts/blob/master/drupal/values.yaml
 # for all possible options.
 
+# Configuration for everything that runs in php containers.
+php:
+  # Define the location of the Drupal config files relative to the composer root.
+  # This variable is exposed as $DRUPAL_CONFIG_PATH in the container.
+  drupalConfigPath: "sync"
