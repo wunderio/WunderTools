@@ -6,7 +6,6 @@ config:
   via: nginx
   php: '7.2'
   database: mariadb:10.2
-  #xdebug: true
 
 tooling:
   build.sh:
@@ -19,6 +18,16 @@ tooling:
     description: Run codeception
     cmd:
     - ./vendor/bin/codecept
+  xdebug-on:
+    service: appserver
+    description: Enable xdebug for nginx.
+    cmd: docker-php-ext-enable xdebug && pkill -o -USR2 php-fpm
+    user: root
+  xdebug-off:
+    service: appserver
+    description: Disable xdebug for nginx.
+    cmd: rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && pkill -o -USR2 php-fpm
+    user: root
 
 services:
   mailhog:
