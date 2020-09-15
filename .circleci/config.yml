@@ -20,7 +20,7 @@ workflows:
             - silta/drupal-composer-install
             - silta/npm-install-build:
                 path: . # Adjust to the location of your package.json
-          context: global_nonprod
+          context: silta_dev
           filters:
             branches:
               ignore: production
@@ -30,7 +30,7 @@ workflows:
           <<: *build-deploy
           name: build-deploy-prod
           silta_config: silta/silta.yml,silta/silta-prod.yml
-          context: global_nonprod
+          context: silta_finland
           filters:
             branches:
               only: production
