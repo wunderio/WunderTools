@@ -34,7 +34,7 @@
         "zaporylie/composer-drupal-optimizations": "^1.0"
     },
     "require-dev": {
-        "guncha25/drupal-codeception": "^8"
+        "guncha25/drupal-codeception": "^9"
     },
     "conflict": {
         "drupal/drupal": "*"
