@@ -1,5 +1,7 @@
 # Wundertools
 
+**Note!** This project is no longer in active development and receives only maintenance fixes. For new projects, we recommend <https://github.com/wunderio/drupal-project> instead.
+
 Reference setup with Ansible & Vagrant for Drupal 8 projects. For Drupal 7 support, see the [Drupal 7 branch](https://github.com/wunderio/WunderTools/tree/drupal7).
 
 [![CircleCI](https://circleci.com/gh/wunderio/WunderTools.svg?style=svg)](https://circleci.com/gh/wunderio/WunderTools)
