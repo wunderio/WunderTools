@@ -32,7 +32,7 @@ Let Vagrant create your new machine:
 This will create a new Virtual machine on your computer, configure it with all the nice bells & whistles that you can
 think of (like MariaDB, nginx, Varnish, memcached and whatnot) and start it up for you. This will also install vagrant plugin depedencies, if you encounter issues while installing the plugins then you could use: `vagrant --skip-dependency-manager up`
 
-SSH into your box and build and install Drupal: 
+SSH into your box and build and install Drupal:
 
 ```
 vagrant ssh
@@ -41,7 +41,7 @@ cd /vagrant/drupal
 ```
 
 If this is a project with an existing production/staging server, you should probably sync the production database now,
-from your local machine: 
+from your local machine:
 
 `sync.sh`
 
@@ -124,3 +124,11 @@ of the box for PHPStorm. PHP script e.g. drush debugging should also work.
 XDebug can be enabled by uncommeting `xdebug: true` in the .lando.yml file. After `lando rebuild` port 9000 is used for XDebug.
 
 Note: Make sure port 9000 is not used in your OS for anything else. You can see all ports in use for example with `lsof -i -n -P`. For example php-fpm might be using port 9000 if you have it running.
+
+## Provisioning with Lando
+
+Perform the following tasks in the project root folder to set up the Lando-based provisioning tool:
+
+1. create the file `ansible.vault` and save it with the Ansible vault password (search for `Ansible vault password` or similar in the LastPass),
+2. run `lando start`,
+3. use `lando provision` for help and `lando provision <task>` for provisioning tasks.
