@@ -129,6 +129,6 @@ Note: Make sure port 9000 is not used in your OS for anything else. You can see 
 
 Perform the following tasks in the project root folder to set up the Lando-based provisioning tool:
 
-1. create the file `ansible.vault` and save it with the Ansible vault password (search for `Ansible vault password` or similar in the LastPass),
+1. create the file `~/.ssh/ansible.vault` and save it with the Ansible vault password (search for `Ansible vault password` or similar in the LastPass),
 2. run `lando start`,
 3. use `lando provision` for help and `lando provision <task>` for provisioning tasks.

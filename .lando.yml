@@ -15,8 +15,8 @@ services:
       - cd /app/ansible && pipenv install
     overrides:
       environment:
-        # Set the path to the Ansible vault file. Save the password to the `ansible.vault` file.
-        WT_ANSIBLE_VAULT_FILE: "/app/ansible.vault"
+        # Set the path to the Ansible vault file. Save the password to the `~/.ssh/ansible.vault` file.
+        WT_ANSIBLE_VAULT_FILE: "/user/.ssh/ansible.vault"
 tooling:
   provision:
     description: Run Ansible provisioning commands
