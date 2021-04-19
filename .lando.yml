@@ -1,0 +1,30 @@
+name: provision
+services:
+  python:
+    type: python:3.7
+    build_as_root:
+      - "apt-get update -y"
+      # Resolve the locale language issue.
+      - "apt-get install locales locales-all sudo -y"
+      - "locale-gen en_US.UTF-8"
+    run_as_root:
+      - rm -rf /app/ansible
+      - git clone git@github.com:wunderio/WunderMachina.git --branch master --single-branch ansible
+      - install -d -m 777 /var/www/.local/share
+      - cd /app/ansible && pip install pipenv
+      - cd /app/ansible && pipenv install
+    overrides:
+      environment:
+        # Set the path to the Ansible vault file. Save the password to the `~/.ssh/ansible.vault` file.
+        WT_ANSIBLE_VAULT_FILE: "/user/.ssh/ansible.vault"
+tooling:
+  provision:
+    description: Run Ansible provisioning commands
+    cmd:
+      - python: ./provision.sh
+  pip:
+    description: Run pip commands
+    service: python
+  pipenv:
+    description: Run pipenv commands
+    service: python
