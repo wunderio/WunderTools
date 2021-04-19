@@ -357,12 +357,9 @@ class Maker:
 
     # Execute a drush command
     def drush_command(self, command):
-            drush_command = command.split(' ')
-
-            command_status = self._drush(drush_command, False)
-
-            if not command_status:
-                raise BuildError("Drush command failed")
+        drush_command = command.split(' ')
+        if not self._drush(drush_command, False):
+            raise BuildError("Drush command: '" + command + "' failed.")
 
     def append(self, command):
         files = command.split(">")
