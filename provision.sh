@@ -25,7 +25,7 @@ function parse_yaml {
 
 show_help() {
 cat <<EOF
-Usage: ${0##*/} [-fm MYSQL_ROOT_PASS] [-t|s ANSIBLE_TAGS] [-p ANSIBLE_VAULT_FILE] [ENVIRONMENT] 
+Usage: ${0##*/} [-fm MYSQL_ROOT_PASS] [-t|s ANSIBLE_TAGS] [-p ANSIBLE_VAULT_FILE] [ENVIRONMENT]
       -f                    First run, use when provisioning new servers.
       -r                    Skip installing requirements from ansible/requirements.txt.
       -m MYSQL_ROOT_PASS    For first run you need to provide new mysql root password.
@@ -188,9 +188,9 @@ if [ ! $SKIP_REQUIREMENTS ] ; then
 
     # Ensure ansible & ansible library versions with pip
     if [ -f $ROOT/ansible/Pipfile.lock ]; then
-      pipenv install 
+      pipenv install --python 3.6
     else
-      pipenv install ansible
+      pipenv install ansible --python 3.6
     fi
   fi
 fi

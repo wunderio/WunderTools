@@ -1,7 +1,7 @@
 name: provision
 services:
   python:
-    type: python:3.7
+    type: python:3.6
     build_as_root:
       - "apt-get update -y"
       # Resolve the locale language issue.
@@ -12,7 +12,7 @@ services:
       - git clone git@github.com:wunderio/WunderMachina.git --branch master --single-branch ansible
       - install -d -m 777 /var/www/.local/share
       - cd /app/ansible && pip install pipenv
-      - cd /app/ansible && pipenv install
+      - cd /app/ansible && pipenv install --python 3.6
     overrides:
       environment:
         # Set the path to the Ansible vault file. Save the password to the `~/.ssh/ansible.vault` file.
